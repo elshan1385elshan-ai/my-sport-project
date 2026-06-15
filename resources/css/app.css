@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ====================== Hero Section Styles ====================== */
+
+.hero-section {
+    height: 85vh;
+    min-height: 650px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-background {
+    position: absolute;
+    inset: 0;
+    background-image: url('{{ Vite::asset('resources/images/nou-camp.webp') }}');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: brightness(0.55);
+    z-index: 1;
+}
+
+.hero-background::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+    z-index: 2;
+}
+
+.hero-section h1 {
+    text-shadow: 0 4px 25px rgba(0, 0, 0, 0.9);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        height: 70vh;
+        min-height: 500px;
+    }
+}
