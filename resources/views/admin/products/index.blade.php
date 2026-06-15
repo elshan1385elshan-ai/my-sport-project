@@ -31,39 +31,39 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($sports as $sport)
+                        @forelse($products as $product)
                             <tr>
                                 <td class="ps-4">
-                                    @if($sport->images->count() > 0)
+                                    @if($product->images->count() > 0)
                                         {{-- نمایش اولین عکس محصول --}}
-                                        <img src="{{ asset('storage/' . $sport->images->first()->image_path) }}" 
+                                        <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
                                              class="img-thumbnail" 
                                              style="width: 50px; height: 50px; object-fit: cover;" 
-                                             alt="{{ $sport->name }}">
+                                             alt="{{ $product->name }}">
                                     @else
                                         <span class="badge bg-secondary">بدون تصویر</span>
                                     @endif
                                 </td>
-                                <td class="fw-bold">{{ $sport->name }}</td>
+                                <td class="fw-bold">{{ $product->name }}</td>
                                 <td>
                                     <span class="badge bg-info text-dark">
-                                        {{ $sport->category->name ?? 'بدون دسته' }}
+                                        {{ $product->category->name ?? 'بدون دسته' }}
                                     </span>
                                 </td>
-                                <td>{{ number_format($sport->price) }} ریال</td>
+                                <td>{{ number_format($product->price) }} ریال</td>
                                 <td>
-                                    @if($sport->discount > 0)
-                                        <span class="text-danger">-{{ $sport->discount }}%</span>
+                                    @if($product->discount > 0)
+                                        <span class="text-danger">-{{ $product->discount }}%</span>
                                     @else
                                         <span class="text-muted">۰%</span>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('sports.edit', $sport->id) }}" class="btn btn-outline-primary">
+                                        <a href="{{ route('sports.edit', $product->id) }}" class="btn btn-outline-primary">
                                             <i class="fas fa-edit"></i> ویرایش
                                         </a>
-                                        <form action="{{ route('sports.destroy', $sport->id) }}" method="POST" onsubmit="return confirm('آیا از حذف این محصول اطمینان دارید؟')">
+                                        <form action="{{ route('sports.destroy', $product->id) }}" method="POST" onsubmit="return confirm('آیا از حذف این محصول اطمینان دارید؟')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-outline-danger">

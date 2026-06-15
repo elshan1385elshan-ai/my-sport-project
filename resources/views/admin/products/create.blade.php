@@ -30,7 +30,7 @@
                             </div >
 
                             <!-- شروع فرم با ویژگی‌های ضروری -->
-                            <form action="{{ route('sport.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf <!-- بسیار مهم برای جلوگیری از خطای 419 -->
 
                                 <div class="card-body">

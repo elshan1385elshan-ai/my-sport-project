@@ -3,7 +3,6 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\SportController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 
@@ -22,7 +21,7 @@ Route::middleware('auth')->group(function () {
 // بخش ادمین
 Route::middleware(['auth'])->group(function () {
     Route::middleware('admin')->group(function () {
-        Route::resource('sport', SportController::class);
+        Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class);
     });
 });

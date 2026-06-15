@@ -24,13 +24,13 @@
 
             <!-- دکمه اصلاح شده افزودن لوازم -->
             <li class="nav-item">
-              <a href="{{route('sport.create')}}" class="nav-link custom-btn-hover">
+              <a href="{{route('products.create')}}" class="nav-link custom-btn-hover">
                 <i class="nav-icon fa fa-plus-circle"></i> <!-- پیشنهاد: استفاده از آیکون استانداردتر -->
                 <p>افزودن لوازم ورزشی</p>
               </a>
             </li>
             <li class="nav-item">
-              <a href="{{route('sport.index')}}" class="nav-link custom-btn-hover">
+              <a href="{{route('products.index')}}" class="nav-link custom-btn-hover">
                 <i class="fa fa-list nav-icon blue"></i> <!-- پیشنهاد: استفاده از آیکون استانداردتر -->
                 <p>لیست لوازم </p>
               </a>

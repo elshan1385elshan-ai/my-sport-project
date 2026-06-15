@@ -9,28 +9,14 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+      protected $fillable=[
         'name',
-        'slug',
-        'brand',
-        'description',
         'price',
-        'old_price',
-        'image',
-        'images',
-        'stock',
-        'is_active',
-        'category',
-        'sport_type',
-        'player_name',
+        'discount',
+        'category_id'
     ];
 
-    protected $casts = [
-        'price' => 'decimal:2',
-        'old_price' => 'decimal:2',
-        'images' => 'array',
-        'is_active' => 'boolean',
-    ];
+    
 
     // اگر از Slug استفاده می‌کنی (توصیه می‌شود)
     public static function boot()
@@ -54,5 +40,16 @@ class Product extends Model
     public function getFormattedPriceAttribute()
     {
         return number_format($this->price) . ' تومان';
+    }
+  
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+    public function images(){
+        return $this->hasMany(SportImage::class);
+    }
+    public function category(){
+        return $this->belongsToMany(Category::class);
     }
 }
