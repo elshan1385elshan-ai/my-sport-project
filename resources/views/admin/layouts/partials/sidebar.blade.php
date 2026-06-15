@@ -31,7 +31,7 @@
             </li>
             <li class="nav-item">
               <a href="{{route('products.index')}}" class="nav-link custom-btn-hover">
-                <i class="fa fa-list nav-icon blue"></i> <!-- پیشنهاد: استفاده از آیکون استانداردتر -->
+                <i class="fa fa-list nav-icon blue"></i> 
                 <p>لیست لوازم </p>
               </a>
             </li>
