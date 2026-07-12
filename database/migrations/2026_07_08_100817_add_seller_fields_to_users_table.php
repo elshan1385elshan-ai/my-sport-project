@@ -25,7 +25,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
                 'is_seller', 'shop_name', 'shop_description', 'shop_slug',
-                'shop_logo', 'shop_social', 'seller_verified_at', 'seller_status'
+                'shop_logo', 'shop_social', 'seller_verified_at', 'seller_status',
             ]);
         });
     }

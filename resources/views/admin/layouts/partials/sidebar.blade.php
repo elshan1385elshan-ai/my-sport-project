@@ -69,10 +69,16 @@
             </li>
              <!-- خروج -->
             <li class="nav-item">
-              <a href="logout.html" class="nav-link  custom-btn-hover">
-                <i class="nav-icon fa fa-sign-out"></i>
-                <p>خروج</p>
-              </a>
+                <a href="#" 
+                  class="nav-link custom-btn-hover"
+                  onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    <i class="nav-icon fa fa-sign-out"></i>
+                    <p>خروج</p>
+                </a>
+
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                    @csrf
+                </form>
             </li>
           </ul>
         </nav>

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\SellerMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -12,13 +14,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin' => \App\Http\Middleware\AdminMiddleware::class,
-            'seller' => \App\Http\Middleware\SellerMiddleware::class,
+            'admin' => AdminMiddleware::class,
+            'seller' => SellerMiddleware::class,
         ]);
 
         // important: do NOT remove/override default middleware.
     })
-
 
     ->withExceptions(function (Exceptions $exceptions): void {
         //

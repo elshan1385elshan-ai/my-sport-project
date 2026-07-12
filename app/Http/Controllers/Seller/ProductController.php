@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Seller;
 
 use App\Http\Controllers\Controller;
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use App\Models\SportImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -29,6 +30,7 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::whereNull('parent_id')->with('children')->get();
+
         return view('seller.products.create', compact('categories'));
     }
 
@@ -60,12 +62,12 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
                 $image->storeAs('products', $fileName, 'public');
 
                 SportImage::create([
                     'product_id' => $product->id,
-                    'image_path' => 'products/' . $fileName,
+                    'image_path' => 'products/'.$fileName,
                 ]);
             }
         }
@@ -77,6 +79,7 @@ class ProductController extends Controller
     {
         $this->authorize('update', $product);
         $categories = Category::whereNull('parent_id')->with('children')->get();
+
         return view('seller.products.edit', compact('product', 'categories'));
     }
 
@@ -108,12 +111,12 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
-                $fileName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
                 $image->storeAs('products', $fileName, 'public');
 
                 SportImage::create([
                     'product_id' => $product->id,
-                    'image_path' => 'products/' . $fileName,
+                    'image_path' => 'products/'.$fileName,
                 ]);
             }
         }
@@ -125,6 +128,7 @@ class ProductController extends Controller
     {
         $this->authorize('delete', $product);
         $product->delete();
+
         return redirect()->route('seller.products.index')->with('success', 'محصول حذف شد!');
     }
 
@@ -136,7 +140,7 @@ class ProductController extends Controller
             abort(403);
         }
 
-        \Illuminate\Support\Facades\Storage::disk('public')->delete($image->image_path);
+        Storage::disk('public')->delete($image->image_path);
         $image->delete();
 
         return response()->json(['success' => true]);

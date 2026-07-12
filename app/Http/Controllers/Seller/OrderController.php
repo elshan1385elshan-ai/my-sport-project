@@ -16,7 +16,7 @@ class OrderController extends Controller
     public function index()
     {
         $seller = auth()->guard('seller')->user();
-        $orders = Order::whereHas('items.product', fn($q) => $q->where('user_id', $seller->id))
+        $orders = Order::whereHas('items.product', fn ($q) => $q->where('user_id', $seller->id))
             ->with(['items.product', 'user'])
             ->latest()
             ->paginate(15);
@@ -28,7 +28,7 @@ class OrderController extends Controller
     {
         $seller = auth()->guard('seller')->user();
         $order->load(['items.product', 'user', 'address']);
-        
+
         $sellerItems = $order->items->where('product.user_id', $seller->id);
         if ($sellerItems->isEmpty()) {
             abort(403);
@@ -41,7 +41,7 @@ class OrderController extends Controller
     {
         $seller = auth()->guard('seller')->user();
         $sellerItems = $order->items->where('product.user_id', $seller->id);
-        
+
         if ($sellerItems->isEmpty()) {
             abort(403);
         }

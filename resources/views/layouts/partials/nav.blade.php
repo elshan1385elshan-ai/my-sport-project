@@ -69,7 +69,7 @@
                 @auth
                     <a href="{{ route('cart.show') }}" class="btn btn-outline-light position-relative">
                         <i class="bi bi-cart3"></i>
-                        @php $cartCount = count(session()->get('cart', [])); @endphp
+                        @php $cartCount = array_sum(session()->get('cart', [])); @endphp
                         @if($cartCount > 0)
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{ $cartCount }}
@@ -94,7 +94,7 @@
                 @else
                     <a href="{{ route('cart.show') }}" class="btn btn-outline-light position-relative">
                         <i class="bi bi-cart3"></i>
-                        @php $cartCount = count(session()->get('cart', [])); @endphp
+                        @php $cartCount = array_sum(session()->get('cart', [])); @endphp
                         @if($cartCount > 0)
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
                                 {{ $cartCount }}

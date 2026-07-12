@@ -13,6 +13,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::paginate(10);
+
         return view('admin.categories.index', compact('categories'));
     }
 
@@ -22,6 +23,7 @@ class CategoryController extends Controller
     public function create()
     {
         $categories = Category::whereNull('parent_id')->get();
+
         return view('admin.categories.create', compact('categories'));
     }
 
@@ -74,7 +76,7 @@ class CategoryController extends Controller
         $category = Category::query()->findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'required|unique:categories,name,' . $category->id,
+            'name' => 'required|unique:categories,name,'.$category->id,
             'parent_id' => 'nullable|exists:categories,id',
         ], [
             'name.required' => 'وارد کردن نام دسته‌بندی الزامی است.',

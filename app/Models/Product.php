@@ -9,17 +9,15 @@ class Product extends Model
 {
     use HasFactory;
 
-      protected $fillable=[
+    protected $fillable = [
         'name',
         'price',
         'discount',
         'description',
         'slug',
         'category_id',
-        'user_id'
+        'user_id',
     ];
-
-    
 
     // اگر از Slug استفاده می‌کنی (توصیه می‌شود)
     public static function boot()
@@ -48,18 +46,21 @@ class Product extends Model
 
     public function getFormattedDiscountedPriceAttribute()
     {
-        return number_format($this->discounted_price) . ' تومان';
+        return number_format($this->discounted_price).' تومان';
     }
-  
 
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
-    public function images(){
+
+    public function images()
+    {
         return $this->hasMany(SportImage::class);
     }
-    public function category(){
+
+    public function category()
+    {
         return $this->belongsTo(Category::class, 'category_id');
     }
-
 }

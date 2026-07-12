@@ -2,28 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\SportImage;
-use App\Models\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    
-
     // // متدهای آینده (مثلاً نمایش همه محصولات)
     // public function index()
     // {
     //     $products = Product::all();
     //     return view('products.index', compact('products'));
     // }
-     /**
+    /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $products = Product::with('user', 'category', 'images')->latest()->paginate(5);
-        return view('admin.products.index' , compact('products'));
+
+        return view('admin.products.index', compact('products'));
     }
 
     /**
@@ -32,7 +31,8 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.products.create' , compact('categories'));
+
+        return view('admin.products.create', compact('categories'));
     }
 
     /**
@@ -41,22 +41,22 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'         => 'required|unique:products,name',
-            'price'        => 'required|numeric',
-            'discount'     => 'nullable|integer',
-            'category_id'  => 'required|exists:categories,id',
-            'description'  => 'nullable|string',
-            'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:2048'
+            'name' => 'required|unique:products,name',
+            'price' => 'required|numeric',
+            'discount' => 'nullable|integer',
+            'category_id' => 'required|exists:categories,id',
+            'description' => 'nullable|string',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
         $product = Product::create([
-            'name'         => $request->name,
-            'price'        => $request->price,
-            'discount'     => $request->discount ?? 0,
-            'slug'         => \Str::slug($request->name),
-            'category_id'  => $request->category_id,
-            'description'  => $request->description,
-            'user_id'      => auth()->id(),
+            'name' => $request->name,
+            'price' => $request->price,
+            'discount' => $request->discount ?? 0,
+            'slug' => \Str::slug($request->name),
+            'category_id' => $request->category_id,
+            'description' => $request->description,
+            'user_id' => auth()->id(),
         ]);
 
         if ($request->hasFile('images')) {
@@ -73,7 +73,7 @@ class ProductController extends Controller
 
                 SportImage::create([
                     'product_id' => $product->id,
-                    'image_path' => 'products/'.$fileName
+                    'image_path' => 'products/'.$fileName,
                 ]);
             }
         }
@@ -89,6 +89,7 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $product->load(['images', 'category', 'user']);
+
         return view('product.show', compact('product'));
     }
 
@@ -99,7 +100,7 @@ class ProductController extends Controller
     {
         $categories = Category::all();
 
-        return view('admin.products.edit', compact('product','categories'));
+        return view('admin.products.edit', compact('product', 'categories'));
     }
 
     /**
@@ -110,13 +111,13 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|unique:products,name,' . $product->id,
+            'name' => 'required|unique:products,name,'.$product->id,
             'price' => 'required|numeric',
             'discount' => 'nullable|integer',
             'category_id' => 'required|exists:categories,id',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
-        ],[
+        ], [
             'name.required' => 'نام محصول الزامی است.',
             'name.unique' => 'این محصول قبلاً ثبت شده است.',
             'price.required' => 'قیمت محصول الزامی است.',
@@ -130,7 +131,7 @@ class ProductController extends Controller
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
             'category_id' => $request->category_id,
-            'description'=> $request->description,
+            'description' => $request->description,
         ]);
 
         if ($request->hasFile('images')) {
@@ -147,7 +148,7 @@ class ProductController extends Controller
 
                 SportImage::create([
                     'product_id' => $product->id,
-                    'image_path' => 'products/'.$fileName
+                    'image_path' => 'products/'.$fileName,
                 ]);
             }
         }
@@ -163,8 +164,10 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         $product->delete();
+
         return redirect()->route('products.index');
     }
+
     // /**
     //  * جستجوی زنده (Live Search)
     //  */
@@ -178,6 +181,6 @@ class ProductController extends Controller
 
         $products = Product::with('images', 'category')->where('name', 'LIKE', "%{$query}%")->orWhere('price', 'LIKE', "%{$query}%")->paginate(10);
 
-        return view('search.results' , compact('query' , 'products'));
+        return view('search.results', compact('query', 'products'));
     }
 }

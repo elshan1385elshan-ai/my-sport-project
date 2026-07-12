@@ -11,11 +11,19 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        $cart[] = $request->product_id;
+        $id = $request->product_id;
+
+        if (isset($cart[$id])) {
+            $cart[$id]++;
+        } else {
+            $cart[$id] = 1;
+        }
 
         session()->put('cart', $cart);
 
-        return redirect()->back()->with('success', 'کالا به سبد خرید اضافه شد');
+        $total = array_sum($cart);
+
+        return redirect()->back()->with('success', "کالا به سبد خرید اضافه شد (تعداد کل: $total)");
     }
 
     public function show()
@@ -23,29 +31,44 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
 
         $products = Product::with(['images', 'category'])
-            ->whereIn('id', $cart)
-            ->get();
+            ->whereIn('id', array_keys($cart))
+            ->get()
+            ->keyBy('id');
 
-        return view('cart.show', compact('products'));
+        return view('cart.show', compact('products', 'cart'));
     }
 
     public function remove(Request $request)
     {
         $cart = session()->get('cart', []);
 
-        $key = array_search($request->product_id, $cart);
-        if ($key !== false) {
-            unset($cart[$key]);
-            $cart = array_values($cart);
-        }
+        unset($cart[$request->product_id]);
 
         session()->put('cart', $cart);
 
         return redirect()->back()->with('success', 'کالا از سبد خرید حذف شد');
     }
 
+    public function decrease(Request $request)
+    {
+        $cart = session()->get('cart', []);
+
+        $id = $request->product_id;
+
+        if (isset($cart[$id])) {
+            $cart[$id]--;
+            if ($cart[$id] <= 0) {
+                unset($cart[$id]);
+            }
+        }
+
+        session()->put('cart', $cart);
+
+        return redirect()->back();
+    }
+
     public function count()
     {
-        return count(session()->get('cart', []));
+        return array_sum(session()->get('cart', []));
     }
 }

@@ -14,7 +14,7 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
@@ -22,10 +22,9 @@ class AdminMiddleware
 
         // Admin = role === 'admin'
         if (($user->role ?? 'user') !== 'admin') {
-            abort(403, 'Forbidden');
+            return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
         }
 
         return $next($request);
     }
 }
-

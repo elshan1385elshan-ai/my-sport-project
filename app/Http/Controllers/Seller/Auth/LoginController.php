@@ -27,13 +27,15 @@ class LoginController extends Controller
 
         if (Auth::guard('seller')->attempt($credentials, $request->filled('remember'))) {
             $user = Auth::guard('seller')->user();
-            
-            if (!$user->isApprovedSeller()) {
+
+            if (! $user->isApprovedSeller()) {
                 Auth::guard('seller')->logout();
+
                 return back()->withErrors(['email' => 'حساب فروشنده شما هنوز تأیید نشده یا معلق است.']);
             }
 
             $request->session()->regenerate();
+
             return redirect()->intended(route('seller.dashboard'));
         }
 
@@ -45,6 +47,7 @@ class LoginController extends Controller
         Auth::guard('seller')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('seller.login');
     }
 }

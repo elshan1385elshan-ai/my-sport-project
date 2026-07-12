@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
-use Illuminate\Http\Request;
+use App\Models\Product;
 
 class HomeController extends Controller
 {
-    public function dashboard(){
+    public function dashboard()
+    {
         return view('admin.dashboard');
     }
 
-    public function profile(){
+    public function profile()
+    {
         return view('admin.profile');
     }
 
-    public function home(){
+    public function home()
+    {
         $products = Product::with(['images', 'category'])
             ->latest()
             ->limit(12)
@@ -24,8 +26,6 @@ class HomeController extends Controller
 
         $categories = Category::whereNull('parent_id')->with('children')->select(['id', 'name'])->get();
 
-
         return view('home', compact('products', 'categories'));
     }
 }
-

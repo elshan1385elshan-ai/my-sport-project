@@ -4,8 +4,8 @@
 <main class="container my-5" id="content">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="h3 mb-0">سبد خرید</h2>
-        @if($products->count() > 0)
-            <span class="badge bg-primary fs-6">{{ $products->count() }} کالا</span>
+        @if(count($cart) > 0)
+            <span class="badge bg-primary fs-6">{{ array_sum($cart) }} کالا</span>
         @endif
     </div>
 
@@ -13,9 +13,11 @@
         <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
 
-    @if($products->count() > 0)
+    @if(count($cart) > 0)
         <div class="row g-4">
-            @foreach($products as $product)
+            @foreach($cart as $id => $quantity)
+                @php $product = $products->get($id); @endphp
+                @if(!$product) @continue @endif
                 @php $firstImage = $product->images->first(); @endphp
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0 hover-shadow">
@@ -51,6 +53,30 @@
                                             <span class="badge bg-danger ms-2">-{{ $product->discount }}%</span>
                                         @else
                                             <span class="text-success fw-bold fs-5">{{ number_format($product->price) }} تومان</span>
+                                        @endif
+                                    </div>
+
+                                    <div class="d-flex align-items-center gap-2 mb-2">
+                                        <form action="{{ route('cart.add') }}" method="POST" class="d-inline">
+                                            @csrf
+                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-plus-lg"></i>
+                                            </button>
+                                        </form>
+                                        <span class="fw-bold fs-5 px-2">{{ $quantity }}</span>
+                                        @if($quantity > 1)
+                                            <form action="{{ route('cart.decrease') }}" method="POST" class="d-inline">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="btn btn-sm btn-outline-warning">
+                                                    <i class="bi bi-dash-lg"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <button type="button" class="btn btn-sm btn-outline-warning" onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')">
+                                                <i class="bi bi-dash-lg"></i>
+                                            </button>
                                         @endif
                                     </div>
 
