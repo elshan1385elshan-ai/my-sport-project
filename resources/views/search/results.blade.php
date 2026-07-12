@@ -2,7 +2,11 @@
 
 @section('content')
 <main class="container my-5" id="content">
-    <h2 class="text-center mb-4">جدیدترین کالاهای ورزشی</h2>
+    <h2 class="text-center mb-4">نتیجه جستجو برای: "{{ $query }}"</h2>
+
+    @if($products->count() > 0)
+        <p class="text-muted text-center">{{ $products->total() }} محصول یافت شد.</p>
+    @endif
 
     <div class="row g-4">
         @forelse($products as $product)
@@ -41,11 +45,13 @@
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-info text-center">هنوز محصولی ثبت نشده است.</div>
+                <div class="alert alert-info text-center">محصولی با این نام یافت نشد.</div>
             </div>
         @endforelse
     </div>
+
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $products->links() }}
+    </div>
 </main>
 @endsection
-
-

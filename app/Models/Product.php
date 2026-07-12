@@ -13,7 +13,10 @@ class Product extends Model
         'name',
         'price',
         'discount',
-        'category_id'
+        'description',
+        'slug',
+        'category_id',
+        'user_id'
     ];
 
     
@@ -31,15 +34,21 @@ class Product extends Model
     }
 
     // Scope برای محصولات فعال
-    public function scopeActive($query)
+    // public function scopeActive($query)
+    // {
+    //     return $query->where('is_active', true);
+    // }
+
+    public function getDiscountedPriceAttribute()
     {
-        return $query->where('is_active', true);
+        return $this->discount > 0
+            ? $this->price - ($this->price * $this->discount / 100)
+            : $this->price;
     }
 
-    // Accessor برای نمایش قیمت با کاما
-    public function getFormattedPriceAttribute()
+    public function getFormattedDiscountedPriceAttribute()
     {
-        return number_format($this->price) . ' تومان';
+        return number_format($this->discounted_price) . ' تومان';
     }
   
 
@@ -50,6 +59,7 @@ class Product extends Model
         return $this->hasMany(SportImage::class);
     }
     public function category(){
-        return $this->belongsToMany(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
     }
+
 }

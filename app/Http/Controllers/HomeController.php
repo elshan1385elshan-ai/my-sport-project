@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -9,10 +11,21 @@ class HomeController extends Controller
     public function dashboard(){
         return view('admin.dashboard');
     }
+
     public function profile(){
         return view('admin.profile');
     }
+
     public function home(){
-        return view('home');
+        $products = Product::with(['images', 'category'])
+            ->latest()
+            ->limit(12)
+            ->get();
+
+        $categories = Category::whereNull('parent_id')->with('children')->select(['id', 'name'])->get();
+
+
+        return view('home', compact('products', 'categories'));
     }
 }
+

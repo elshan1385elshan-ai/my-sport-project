@@ -271,3 +271,26 @@ ul {
 .datepicker-plot-area {
     font-family: 'Vazir', sans-serif;
 }
+
+i.lists-color.nav-icon {
+    color: rgb(229, 255, 0) !important;
+}
+
+i.plus.nav-icon{
+    color: rgb(179, 31, 31) !important;
+}
+
+.plus{
+    color: rgb(179, 31, 31) !important;
+}
+
+/* آیکن‌های منوی «ایجاد کالا» و «ایجاد دسته‌بندی جدید» */
+
+.nav-sidebar .nav-icon.plus,
+.nav-sidebar .nav-icon.plus:before {
+    color: rgb(179, 31, 31) !important;
+}
+
+
+
+

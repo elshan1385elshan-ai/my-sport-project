@@ -21,23 +21,55 @@
                 <p>داشبوردها <i class="right fa fa-angle-left"></i></p>
               </a>
             </li>
-
-            <!-- دکمه اصلاح شده افزودن لوازم -->
-            <li class="nav-item">
-              <a href="{{route('products.create')}}" class="nav-link custom-btn-hover">
-                <i class="nav-icon fa fa-plus-circle"></i> <!-- پیشنهاد: استفاده از آیکون استانداردتر -->
-                <p>افزودن لوازم ورزشی</p>
+            <li class="nav-item has-treeview">  
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-shopping-bag"></i>
+                <p>
+                  مدیریت کالاها 
+                  <i class="fa fa-angle-left right"></i>
+                </p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('products.create')}}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>ایجاد کالا </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('products.index')}}" class="nav-link">
+                    <i class="fa fa-list nav-icon lists-color"></i>
+                    <p> کالاها </p>
+                  </a>
+                </li>
+              </ul>
             </li>
-            <li class="nav-item">
-              <a href="{{route('products.index')}}" class="nav-link custom-btn-hover">
-                <i class="fa fa-list nav-icon blue"></i> 
-                <p>لیست لوازم </p>
+            <li class="nav-item has-treeview">  
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-gear"></i>
+                <p>
+                  مدیریت دسته بندی ها 
+                  <i class="fa fa-angle-left right"></i>
+                </p>
               </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{route('categories.create')}}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>ایجاد دسته بندی جدید </p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{route('categories.index')}}" class="nav-link">
+                    <i class="fa fa-list lists-color nav-icon "></i>
+                    <p> دسته بندی ها </p>
+                  </a>
+                </li>
+              </ul>
             </li>
              <!-- خروج -->
             <li class="nav-item">
-              <a href="logout.html" class="nav-link text-danger custom-btn-hover">
+              <a href="logout.html" class="nav-link  custom-btn-hover">
                 <i class="nav-icon fa fa-sign-out"></i>
                 <p>خروج</p>
               </a>

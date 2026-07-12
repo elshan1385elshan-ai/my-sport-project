@@ -69,17 +69,13 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label>ارسال فایل</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input type="file" class="custom-file-input" name="image" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">انتخاب فایل</label>
-                                            </div >
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">Upload</span>
-                                            </div >
-                                        </div >
-                                    </div >
+                                        <label for="images">تصاویر محصول</label>
+                                        <input type="file" id="images" name="images[]" multiple class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label> توضیحات کتاب :</label>
+                                        <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                                    </div>
                                 </div>
 
                                 <div class="card-footer">

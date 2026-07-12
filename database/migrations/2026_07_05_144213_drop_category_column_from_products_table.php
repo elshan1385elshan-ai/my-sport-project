@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sport_images', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('sport_id')->constrained()->onDelete('cascade'); // اتصال به محصول
-            $table->string('image_path'); // مسیر هر عکس
-            $table->timestamps();
+        Schema::table('products', function (Blueprint $table) {
+            if (Schema::hasColumn('products', 'category')) {
+                $table->dropColumn('category');
+            }
         });
     }
 
@@ -24,6 +23,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sport_images');
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('category')->nullable();
+        });
     }
 };

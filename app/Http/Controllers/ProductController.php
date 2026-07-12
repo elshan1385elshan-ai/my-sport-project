@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\SportImage;
 use App\Models\Category;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('user')->latest()->paginate(5);
+        $products = Product::with('user', 'category', 'images')->latest()->paginate(5);
         return view('admin.products.index' , compact('products'));
     }
 
@@ -39,52 +40,66 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        // ۱. اعتبارسنجی (Validation)
         $request->validate([
-            'name'     => 'required|unique:sports,name', // بررسی منحصر‌به‌فرد بودن نام در جدول sports
-            'category_id' => 'required|exists:categories,id',
-            'price'    => 'required|numeric',
-            'discount' => 'nullable|numeric',
-            'image'    => 'required|image|mimes:jpeg,png,jpg,webp|max:2048', // فقط عکس و حداکثر ۲ مگابایت
-        ], [
-            // پیام‌های فارسی برای کاربر
-            'name.unique' => 'این نام محصول قبلاً ثبت شده است.',
-            'name.required' => 'وارد کردن نام محصول الزامی است.',
-            'image.required' => 'لطفاً یک تصویر انتخاب کنید.',
-            'image.image' => 'فایل انتخاب شده باید یک تصویر معتبر باشد.',
+            'name'         => 'required|unique:products,name',
+            'price'        => 'required|numeric',
+            'discount'     => 'nullable|integer',
+            'category_id'  => 'required|exists:categories,id',
+            'description'  => 'nullable|string',
+            'images.*'     => 'image|mimes:jpg,jpeg,png,webp|max:2048'
         ]);
 
-        // ۲. اگر اعتبارسنجی موفق بود، کد زیر اجرا می‌شود
-        
-        // آپلود عکس
-        $path = $request->file('image')->store('products', 'public');
-
-        // ذخیره در دیتابیس
-        Product::create([
-            'name'     => $request->name,
-            'price'    => $request->price,
-            'category_id' => $request->category_id,
-            'discount' => $request->discount,
-            'image'    => $path,
+        $product = Product::create([
+            'name'         => $request->name,
+            'price'        => $request->price,
+            'discount'     => $request->discount ?? 0,
+            'slug'         => \Str::slug($request->name),
+            'category_id'  => $request->category_id,
+            'description'  => $request->description,
+            'user_id'      => auth()->id(),
         ]);
 
-        return redirect()->route('products.index')->with('success', 'محصول با موفقیت ثبت شد!');
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $image) {
+
+                $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+                $image->storeAs(
+                    'products',
+                    $fileName,
+                    'public'
+                );
+
+                SportImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => 'products/'.$fileName
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'محصول با موفقیت ثبت شد');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        //
+        $product->load(['images', 'category', 'user']);
+        return view('product.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        //
+        $categories = Category::all();
+
+        return view('admin.products.edit', compact('product','categories'));
     }
 
     /**
@@ -92,7 +107,54 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|unique:products,name,' . $product->id,
+            'price' => 'required|numeric',
+            'discount' => 'nullable|integer',
+            'category_id' => 'required|exists:categories,id',
+            'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+            'description' => 'nullable|string',
+        ],[
+            'name.required' => 'نام محصول الزامی است.',
+            'name.unique' => 'این محصول قبلاً ثبت شده است.',
+            'price.required' => 'قیمت محصول الزامی است.',
+            'price.numeric' => 'قیمت باید عدد باشد.',
+            'descriotion.required' => 'توضیحات محصول وارد شده الزامی است.',
+        ]);
+
+        $product->update([
+            'name' => $request->name,
+            'price' => $request->price,
+            'discount' => $request->discount ?? 0,
+            'slug' => \Str::slug($request->name),
+            'category_id' => $request->category_id,
+            'description'=> $request->description,
+        ]);
+
+        if ($request->hasFile('images')) {
+
+            foreach ($request->file('images') as $image) {
+
+                $fileName = time().'_'.uniqid().'.'.$image->getClientOriginalExtension();
+
+                $image->storeAs(
+                    'products',
+                    $fileName,
+                    'public'
+                );
+
+                SportImage::create([
+                    'product_id' => $product->id,
+                    'image_path' => 'products/'.$fileName
+                ]);
+            }
+        }
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'محصول با موفقیت به‌روزرسانی شد');
     }
 
     /**
@@ -106,20 +168,16 @@ class ProductController extends Controller
     // /**
     //  * جستجوی زنده (Live Search)
     //  */
-    // public function liveSearch(Request $request)
-    // {
-    //     $query = $request->get('q');
+    public function liveSearch(Request $request)
+    {
+        $query = $request->get('q');
 
-    //     if (empty($query) || strlen($query) < 2) {
-    //         return response()->json([]);
-    //     }
+        if (empty($query) || strlen($query) < 2) {
+            return response()->json([]);
+        }
 
-    //     $products = Product::where('name', 'LIKE', "%{$query}%")
-    //                 ->orWhere('brand', 'LIKE', "%{$query}%")
-    //                 ->select('id', 'name', 'brand', 'price', 'image')
-    //                 ->limit(10)
-    //                 ->get();
+        $products = Product::with('images', 'category')->where('name', 'LIKE', "%{$query}%")->orWhere('price', 'LIKE', "%{$query}%")->paginate(10);
 
-    //     return response()->json($products);
-    // }
+        return view('search.results' , compact('query' , 'products'));
+    }
 }

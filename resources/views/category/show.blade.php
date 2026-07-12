@@ -2,7 +2,7 @@
 
 @section('content')
 <main class="container my-5" id="content">
-    <h2 class="text-center mb-4">جدیدترین کالاهای ورزشی</h2>
+    <h2 class="text-center mb-4">دسته‌بندی: {{ $category->name }}</h2>
 
     <div class="row g-4">
         @forelse($products as $product)
@@ -41,11 +41,10 @@
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-info text-center">هنوز محصولی ثبت نشده است.</div>
+                <div class="alert alert-info text-center">محصولی برای این دسته‌بندی ثبت نشده است.</div>
             </div>
         @endforelse
     </div>
 </main>
 @endsection
-
 

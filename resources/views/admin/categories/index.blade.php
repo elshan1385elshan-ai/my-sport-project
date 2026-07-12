@@ -1,89 +1,85 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="h3">لیست محصولات ورزشی</h2>
-        <a href="{{ route('sports.create') }}" class="btn btn-primary">
-            <i class="fas fa-plus"></i> افزودن محصول جدید
-        </a>
+  <div class="content-wrapper">
+    <div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3>لیست دسته‌بندی‌ها</h3>
+        <a class="btn btn-success" href="{{ route('categories.create') }}">دسته‌بندی جدید</a>
     </div>
 
-    @if(session('success'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
+    <div class="card">
+        <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover mb-0">
-                    <thead class="table-light">
+                <table class="table table-bordered table-striped align-middle">
+                    <thead>
                         <tr>
-                            <th class="ps-4">تصویر</th>
-                            <th>نام محصول</th>
-                            <th>دسته‌بندی</th>
-                            <th>قیمت</th>
-                            <th>تخفیف</th>
-                            <th class="text-center">عملیات</th>
+                            <th style="width: 60px;">#</th>
+                            <th>نام</th>
+                            <th style="width: 220px;">عملیات</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($products as $product)
+                        @forelse ($categories as $index => $category)
                             <tr>
-                                <td class="ps-4">
-                                    @if($product->images->count() > 0)
-                                        {{-- نمایش اولین عکس محصول --}}
-                                        <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" 
-                                             class="img-thumbnail" 
-                                             style="width: 50px; height: 50px; object-fit: cover;" 
-                                             alt="{{ $product->name }}">
-                                    @else
-                                        <span class="badge bg-secondary">بدون تصویر</span>
-                                    @endif
-                                </td>
-                                <td class="fw-bold">{{ $product->name }}</td>
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $category->name }}</td>
                                 <td>
-                                    <span class="badge bg-info text-dark">
-                                        {{ $product->category->name ?? 'بدون دسته' }}
-                                    </span>
-                                </td>
-                                <td>{{ number_format($product->price) }} ریال</td>
-                                <td>
-                                    @if($product->discount > 0)
-                                        <span class="text-danger">-{{ $product->discount }}%</span>
-                                    @else
-                                        <span class="text-muted">۰%</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-group-sm">
-                                        <a href="{{ route('sports.edit', $product->id) }}" class="btn btn-outline-primary">
-                                            <i class="fas fa-edit"></i> ویرایش
-                                        </a>
-                                        <form action="{{ route('sports.destroy', $product->id) }}" method="POST" onsubmit="return confirm('آیا از حذف این محصول اطمینان دارید؟')">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-outline-danger">
-                                                <i class="fas fa-trash"></i> حذف
-                                            </button>
-                                        </form>
-                                    </div>
+                                    <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">ویرایش</a>
+                                    <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $category->id }}">حذف</button>
+                                    <form id="delete-form-{{ $category->id }}" action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-none">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center py-4 text-muted">
-                                    هیچ محصولی یافت نشد.
-                                </td>
+                                <td colspan="3" class="text-center">دسته‌بندی‌ای وجود ندارد.</td>
                             </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
+
+            <div class="mt-3">
+                {{ $categories->links() }}
+            </div>
         </div>
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+  $(document).ready(function() {
+    $('.btn-delete').on('click', function() {
+      var id = $(this).data('id');
+      Swal.fire({
+        title: 'آیا از حذف این دسته‌بندی اطمینان دارید؟',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'بله، حذف کن',
+        cancelButtonText: 'لغو'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $('#delete-form-' + id).submit();
+        }
+      });
+    });
+  });
+</script>
+@endpush
+

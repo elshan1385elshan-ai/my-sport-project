@@ -29,7 +29,10 @@
   <!-- bootstrap rtl -->
   <link rel="stylesheet" href="{{asset('dist/css/bootstrap-rtl.min.css')}}">
   <!-- template rtl version -->
-  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}">
+  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ time() }}">
+  <style>
+    .swal2-container { z-index: 9999 !important; }
+  </style>
 
 </head>
 <body class="hold-transition sidebar-mini">
@@ -94,5 +97,23 @@
 <script src="{{asset('dist/js/pages/dashboard.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{asset('dist/js/demo.js')}}"></script>
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  $(document).ready(function() {
+    @if(session('success'))
+      Swal.fire({
+        icon: 'success',
+        title: 'موفق',
+        text: '{{ session('success') }}',
+        timer: 3000,
+        showConfirmButton: false,
+        toast: true,
+        position: 'top-start'
+      });
+    @endif
+  });
+</script>
+@stack('scripts')
 </body>
 </html>

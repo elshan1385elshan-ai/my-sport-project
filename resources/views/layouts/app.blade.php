@@ -6,24 +6,11 @@
     <title>Sport | خانه قهرمانان</title>
     <!-- استفاده از بوت‌استرپ ۵ برای استایل‌دهی مدرن -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <style>
         body { font-family: Tahoma, Arial, sans-serif; }
         
         /* استایل خاص برای بنر با تصویر شما */
-        .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{{ asset('images/nou camp.webp') }}');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            height: 500px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-align: center;
-        }
-        .hero-section h1 { font-size: 3.5rem; font-weight: bold; }
-        
         .card-img-top { height: 200px; object-fit: cover; }
     </style>
 </head>
@@ -32,14 +19,48 @@
     <!-- Navbar -->
     @include('layouts.partials.nav')
 
+    @if(Route::currentRouteName() === 'home')
+        <header class="hero-section position-relative">
+            <div class="hero-background"></div>
+            <style>
+                /* بنر صفحه home */
+                .hero-section {
+                    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{{ asset('images/nou camp.webp') }}');
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    height: 500px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    color: white;
+                    text-align: center;
+                }
+                .hero-section h1 { font-size: 3.5rem; font-weight: bold; }
+            </style>
+
+            <div class="container position-relative z-3 h-100 d-flex align-items-center">
+                <div class="row justify-content-center text-center w-100">
+                    <div class="col-lg-15">
+                        <h1 class="display-3 fw-bold text-white mb-4">
+                            به فروشگاه خانه قهرمانان خوش آمدید
+                        </h1>
+                        <a href="#content" class="btn btn-danger btn-lg px-5 py-3">مشاهده همه کالاها</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+    @endif
+
+
     <!-- محتوا -->
     @yield('content')
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 mt-5">
-        <p class="mb-0">تمامی حقوق برای سایت SPORT محفوظ است - ۲۰۲۶</p>
-    </footer>
+    @include('layouts.partials.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @stack('scripts')
 </body>
 </html>
