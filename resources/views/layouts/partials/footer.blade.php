@@ -7,16 +7,16 @@
                 </h5>
                 <p class="text-white-50 small">فروشگاه تخصصی کالاهای ورزشی با بهترین کیفیت و قیمت. همراه شما در مسیر قهرمانی.</p>
                 <div class="d-flex gap-2 mt-3">
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 38px; height: 38px; padding: 0; line-height: 38px; text-align: center;">
+                    <a href="#" class="social-icon instagram" title="اینستاگرام">
                         <i class="bi bi-instagram"></i>
                     </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 38px; height: 38px; padding: 0; line-height: 38px; text-align: center;">
+                    <a href="#" class="social-icon telegram" title="تلگرام">
                         <i class="bi bi-telegram"></i>
                     </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 38px; height: 38px; padding: 0; line-height: 38px; text-align: center;">
+                    <a href="#" class="social-icon whatsapp" title="واتساپ">
                         <i class="bi bi-whatsapp"></i>
                     </a>
-                    <a href="#" class="btn btn-outline-light btn-sm rounded-circle" style="width: 38px; height: 38px; padding: 0; line-height: 38px; text-align: center;">
+                    <a href="#" class="social-icon youtube" title="یوتیوب">
                         <i class="bi bi-youtube"></i>
                     </a>
                 </div>
@@ -73,4 +73,23 @@
 <style>
     footer a:hover { color: #ffc107 !important; }
     footer .rounded-circle:hover { background: rgba(255,255,255,0.1); }
+
+    .social-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 2px solid rgba(255,255,255,0.6);
+        color: rgba(255,255,255,0.8);
+        font-size: 1.15rem;
+        text-decoration: none;
+        transition: all .25s ease;
+    }
+    .social-icon:hover { transform: translateY(-3px); border-color: transparent; }
+    .social-icon.instagram:hover { background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285AEB); color: #fff; }
+    .social-icon.telegram:hover { background: #0088cc; color: #fff; }
+    .social-icon.whatsapp:hover { background: #25D366; color: #fff; }
+    .social-icon.youtube:hover { background: #FF0000; color: #fff; }
 </style>

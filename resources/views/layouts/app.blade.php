@@ -7,6 +7,7 @@
     <!-- استفاده از بوت‌استرپ ۵ برای استایل‌دهی مدرن -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{{ asset('css/sport-public.css') }}">
     <style>
         body { font-family: Tahoma, Arial, sans-serif; }
         

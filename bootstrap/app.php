@@ -15,7 +15,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'admin' => AdminMiddleware::class,
-            'seller' => SellerMiddleware::class,
         ]);
 
         // important: do NOT remove/override default middleware.

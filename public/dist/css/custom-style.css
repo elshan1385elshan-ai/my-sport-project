@@ -291,6 +291,209 @@ i.plus.nav-icon{
     color: rgb(179, 31, 31) !important;
 }
 
+/* ===================== Sport Dashboard Enhancements ===================== */
+
+/* Sidebar */
+.sport-sidebar {
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 60%, #0f3460 100%) !important;
+}
+
+.sport-brand {
+    background: rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: all .3s ease;
+}
+.sport-brand:hover {
+    background: rgba(255,255,255,0.1);
+}
+.sport-brand .brand-image {
+    color: #ffc107;
+    font-size: 1.5rem;
+    margin-right: .3rem;
+}
+
+.sport-nav .nav-link {
+    border-radius: 8px;
+    margin: 4px 10px;
+    padding: 10px 14px;
+    transition: all .25s ease;
+}
+.sport-nav .nav-link i.nav-icon {
+    transition: transform .25s ease;
+}
+.sport-nav .nav-link:hover {
+    background: rgba(255,255,255,0.12) !important;
+    color: #ffc107 !important;
+}
+.sport-nav .nav-link:hover i.nav-icon {
+    transform: scale(1.2);
+}
+.sport-nav .nav-link.active {
+    background: linear-gradient(90deg, #e94560, #ff6b6b) !important;
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(233,69,96,0.35);
+}
+.sport-nav .nav-treeview .nav-link {
+    margin-right: 18px;
+}
+.sport-nav .nav-treeview .nav-link:hover {
+    background: rgba(255,255,255,0.08) !important;
+}
+
+.sport-logout .nav-link:hover {
+    background: rgba(220,53,69,0.2) !important;
+    color: #ff6b6b !important;
+}
+
+/* Navbar */
+.sport-navbar {
+    background: linear-gradient(90deg, #1a1a2e, #0f3460) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+.sport-navbar .nav-link, .sport-navbar .navbar-nav > .nav-item > .nav-link {
+    color: #fff !important;
+}
+.sport-navbar .nav-link:hover {
+    color: #ffc107 !important;
+}
+.sport-navbar .dropdown-menu {
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    border: none;
+}
+.sport-navbar .dropdown-item:hover {
+    background: #f1f3f5;
+    color: #e94560;
+}
+
+/* Dashboard stat-card enhancements */
+.sport-stat-card {
+    position: relative;
+    border-radius: 16px;
+    padding: 22px;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 6px 22px rgba(0,0,0,0.15);
+    transition: transform .3s ease, box-shadow .3s ease;
+    min-height: 132px;
+}
+.sport-stat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 38px rgba(0,0,0,0.28);
+}
+.sport-stat-card .stat-icon {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    background: rgba(255,255,255,0.22);
+    transition: transform .3s ease;
+}
+.sport-stat-card:hover .stat-icon {
+    transform: rotate(-8deg) scale(1.12);
+}
+.sport-stat-card .stat-body {
+    padding-top: 14px;
+    padding-left: 72px;
+}
+.sport-stat-card .stat-body h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin: 0;
+    line-height: 1.1;
+}
+.sport-stat-card .stat-body p {
+    margin: 6px 0 0;
+    font-size: .85rem;
+    opacity: .92;
+}
+.sport-stat-card::after {
+    content: "";
+    position: absolute;
+    bottom: -34px;
+    right: -34px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+}
+
+/* color variants */
+.c-blue   { background: linear-gradient(135deg, #2193b0, #6dd5ed); }
+.c-indigo { background: linear-gradient(135deg, #1a1a2e, #0f3460); }
+.c-green  { background: linear-gradient(135deg, #11998e, #38ef7d); }
+.c-amber  { background: linear-gradient(135deg, #f7971e, #ffd200); }
+.c-olive  { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+.c-red    { background: linear-gradient(135deg, #cb2d3e, #ef473a); }
+.c-gray   { background: linear-gradient(135deg, #606c88, #3f4c6b); }
+.c-maroon { background: linear-gradient(135deg, #8e2de2, #4a00e0); }
+
+/* Footer */
+.sport-footer {
+    background: linear-gradient(90deg, #1a1a2e, #0f3460) !important;
+    color: #fff !important;
+    border-top: none !important;
+}
+.sport-footer a.text-warning:hover {
+    color: #ff6b6b !important;
+}
+
+/* ===================== Content / Cards / Tables ===================== */
+.content-header h1 {
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.sport-card {
+    border: none !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important;
+}
+.sport-card .card-header {
+    background: linear-gradient(90deg, #1a1a2e, #0f3460) !important;
+    color: #fff !important;
+    border-radius: 14px 14px 0 0 !important;
+    border-bottom: none !important;
+}
+
+.sport-btn-primary {
+    background: linear-gradient(90deg, #e94560, #ff6b6b) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    box-shadow: 0 4px 12px rgba(233,69,96,0.35);
+    transition: all .2s ease;
+    color: #fff !important;
+}
+.sport-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(233,69,96,0.45);
+    color: #fff !important;
+}
+
+.sport-table thead th {
+    background: linear-gradient(90deg, #1a1a2e, #0f3460) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600;
+}
+.sport-table tbody tr {
+    transition: background .2s ease;
+}
+.sport-table tbody tr:hover {
+    background: rgba(15,52,96,0.06) !important;
+}
+
+.sport-form-control:focus {
+    border-color: #e94560 !important;
+    box-shadow: 0 0 0 0.2rem rgba(233,69,96,0.25) !important;
+}
+
 
 
 

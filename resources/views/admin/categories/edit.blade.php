@@ -1,9 +1,11 @@
 @extends('admin.layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+<div class="content-wrapper">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
             <div class="card">
                 <div class="card-header">ویرایش دسته‌بندی</div>
 
@@ -43,9 +45,11 @@
                         <a href="{{ route('categories.index') }}" class="btn btn-secondary">بازگشت</a>
                     </form>
                 </div>
+                </div>
             </div>
         </div>
     </div>
+    </section>
 </div>
 @endsection
 

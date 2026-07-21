@@ -17,6 +17,8 @@ class Product extends Model
         'slug',
         'category_id',
         'user_id',
+        'stock',
+        'is_active',
     ];
 
     // اگر از Slug استفاده می‌کنی (توصیه می‌شود)

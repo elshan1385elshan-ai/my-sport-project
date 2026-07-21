@@ -32,6 +32,9 @@
   <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ time() }}">
   <style>
     .swal2-container { z-index: 9999 !important; }
+    .wrapper { display: flex; flex-direction: column; min-height: 100vh; }
+    .admin-content-area { flex: 1 0 auto; display: flex; flex-direction: column; }
+    .admin-content-area > .content-wrapper { flex: 1 0 auto; }
   </style>
 
 </head>
@@ -39,18 +42,18 @@
 <div class="wrapper">
 
   <!-- Navbar -->
-      @include('admin.layouts.partials.nav')
+    @include('admin.layouts.partials.nav')
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-     @include('admin.layouts.partials.sidebar')
+    @include('admin.layouts.partials.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-     @yield('content')
+    <div class="admin-content-area">
+        @yield('content')
+    </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
-    <strong>CopyLeft &copy; 2018 <a href="http://github.com/hesammousavi/">حسام موسوی</a>.</strong>
-  </footer>
+    @include('admin.layouts.partials.footer')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

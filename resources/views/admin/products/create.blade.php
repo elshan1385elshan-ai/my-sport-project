@@ -1,40 +1,31 @@
 @extends('admin.layouts.app')
 
-@section('content') 
+@section('content')
     <div class="content-wrapper">
-        <!-- Content Header -->
         <section class="content-header">
             <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1>فرم‌های عمومی</h1>
-                    </div >
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-left">
-                            <li class="breadcrumb-item"><a href="#">خانه</a></li>
-                            <li class="breadcrumb-item active">فرم‌های عمومی</li>
-                        </ol>
-                    </div >
-                </div >
-            </div >
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h1 class="m-0">افزودن لوازم ورزشی جدید</h1>
+                    <a href="{{ route('products.index') }}" class="btn sport-btn-primary">
+                        <i class="fa fa-list"></i> لیست محصولات
+                    </a>
+                </div>
+            </div>
         </section>
 
-        <!-- Main content -->
         <section class="content">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card card-primary">
+                        <div class="card sport-card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">افزودن لوازم ورزشی جدید</h3>
-                            </div >
+                                <h3 class="card-title">فرم ثبت محصول</h3>
+                            </div>
 
-                            <!-- شروع فرم با ویژگی‌های ضروری -->
                             <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf <!-- بسیار مهم برای جلوگیری از خطای 419 -->
+                                @csrf
 
                                 <div class="card-body">
-                                    <!-- نمایش پیام‌های خطا (مثل نام تکراری) -->
                                     @if ($errors->any())
                                         <div class="alert alert-danger">
                                             <ul class="mb-0">
@@ -42,52 +33,61 @@
                                                     <li>{{ $error }}</li>
                                                 @endforeach
                                             </ul>
-                                        </div >
+                                        </div>
                                     @endif
 
                                     <div class="form-group">
                                         <label>نام محصول را وارد نمایید</label>
-                                        <input type="text" class="form-control" name="name" value="{{ old('name') }}">
-                                    </div >
-                                    
+                                        <input type="text" class="form-control sport-form-control" name="name" value="{{ old('name') }}">
+                                    </div>
+
                                     <div class="form-group">
                                         <label>قیمت را وارد نمایید</label>
-                                        <input type="number" class="form-control" name="price" value="{{ old('price') }}">
-                                    </div >
-                                    
+                                        <input type="number" class="form-control sport-form-control" name="price" value="{{ old('price') }}">
+                                    </div>
+
                                     <div class="form-group">
-                                        <label>تخفیف را وارد نمایید</label>
-                                        <input type="number" class="form-control" name="discount" value="{{ old('discount') }}">
-                                    </div >
+                                        <label>تعداد موجودی</label>
+                                        <input type="number" class="form-control sport-form-control" name="stock" value="{{ old('stock', 0) }}">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>تخفیف را وارد نمایید (درصد)</label>
+                                        <input type="number" class="form-control sport-form-control" name="discount" value="{{ old('discount') }}">
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="category_id">انتخاب دسته‌بندی</label>
-                                        <select name="category_id" class="form-control" required>
+                                        <select name="category_id" class="form-control sport-form-control" required>
                                             <option value="">-- انتخاب کنید --</option>
                                             @foreach($categories as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
+
                                     <div class="form-group">
                                         <label for="images">تصاویر محصول</label>
-                                        <input type="file" id="images" name="images[]" multiple class="form-control">
+                                        <input type="file" id="images" name="images[]" multiple class="form-control sport-form-control">
                                     </div>
+
                                     <div class="form-group">
-                                        <label> توضیحات کتاب :</label>
-                                        <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                                        <label>توضیحات محصول:</label>
+                                        <textarea name="description" class="form-control sport-form-control" rows="4">{{ old('description') }}</textarea>
                                     </div>
                                 </div>
 
                                 <div class="card-footer">
-                                    <button type="submit" class="btn btn-primary">ارسال</button>
-                                </div >
+                                    <button type="submit" class="btn sport-btn-primary">
+                                        <i class="fa fa-save"></i> ارسال
+                                    </button>
+                                    <a href="{{ route('products.index') }}" class="btn btn-secondary">انصراف</a>
+                                </div>
                             </form>
-                            <!-- پایان فرم -->
-
-                        </div >
-                    </div >
-                </div >
-            </div >
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
-    </div >
+    </div>
 @endsection

@@ -43,6 +43,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|unique:products,name',
             'price' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
             'category_id' => 'required|exists:categories,id',
             'description' => 'nullable|string',
@@ -52,11 +53,11 @@ class ProductController extends Controller
         $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
             'category_id' => $request->category_id,
             'description' => $request->description,
-            'user_id' => auth()->id(),
         ]);
 
         if ($request->hasFile('images')) {
@@ -88,7 +89,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load(['images', 'category', 'user']);
+        $product->load(['images', 'category', 'user.shopAddress']);
 
         return view('product.show', compact('product'));
     }
@@ -113,6 +114,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|unique:products,name,'.$product->id,
             'price' => 'required|numeric',
+            'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
             'category_id' => 'required|exists:categories,id',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -128,6 +130,7 @@ class ProductController extends Controller
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
+            'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
             'category_id' => $request->category_id,

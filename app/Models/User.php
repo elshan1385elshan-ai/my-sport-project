@@ -2,22 +2,19 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role',
         'is_seller',
         'shop_name',
         'shop_description',
@@ -25,6 +22,7 @@ class User extends Authenticatable
         'shop_logo',
         'shop_social',
         'seller_status',
+        'seller_verified_at',
     ];
 
     protected $hidden = [
@@ -39,17 +37,8 @@ class User extends Authenticatable
             'password' => 'hashed',
             'is_seller' => 'boolean',
             'shop_social' => 'array',
+            'seller_verified_at' => 'datetime',
         ];
-    }
-
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
     }
 
     public function isSeller(): bool

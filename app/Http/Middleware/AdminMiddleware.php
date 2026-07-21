@@ -9,20 +9,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
-    /**
-     * Handle an incoming request.
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! Auth::check()) {
+        if (! auth()->check()) {
             return redirect()->route('login');
         }
 
-        $user = Auth::user();
-
-        // Admin = role === 'admin'
-        if (($user->role ?? 'user') !== 'admin') {
-            return redirect()->route('home')->with('error', 'You do not have permission to access this page.');
+        if ( auth()->user()->role !=='admin') {
+            // abort(403, 'You do not have admin access.');
+            return redirect('/');
         }
 
         return $next($request);

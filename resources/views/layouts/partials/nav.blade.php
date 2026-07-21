@@ -10,11 +10,6 @@
 
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('home') }}">
-                        <i class="bi bi-house-fill"></i> صفحه اصلی
-                    </a>
-                </li>
 
                 @if(isset($navCategories) && $navCategories->isNotEmpty())
                 <li class="nav-item dropdown">
@@ -51,22 +46,42 @@
                 @endif
             </ul>
 
-            <form class="d-flex mx-lg-3 my-2 my-lg-0" action="{{ route('search.live') }}" method="GET">
-                <div class="input-group" style="width: 300px;">
+            <form class="d-flex mx-lg-3 my-2 my-lg-0" action="{{ route('search.live') }}" method="GET" style="max-width: 460px; flex: 1 1 340px;">
+                <div class="sport-search-box d-flex align-items-stretch rounded-pill overflow-hidden shadow w-100">
                     <input type="text"
-                           class="form-control border-0 bg-white bg-opacity-10 text-white placeholder-white"
+                           class="sport-search-input border-0"
                            name="q"
-                           placeholder="جستجو کنید..."
-                           aria-label="جستجو"
-                           style="backdrop-filter: blur(4px);">
-                    <button class="btn btn-danger" type="submit">
+                           placeholder="جستجوی کالای ورزشی..."
+                           aria-label="جستجو">
+                    <button class="sport-search-btn border-0" type="submit" title="جستجو">
                         <i class="bi bi-search"></i>
                     </button>
                 </div>
             </form>
 
             <div class="d-flex align-items-center gap-2">
-                @auth
+                @auth('admin')
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+                            <i class="bi bi-shield-lock-fill"></i> {{ Auth::guard('admin')->user()->name }}
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #1a1a2e;">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                    <i class="bi bi-speedometer2"></i> پنل مدیریت
+                                </a>
+                            </li>
+                            <li>
+                                <form method="POST" action="{{ route('admin.logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="bi bi-box-arrow-right"></i> خروج
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                @elseauth('web')
                     <a href="{{ route('cart.show') }}" class="btn btn-outline-light position-relative">
                         <i class="bi bi-cart3"></i>
                         @php $cartCount = array_sum(session()->get('cart', [])); @endphp
@@ -76,11 +91,17 @@
                             </span>
                         @endif
                     </a>
+
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> {{ auth()->user()->name }}
+                            <i class="bi bi-person-circle"></i> {{ auth('web')->user()->name }}
                         </button>
                         <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #1a1a2e;">
+                            <li>
+                                <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                    <i class="bi bi-speedometer2"></i> داشبورد
+                                </a>
+                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -101,11 +122,9 @@
                             </span>
                         @endif
                     </a>
-                    <a href="{{ route('login') }}" class="btn btn-outline-light">
-                        <i class="bi bi-box-arrow-in-right"></i> ورود
-                    </a>
-                    <a href="{{ route('register') }}" class="btn btn-danger">
-                        <i class="bi bi-person-plus"></i> ثبت نام
+
+                    <a href="{{ route('login') }}" class="btn btn-danger">
+                        <i class="bi bi-dashboard"></i> ورودی
                     </a>
                 @endauth
             </div>
@@ -116,6 +135,41 @@
 <style>
     .navbar .form-control::placeholder { color: rgba(255,255,255,0.6) !important; }
     .navbar .form-control:focus { background: rgba(255,255,255,0.15) !important; color: #fff !important; box-shadow: none; }
+
+    /* Sport search bar (Taaghche-inspired) */
+    .sport-search-box {
+        background: #fff;
+        border-radius: 50px;
+        min-width: 300px;
+        height: 48px;
+        border: 2px solid transparent;
+        transition: border-color .2s ease, box-shadow .2s ease;
+    }
+    .sport-search-box:focus-within {
+        border-color: #ffc107;
+        box-shadow: 0 0 0 4px rgba(255,193,7,0.18), 0 6px 18px rgba(0,0,0,0.18);
+    }
+    .sport-search-input {
+        border: none !important;
+        flex: 1;
+        padding: 0 22px;
+        font-size: 1rem;
+        outline: none;
+        min-width: 0;
+        box-shadow: none !important;
+        height: 100%;
+    }
+    .sport-search-input::placeholder { color: #9aa0ac; }
+    .sport-search-btn {
+        background: linear-gradient(90deg, #e94560, #ff6b6b);
+        color: #fff;
+        width: 56px;
+        font-size: 1.15rem;
+        transition: filter .2s ease;
+        border-radius: 0 50px 50px 0 !important;
+    }
+    .sport-search-btn:hover { filter: brightness(1.08); }
+
     .dropdown-submenu { position: relative; }
     .dropdown-submenu > .dropdown-menu {
         top: 0; right: 100%; margin-top: 0; border-radius: 0.5rem;

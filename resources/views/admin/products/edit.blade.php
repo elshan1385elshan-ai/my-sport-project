@@ -69,6 +69,14 @@
                             </div>
                             
                             <div class="form-group">
+                                <label>تعداد موجودی</label>
+                                <input type="number"
+                                class="form-control"
+                                name="stock"
+                                value="{{ old('stock', $product->stock) }}">
+                            </div>
+
+                            <div class="form-group">
                                 <label>تخفیف</label>
                                 <input type="number"
                                 class="form-control"
