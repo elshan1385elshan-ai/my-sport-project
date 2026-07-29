@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-lg navbar-dark shadow-lg" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
     <div class="container">
         <a class="navbar-brand fw-bold fs-4" href="{{ route('home') }}">
-            <i class="bi bi-trophy-fill text-warning"></i> خانه قهرمانان
+            @if(($appSettings['public_icon_type'] ?? 'font') === 'custom' && !empty($appSettings['public_icon_custom'] ?? ''))
+                <img src="{{ Storage::url($appSettings['public_icon_custom']) }}" alt="icon" style="height: 28px; width: auto;" class="ml-1">
+            @else
+                <i class="bi bi-{{ $appSettings['public_icon'] ?? 'trophy-fill' }} text-warning"></i>
+            @endif
+            {{ $appSettings['app_name'] ?? 'خانه قهرمانان' }}
         </a>
 
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -124,7 +129,7 @@
                     </a>
 
                     <a href="{{ route('login') }}" class="btn btn-danger">
-                        <i class="bi bi-dashboard"></i> ورودی
+                        <i class="bi bi-dashboard"></i> ورود
                     </a>
                 @endauth
             </div>

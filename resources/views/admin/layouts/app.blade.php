@@ -32,9 +32,7 @@
   <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ time() }}">
   <style>
     .swal2-container { z-index: 9999 !important; }
-    .wrapper { display: flex; flex-direction: column; min-height: 100vh; }
-    .admin-content-area { flex: 1 0 auto; display: flex; flex-direction: column; }
-    .admin-content-area > .content-wrapper { flex: 1 0 auto; }
+    body, .wrapper, .main-header, .main-sidebar, .content-wrapper, .main-footer { font-family: {{ $appSettings['font_family'] ?? "'Vazir', sans-serif" }} !important; }
   </style>
 
 </head>
@@ -49,9 +47,7 @@
     @include('admin.layouts.partials.sidebar')
 
   <!-- Content Wrapper. Contains page content -->
-    <div class="admin-content-area">
-        @yield('content')
-    </div>
+    @yield('content')
   <!-- /.content-wrapper -->
     @include('admin.layouts.partials.footer')
 

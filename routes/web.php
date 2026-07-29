@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BrandController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +19,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('search.live');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.show');
+Route::get('/brand/{brand}', [BrandController::class, 'show'])->name('brand.show');
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
@@ -52,17 +56,31 @@ Route::middleware('auth')->group(function () {
 // بخش ادمین
 Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+    Route::prefix('/users')->name('admin.users.')->group(function () {
+        Route::get('/', [AdminUserController::class, 'index'])->name('index');
+        Route::get('/create', [AdminUserController::class, 'create'])->name('create');
+        Route::post('/', [AdminUserController::class, 'store'])->name('store');
+        Route::get('/{user}', [AdminUserController::class, 'show'])->name('show');
+        Route::get('/{user}/edit', [AdminUserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [AdminUserController::class, 'update'])->name('update');
+        Route::delete('/{user}', [AdminUserController::class, 'destroy'])->name('destroy');
+    });
     Route::resource('/products', ProductController::class);
     Route::resource('/categories', CategoryController::class);
+    Route::resource('/brands', BrandController::class);
 
-    Route::get('/address/create', [AddressController::class, 'create'])->name('address.create');
-    Route::post('/address', [AddressController::class, 'store'])->name('address.store');
-    Route::get('/address', [AddressController::class, 'show'])->name('address.show');
-    Route::get('/address/edit', [AddressController::class, 'edit'])->name('address.edit');
-    Route::put('/address', [AddressController::class, 'update'])->name('address.update');
+
+
+    Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
+    Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::get('/media', [MediaController::class, 'index'])->name('media.index');
+    Route::post('/media/upload', [MediaController::class, 'upload'])->name('media.upload');
+    Route::delete('/media/{file}', [MediaController::class, 'destroy'])->name('media.destroy');
 });
-Route::middleware('auth')->group(function () {
-    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+Route::middleware('auth')->prefix('/user')->group(function () {
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::resource('/addresses', UserAddressController::class);
 });
 // // بخش فروشنده (چیزی بفروشید)
 // Route::middleware('seller')->group(function () {

@@ -3,21 +3,32 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserAddress;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\View\View;
 
 class UserAddressController extends Controller
 {
-    public function create(): View
+    public function index()
     {
-        return view('profile.address-create');
+        $address = UserAddress::where('user_id', auth()->id())->first();
+
+        return view('user.address.index', compact('address'));
     }
 
-    public function store(Request $request): RedirectResponse
+    public function create()
     {
-        $data = $request->validate([
+        $address = UserAddress::where('user_id', auth()->id())->first();
+
+        if ($address) {
+            return redirect()->route('addresses.edit', $address->id)
+                ->with('info', 'شما قبلاً یک آدرس ثبت کرده‌اید. می‌توانید آن را ویرایش کنید.');
+        }
+
+        return view('user.address.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
             'address' => 'required|string|max:500',
             'city' => 'required|string|max:100',
             'province' => 'required|string|max:100',
@@ -25,28 +36,35 @@ class UserAddressController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
 
-        $data['user_id'] = Auth::id();
+        UserAddress::create([
+            'user_id' => auth()->id(),
+            'address' => $request->address,
+            'city' => $request->city,
+            'province' => $request->province,
+            'postal_code' => $request->postal_code,
+            'phone' => $request->phone,
+        ]);
 
-        UserAddress::create($data);
-
-        return redirect()->route('profile.address.show')->with('success', 'آدرس با موفقیت ذخیره شد.');
+        return redirect()->route('addresses.index')->with('success', 'آدرس با موفقیت ثبت شد');
     }
 
-    public function show(): View
+    public function show($id)
     {
-        $address = UserAddress::where('user_id', Auth::id())->first();
-        return view('profile.address-show', compact('address'));
+        return redirect()->route('addresses.index');
     }
 
-    public function edit(): View
+    public function edit($id)
     {
-        $address = UserAddress::where('user_id', Auth::id())->first();
-        return view('profile.address-edit', compact('address'));
+        $address = UserAddress::where('user_id', auth()->id())->findOrFail($id);
+
+        return view('user.address.edit', compact('address'));
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(Request $request, $id)
     {
-        $data = $request->validate([
+        $address = UserAddress::where('user_id', auth()->id())->findOrFail($id);
+
+        $request->validate([
             'address' => 'required|string|max:500',
             'city' => 'required|string|max:100',
             'province' => 'required|string|max:100',
@@ -54,8 +72,16 @@ class UserAddressController extends Controller
             'phone' => 'nullable|string|max:20',
         ]);
 
-        UserAddress::where('user_id', Auth::id())->update($data);
+        $address->update($request->only('address', 'city', 'province', 'postal_code', 'phone'));
 
-        return redirect()->route('profile.address.show')->with('success', 'آدرس با موفقیت به‌روزرسانی شد.');
+        return redirect()->route('addresses.index')->with('success', 'آدرس با موفقیت ویرایش شد');
+    }
+
+    public function destroy($id)
+    {
+        $address = UserAddress::where('user_id', auth()->id())->findOrFail($id);
+        $address->delete();
+
+        return redirect()->route('addresses.index')->with('success', 'آدرس با موفقیت حذف شد');
     }
 }

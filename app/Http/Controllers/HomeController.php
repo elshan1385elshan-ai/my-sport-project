@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -44,6 +45,13 @@ class HomeController extends Controller
 
         $categories = Category::whereNull('parent_id')->with('children')->select(['id', 'name'])->get();
 
-        return view('home', compact('products', 'categories'));
+        $childCategories = Category::whereNotNull('parent_id')
+            ->where('image', '!=', null)
+            ->with('parent')
+            ->get();
+
+        $brands = Brand::where('image', '!=', null)->get();
+
+        return view('home', compact('products', 'categories', 'childCategories', 'brands'));
     }
 }

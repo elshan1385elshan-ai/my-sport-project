@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\SportImage;
@@ -31,8 +32,9 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::all();
+        $brands = Brand::all();
 
-        return view('admin.products.create', compact('categories'));
+        return view('admin.products.create', compact('categories', 'brands'));
     }
 
     /**
@@ -46,8 +48,15 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
+        ],
+        [
+           'name.required' => 'وارد کردن نام محصول الزامی است.',
+           'name.unique'   => 'محصولی با این نام قبلاً ثبت شده است.',
+           'price.required' => 'وارد کردن قیمت محصول الزامی است.',
+           'price.numeric'   => 'قیمت محصول را صحیح وارد کن.',
         ]);
 
         $product = Product::create([
@@ -57,6 +66,8 @@ class ProductController extends Controller
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
+            'user_id' => auth()->id(),
             'description' => $request->description,
         ]);
 
@@ -100,8 +111,9 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $categories = Category::all();
+        $brands = Brand::all();
 
-        return view('admin.products.edit', compact('product', 'categories'));
+        return view('admin.products.edit', compact('product', 'categories', 'brands'));
     }
 
     /**
@@ -117,6 +129,7 @@ class ProductController extends Controller
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
             'category_id' => 'required|exists:categories,id',
+            'brand_id' => 'nullable|exists:brands,id',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
         ], [
@@ -134,6 +147,7 @@ class ProductController extends Controller
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
             'category_id' => $request->category_id,
+            'brand_id' => $request->brand_id,
             'description' => $request->description,
         ]);
 

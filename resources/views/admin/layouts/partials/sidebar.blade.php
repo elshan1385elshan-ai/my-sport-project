@@ -1,17 +1,23 @@
-  <aside class="main-sidebar sidebar-dark-primary elevation-4 sport-sidebar">
-    <!-- Brand Logo -->
+    <aside class="main-sidebar sidebar-dark-primary elevation-4 sport-sidebar">
     <a href="{{ route('admin.dashboard') }}" class="brand-link sport-brand">
-      <i class="nav-icon fa fa-trophy brand-image elevation-3" style="opacity:.9;"></i>
-      <span class="brand-text font-weight-bold">خانه قهرمانان</span>
+      @if(($appSettings['admin_icon_type'] ?? 'font') === 'custom' && !empty($appSettings['admin_icon_custom'] ?? ''))
+        <img src="{{ Storage::url($appSettings['admin_icon_custom']) }}" alt="icon" class="brand-image elevation-3 sport-custom-icon">
+      @else
+        <i class="fa fa-{{ $appSettings['admin_icon'] ?? 'trophy' }} brand-image elevation-3"></i>
+      @endif
+      <span class="brand-text font-weight-bold">{{ $appSettings['app_name'] ?? 'خانه قهرمانان' }}</span>
+      <span class="sport-brand-sub">
+        <span class="status-dot"></span>
+        پنل مدیریت
+      </span>
     </a>
 
-    <!-- Sidebar -->
     <div class="sidebar" style="direction: ltr">
       <div style="direction: rtl">
-
-        <!-- Sidebar Menu -->
-        <nav class="mt-3">
+        <nav class="mt-2">
           <ul class="nav nav-pills nav-sidebar flex-column sport-nav" data-widget="treeview" role="menu" data-accordion="false">
+
+            <li class="nav-header">منوی اصلی</li>
 
             <li class="nav-item">
               <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Route::currentRouteName() === 'admin.dashboard' ? 'active' : '' }}">
@@ -20,11 +26,37 @@
               </a>
             </li>
 
+            <li class="nav-header">مدیریت</li>
+
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.users.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-users"></i>
+                <p>
+                  کاربران
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('admin.users.create') }}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>ایجاد کاربر</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.users.index') }}" class="nav-link">
+                    <i class="fa fa-list lists-color nav-icon"></i>
+                    <p>کاربران</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             <li class="nav-item has-treeview {{ request()->is('products*') ? 'menu-open' : '' }}">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-shopping-bag"></i>
                 <p>
-                  مدیریت کالاها
+                  کالاها
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
@@ -46,9 +78,9 @@
 
             <li class="nav-item has-treeview {{ request()->is('categories*') ? 'menu-open' : '' }}">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-gear"></i>
+                <i class="nav-icon fa fa-sitemap"></i>
                 <p>
-                  مدیریت دسته‌بندی‌ها
+                  دسته‌بندی‌ها
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
@@ -68,31 +100,52 @@
               </ul>
             </li>
 
-            <li class="nav-item has-treeview {{ request()->routeIs('address.*') ? 'menu-open' : '' }}">
+            <li class="nav-item has-treeview {{ request()->is('brands*') ? 'menu-open' : '' }}">
               <a href="#" class="nav-link">
-                <i class="nav-icon fa fa-map-marker"></i>
+                <i class="nav-icon fa fa-star"></i>
                 <p>
-                  آدرس فروشگاه
+                  برندها
                   <i class="fa fa-angle-left right"></i>
                 </p>
               </a>
               <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('address.create') }}" class="nav-link {{ request()->routeIs('address.create') ? 'active' : '' }}">
+                  <a href="{{ route('brands.create') }}" class="nav-link">
                     <i class="fa fa-plus nav-icon plus"></i>
-                    <p>وارد کردن آدرس</p>
+                    <p>ایجاد برند</p>
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="{{ route('address.show') }}" class="nav-link {{ request()->routeIs('address.show') ? 'active' : '' }}">
-                    <i class="fa fa-eye nav-icon lists-color"></i>
-                    <p>آدرس فروشگاه شما</p>
+                  <a href="{{ route('brands.index') }}" class="nav-link">
+                    <i class="fa fa-list lists-color nav-icon"></i>
+                    <p>برندها</p>
                   </a>
                 </li>
+              </ul>
+            </li>
+
+            <li class="nav-item">
+              <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
+                <i class="nav-icon fa fa-picture-o"></i>
+                <p>رسانه‌ها</p>
+              </a>
+            </li>
+
+            <li class="nav-header">سیستم</li>
+
+            <li class="nav-item has-treeview {{ request()->routeIs('settings.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-cog"></i>
+                <p>
+                  تنظیمات
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
                 <li class="nav-item">
-                  <a href="{{ route('address.edit') }}" class="nav-link {{ request()->routeIs('address.edit') ? 'active' : '' }}">
-                    <i class="fa fa-edit nav-icon"></i>
-                    <p>ویرایش آدرس</p>
+                  <a href="{{ route('settings.edit') }}" class="nav-link {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <i class="fa fa-wrench nav-icon"></i>
+                    <p>تنظیمات اپلیکیشن</p>
                   </a>
                 </li>
               </ul>
@@ -108,9 +161,9 @@
                 @csrf
               </form>
             </li>
+
           </ul>
         </nav>
-
       </div>
     </div>
   </aside>

@@ -1,13 +1,34 @@
-# TODO - Cart (سبد خرید)
+# TODO: Beautify Admin & User Dashboards
 
-- [ ] ساخت migration و جدول‌های cart و cart_items
-- [ ] ساخت مدل‌های Cart و CartItem
-- [ ] ساخت CartController (add/update/show/checkout)
-- [ ] ثبت routeها در routes/web.php
-- [ ] آپدیت nav: دکمه سبد خرید + badge تعداد آیتم‌ها (لاگین فقط)
-- [ ] آپدیت ویو home.blade.php: دکمه «خرید» -> add to cart
-- [ ] آپدیت ویو category/show.blade.php: دکمه «خرید» -> add to cart
-- [ ] ساخت ویو نمایش سبد خرید: cart/index.blade.php
-- [ ] تست دستی با لاگین و افزودن/کم/زیاد کردن تعداد
-- [ ] ساخت دکمه «تکمیل خرید» (فعلاً UI)
+## Step 1: Add decorative CSS classes to `custom-style.css`
+- [ ] Add stat-counter animation styles
+- [ ] Add glass-card variant
+- [ ] Add status badges with gradients
+- [ ] Add profile page decorations
+- [ ] Add more floating decorative shapes
+- [ ] Add pulse animations
+- [ ] Add order timeline styles
+- [ ] Add avatar sizes
+- [ ] Add quick-action buttons
+- [ ] Add chart placeholder styles
+
+## Step 2: Update Admin Dashboard (`admin/dashboard.blade.php`)
+- [ ] Add animated counter spans
+- [ ] Enhanced welcome section with avatar/initials
+- [ ] Add quick actions row with icon buttons
+- [ ] Add small chart indicators
+- [ ] Better status badges
+
+## Step 3: Update User Dashboard (`user/dashboard.blade.php`)
+- [ ] Better avatar display with gradient initials
+- [ ] Enhanced account info with glass effect
+- [ ] Quick action buttons
+- [ ] Better orders table
+- [ ] Activity indicators
+
+## Step 4: Update Admin Profile (`admin/profile.blade.php`)
+- [ ] Redesign with modern card layout
+- [ ] User avatar section
+- [ ] Profile stats with counter cards
+- [ ] Better tab design
 

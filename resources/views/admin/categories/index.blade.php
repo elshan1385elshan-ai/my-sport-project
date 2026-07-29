@@ -2,16 +2,21 @@
 
 @section('content')
   <div class="content-wrapper">
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h1 class="m-0">لیست دسته‌بندی‌ها</h1>
-                <a href="{{ route('categories.create') }}" class="btn sport-btn-primary">
-                    <i class="fa fa-plus"></i> دسته‌بندی جدید
-                </a>
-            </div>
+    <div class="sport-page-header">
+      <div class="container-fluid">
+        <div class="row mb-0">
+          <div class="col-sm-6">
+            <h1 class="header-icon-blue"><i class="fa fa-sitemap"></i> لیست دسته‌بندی‌ها</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-left">
+              <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">داشبورد</a></li>
+              <li class="breadcrumb-item active">دسته‌بندی‌ها</li>
+            </ol>
+          </div>
         </div>
-    </section>
+      </div>
+    </div>
 
     <section class="content">
         <div class="container-fluid">
@@ -25,30 +30,41 @@
                 </div>
             @endif
 
-            <div class="card sport-card">
+            <div class="d-flex justify-content-end mb-3">
+                <a href="{{ route('categories.create') }}" class="btn sport-btn-primary">
+                    <i class="fa fa-plus"></i> دسته‌بندی جدید
+                </a>
+            </div>
+
+            <div class="card sport-card sport-card-blue">
                 <div class="card-header">
-                    <h3 class="card-title mb-0">همه دسته‌بندی‌ها</h3>
+                    <span class="card-icon icon-blue"><i class="fa fa-sitemap"></i></span>
+                    <h3 class="card-title">همه دسته‌بندی‌ها</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped align-middle sport-table">
+                        <table class="table table-hover align-middle sport-table mb-0">
                             <thead>
                                 <tr>
                                     <th style="width: 60px;">#</th>
                                     <th>نام</th>
-                                    <th style="width: 220px;">عملیات</th>
+                                    <th style="width: 200px;">عملیات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($categories as $index => $category)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-                                        <td>{{ $category->name }}</td>
+                                        <td class="fw-bold">{{ $index + 1 }}</td>
+                                        <td class="fw-bold">{{ $category->name }}</td>
                                         <td>
-                                            <a href="{{ route('categories.edit', $category->id) }}" class="btn btn-warning btn-sm">
-                                                <i class="fa fa-edit"></i> ویرایش
-                                            </a>
-                                            <button type="button" class="btn btn-danger btn-sm btn-delete" data-id="{{ $category->id }}">حذف</button>
+                                            <div class="d-flex gap-1">
+                                                <a href="{{ route('categories.edit', $category->id) }}" class="sport-action-btn btn-edit" title="ویرایش">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
+                                                <button type="button" class="sport-action-btn btn-delete btn-delete" data-id="{{ $category->id }}" title="حذف">
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
+                                            </div>
                                             <form id="delete-form-{{ $category->id }}" action="{{ route('categories.destroy', $category->id) }}" method="POST" class="d-none">
                                                 @csrf
                                                 @method('DELETE')
@@ -57,17 +73,18 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="3" class="text-center">دسته‌بندی‌ای وجود ندارد.</td>
+                                        <td colspan="3" class="text-center py-4">دسته‌بندی‌ای وجود ندارد.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
-
-                    <div class="mt-3">
-                        {{ $categories->links() }}
-                    </div>
                 </div>
+                @if($categories->hasPages())
+                <div class="card-footer">
+                    {{ $categories->links() }}
+                </div>
+                @endif
             </div>
         </div>
     </section>

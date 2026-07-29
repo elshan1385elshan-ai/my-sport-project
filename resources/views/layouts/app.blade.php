@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sport | خانه قهرمانان</title>
+    <title>{{ $appSettings['page_title_prefix'] ?? 'Sport' }} | {{ $appSettings['app_name'] ?? 'خانه قهرمانان' }}</title>
     <!-- استفاده از بوت‌استرپ ۵ برای استایل‌دهی مدرن -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="{{ asset('css/sport-public.css') }}">
     <style>
-        body { font-family: Tahoma, Arial, sans-serif; }
+        body { font-family: {{ $appSettings['font_family'] ?? "'Vazir', sans-serif" }}; }
         
         /* استایل خاص برای بنر با تصویر شما */
         .card-img-top { height: 200px; object-fit: cover; }
@@ -44,7 +44,7 @@
                 <div class="row justify-content-center text-center w-100">
                     <div class="col-lg-15">
                         <h1 class="display-3 fw-bold text-white mb-4">
-                            به فروشگاه خانه قهرمانان خوش آمدید
+                            {{ str_replace('{app_name}', $appSettings['app_name'], $appSettings['welcome_message'] ?? 'به فروشگاه {app_name} خوش آمدید') }}
                         </h1>
                         <a href="#content" class="btn btn-danger btn-lg px-5 py-3">مشاهده همه کالاها</a>
                     </div>

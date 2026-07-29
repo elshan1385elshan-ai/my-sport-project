@@ -16,6 +16,7 @@ class Product extends Model
         'description',
         'slug',
         'category_id',
+        'brand_id',
         'user_id',
         'stock',
         'is_active',
@@ -64,5 +65,10 @@ class Product extends Model
     public function category()
     {
         return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
     }
 }

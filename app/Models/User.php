@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $query->where('is_seller', true)->where('seller_status', 'approved');
     }
+
+    public function shopAddress()
+    {
+        return $this->hasOne(ShopAddress::class, 'user_id');
+    }
 }

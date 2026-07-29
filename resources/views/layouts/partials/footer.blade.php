@@ -3,7 +3,7 @@
         <div class="row g-4">
             <div class="col-md-4">
                 <h5 class="fw-bold mb-3">
-                    <i class="bi bi-trophy-fill text-warning"></i> خانه قهرمانان
+                    <i class="bi bi-{{ $appSettings['public_icon'] ?? 'trophy-fill' }} text-warning"></i> {{ $appSettings['app_name'] }}
                 </h5>
                 <p class="text-white-50 small">فروشگاه تخصصی کالاهای ورزشی با بهترین کیفیت و قیمت. همراه شما در مسیر قهرمانی.</p>
                 <div class="d-flex gap-2 mt-3">
@@ -50,10 +50,9 @@
             <div class="col-md-3">
                 <h6 class="fw-bold mb-3">اطلاعات تماس</h6>
                 <ul class="list-unstyled small text-white-50">
-                    <li class="mb-2"><i class="bi bi-geo-alt"></i> تهران، خیابان ورزش</li>
-                    <li class="mb-2"><i class="bi bi-telephone"></i> ۰۲۱-۱۲۳۴۵۶۷۸</li>
-                    <li class="mb-2"><i class="bi bi-envelope"></i> info@sportshop.ir</li>
-                    <li class="mb-2"><i class="bi bi-clock"></i> ۹ صبح تا ۹ شب</li>
+                    <li class="mb-2"><i class="bi bi-geo-alt"></i> {{ $appSettings['contact_address'] }}</li>
+                    <li class="mb-2"><i class="bi bi-telephone"></i> {{ $appSettings['contact_phone'] }}</li>
+                    <li class="mb-2"><i class="bi bi-envelope"></i> {{ $appSettings['contact_email'] }}</li>
                 </ul>
             </div>
         </div>
@@ -63,7 +62,7 @@
         <div class="row align-items-center">
             <div class="col text-center">
                 <p class="mb-0 text-white-50 small">
-                    تمامی حقوق مادی و معنوی این وب‌سایت متعلق به <span class="text-warning">خانه قهرمانان</span> می‌باشد &copy; ۲۰۲۶
+                    {{ $appSettings['copyright_display'] ?? $appSettings['app_name'] }}
                 </p>
             </div>
         </div>
