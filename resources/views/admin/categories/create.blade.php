@@ -53,23 +53,29 @@
 
                                 <div class="sport-form-group">
                                     <label>نوع دسته‌بندی <span class="text-danger">*</span></label>
-                                    <select id="category_type" class="form-control sport-form-control" required>
-                                        <option value="">انتخاب کنید</option>
-                                        <option value="parent" {{ old('parent_id') == '' && old('category_type') == 'parent' ? 'selected' : '' }}>دسته‌بندی والد</option>
-                                        <option value="child" {{ old('parent_id') != '' || old('category_type') == 'child' ? 'selected' : '' }}>دسته‌بندی فرزند</option>
-                                    </select>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-tags input-icon"></i>
+                                        <select id="category_type" class="form-control sport-form-control" required>
+                                            <option value="">انتخاب کنید</option>
+                                            <option value="parent" {{ old('parent_id') == '' && old('category_type') == 'parent' ? 'selected' : '' }}>دسته‌بندی والد</option>
+                                            <option value="child" {{ old('parent_id') != '' || old('category_type') == 'child' ? 'selected' : '' }}>دسته‌بندی فرزند</option>
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="sport-form-group" id="parent_select_div" style="display:{{ old('parent_id') ? 'block' : 'none' }};">
                                     <label>دسته‌بندی والد <span class="text-danger">*</span></label>
-                                    <select name="parent_id" id="parent_id" class="form-control sport-form-control">
-                                        <option value="">انتخاب دسته‌بندی والد</option>
-                                        @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}" {{ old('parent_id') == $cat->id ? 'selected' : '' }}>
-                                                {{ $cat->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-folder-open input-icon"></i>
+                                        <select name="parent_id" id="parent_id" class="form-control sport-form-control">
+                                            <option value="">انتخاب دسته‌بندی والد</option>
+                                            @foreach($categories as $cat)
+                                                <option value="{{ $cat->id }}" {{ old('parent_id') == $cat->id ? 'selected' : '' }}>
+                                                    {{ $cat->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <input type="hidden" name="parent_id" id="parent_id_hidden" value="">

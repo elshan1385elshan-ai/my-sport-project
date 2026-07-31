@@ -41,43 +41,57 @@
                             </div>
                         @endif
 
-                        <div class="sport-form-group">
-                            <label>نام <span class="text-danger">*</span></label>
-                            <div class="sport-input-wrap">
-                                <i class="fa fa-user input-icon"></i>
-                                <input type="text" class="form-control sport-form-control" name="name" value="{{ old('name') }}" required>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="sport-form-group">
+                                    <label>نام <span class="text-danger">*</span></label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-user input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="name" value="{{ old('name') }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="sport-form-group">
+                                    <label>ایمیل <span class="text-danger">*</span></label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-envelope input-icon"></i>
+                                        <input type="email" class="form-control sport-form-control" name="email" value="{{ old('email') }}" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="sport-form-group">
+                                    <label>نقش <span class="text-danger">*</span></label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-shield input-icon"></i>
+                                        <select class="form-control sport-form-control" name="role" required>
+                                            <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>کاربر</option>
+                                            <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>مدیر</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="sport-form-group">
-                            <label>ایمیل <span class="text-danger">*</span></label>
-                            <div class="sport-input-wrap">
-                                <i class="fa fa-envelope input-icon"></i>
-                                <input type="email" class="form-control sport-form-control" name="email" value="{{ old('email') }}" required>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="sport-form-group">
+                                    <label>رمز عبور <span class="text-danger">*</span></label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-lock input-icon"></i>
+                                        <input type="password" class="form-control sport-form-control" name="password" required>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-
-                        <div class="sport-form-group">
-                            <label>نقش <span class="text-danger">*</span></label>
-                            <select class="form-control sport-form-control" name="role" required>
-                                <option value="user" {{ old('role') === 'user' ? 'selected' : '' }}>کاربر</option>
-                                <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>مدیر</option>
-                            </select>
-                        </div>
-
-                        <div class="sport-form-group">
-                            <label>رمز عبور <span class="text-danger">*</span></label>
-                            <div class="sport-input-wrap">
-                                <i class="fa fa-lock input-icon"></i>
-                                <input type="password" class="form-control sport-form-control" name="password" required>
-                            </div>
-                        </div>
-
-                        <div class="sport-form-group">
-                            <label>تکرار رمز عبور <span class="text-danger">*</span></label>
-                            <div class="sport-input-wrap">
-                                <i class="fa fa-lock input-icon"></i>
-                                <input type="password" class="form-control sport-form-control" name="password_confirmation" required>
+                            <div class="col-md-4">
+                                <div class="sport-form-group">
+                                    <label>تکرار رمز عبور <span class="text-danger">*</span></label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-lock input-icon"></i>
+                                        <input type="password" class="form-control sport-form-control" name="password_confirmation" required>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

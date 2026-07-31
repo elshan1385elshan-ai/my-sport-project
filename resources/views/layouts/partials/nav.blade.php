@@ -18,20 +18,20 @@
 
                 @if(isset($navCategories) && $navCategories->isNotEmpty())
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <a class="nav-link dropdown-toggle sport-category-nav-btn" href="#" role="button" data-bs-toggle="dropdown">
                         <i class="bi bi-grid-fill"></i> دسته‌بندی‌ها
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #1a1a2e;">
+                    <ul class="dropdown-menu dropdown-menu-dark shadow border-0 sport-dropdown-menu" style="background: #1a1a2e;">
                         @foreach($navCategories as $cat)
                             @if($cat->children->isNotEmpty())
                             <li class="dropdown-submenu">
-                                <a class="dropdown-item dropdown-toggle" href="{{ route('category.show', $cat) }}">
+                                <a class="dropdown-item dropdown-toggle sport-dropdown-item" href="{{ route('category.show', $cat) }}">
                                     {{ $cat->name }}
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #16213e;">
+                                <ul class="dropdown-menu dropdown-menu-dark shadow border-0 sport-dropdown-menu" style="background: #16213e;">
                                     @foreach($cat->children as $child)
                                         <li>
-                                            <a class="dropdown-item" href="{{ route('category.show', $child) }}">
+                                            <a class="dropdown-item sport-dropdown-item" href="{{ route('category.show', $child) }}">
                                                 {{ $child->name }}
                                             </a>
                                         </li>
@@ -40,7 +40,7 @@
                             </li>
                             @else
                             <li>
-                                <a class="dropdown-item" href="{{ route('category.show', $cat) }}">
+                                <a class="dropdown-item sport-dropdown-item" href="{{ route('category.show', $cat) }}">
                                     {{ $cat->name }}
                                 </a>
                             </li>
@@ -67,19 +67,19 @@
             <div class="d-flex align-items-center gap-2">
                 @auth('admin')
                     <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <button class="sport-user-btn dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-shield-lock-fill"></i> {{ Auth::guard('admin')->user()->name }}
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #1a1a2e;">
+                        <ul class="dropdown-menu sport-dropdown-menu shadow border-0" style="background: #1a1a2e;">
                             <li>
-                                <a class="dropdown-item" href="{{ route('admin.dashboard') }}">
+                                <a class="dropdown-item sport-dropdown-item" href="{{ route('admin.dashboard') }}">
                                     <i class="bi bi-speedometer2"></i> پنل مدیریت
                                 </a>
                             </li>
                             <li>
                                 <form method="POST" action="{{ route('admin.logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">
+                                    <button type="submit" class="dropdown-item sport-dropdown-item">
                                         <i class="bi bi-box-arrow-right"></i> خروج
                                     </button>
                                 </form>
@@ -87,7 +87,7 @@
                         </ul>
                     </div>
                 @elseauth('web')
-                    <a href="{{ route('cart.show') }}" class="btn btn-outline-light position-relative">
+                    <a href="{{ route('cart.show') }}" class="position-relative sport-cart-btn" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
                         <i class="bi bi-cart3"></i>
                         @php $cartCount = array_sum(session()->get('cart', [])); @endphp
                         @if($cartCount > 0)
@@ -98,19 +98,19 @@
                     </a>
 
                     <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" data-bs-toggle="dropdown">
+                        <button class="sport-user-btn dropdown-toggle" data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> {{ auth('web')->user()->name }}
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-dark shadow border-0" style="background: #1a1a2e;">
+                        <ul class="dropdown-menu sport-dropdown-menu shadow border-0" style="background: #1a1a2e;">
                             <li>
-                                <a class="dropdown-item" href="{{ route('user.dashboard') }}">
+                                <a class="dropdown-item sport-dropdown-item" href="{{ route('user.dashboard') }}">
                                     <i class="bi bi-speedometer2"></i> داشبورد
                                 </a>
                             </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="dropdown-item">
+                                    <button type="submit" class="dropdown-item sport-dropdown-item">
                                         <i class="bi bi-box-arrow-right"></i> خروج
                                     </button>
                                 </form>
@@ -118,7 +118,7 @@
                         </ul>
                     </div>
                 @else
-                    <a href="{{ route('cart.show') }}" class="btn btn-outline-light position-relative">
+                    <a href="{{ route('cart.show') }}" class="position-relative sport-cart-btn" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
                         <i class="bi bi-cart3"></i>
                         @php $cartCount = array_sum(session()->get('cart', [])); @endphp
                         @if($cartCount > 0)
@@ -128,7 +128,7 @@
                         @endif
                     </a>
 
-                    <a href="{{ route('login') }}" class="btn btn-danger">
+                    <a href="{{ route('login') }}" class="sport-login-btn" style="color: #fff; text-decoration: none; display: inline-flex; align-items: center;">
                         <i class="bi bi-dashboard"></i> ورود
                     </a>
                 @endauth
@@ -141,18 +141,21 @@
     .navbar .form-control::placeholder { color: rgba(255,255,255,0.6) !important; }
     .navbar .form-control:focus { background: rgba(255,255,255,0.15) !important; color: #fff !important; box-shadow: none; }
 
-    /* Sport search bar (Taaghche-inspired) */
+    /* Sport search bar (matches nav buttons) */
     .sport-search-box {
-        background: #fff;
-        border-radius: 50px;
+        background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15));
+        border-radius: 12px;
         min-width: 300px;
         height: 48px;
-        border: 2px solid transparent;
-        transition: border-color .2s ease, box-shadow .2s ease;
+        border: 2px solid rgba(233,69,96,0.3);
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        backdrop-filter: blur(10px);
+        overflow: hidden;
     }
     .sport-search-box:focus-within {
-        border-color: #ffc107;
-        box-shadow: 0 0 0 4px rgba(255,193,7,0.18), 0 6px 18px rgba(0,0,0,0.18);
+        background: linear-gradient(135deg, rgba(233,69,96,0.25), rgba(255,107,107,0.25));
+        border-color: rgba(233,69,96,0.6);
+        box-shadow: 0 8px 25px rgba(233,69,96,0.3), 0 0 0 1px rgba(233,69,96,0.1);
     }
     .sport-search-input {
         border: none !important;
@@ -163,17 +166,30 @@
         min-width: 0;
         box-shadow: none !important;
         height: 100%;
+        background: transparent !important;
+        color: #fff !important;
     }
-    .sport-search-input::placeholder { color: #9aa0ac; }
+    .sport-search-input::placeholder { color: rgba(255,255,255,0.6); }
+    .sport-search-input:focus { background: transparent !important; color: #fff !important; box-shadow: none !important; }
     .sport-search-btn {
         background: linear-gradient(90deg, #e94560, #ff6b6b);
         color: #fff;
         width: 56px;
         font-size: 1.15rem;
-        transition: filter .2s ease;
-        border-radius: 0 50px 50px 0 !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        border-radius: 0 12px 12px 0 !important;
+        border: none !important;
     }
-    .sport-search-btn:hover { filter: brightness(1.08); }
+    .sport-search-btn:hover {
+        filter: brightness(1.08);
+        transform: scale(1.05);
+    }
+    .sport-search-btn i {
+        transition: transform 0.3s ease;
+    }
+    .sport-search-btn:hover i {
+        transform: rotate(360deg);
+    }
 
     .dropdown-submenu { position: relative; }
     .dropdown-submenu > .dropdown-menu {
@@ -184,4 +200,239 @@
     .dropdown-item:hover { background: rgba(255,255,255,0.1) !important; }
     .navbar .nav-link { transition: color 0.2s; }
     .navbar .nav-link:hover { color: #ffc107 !important; }
+
+    /* Enhanced category navigation button */
+    .sport-category-nav-btn {
+        position: relative;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15)) !important;
+        border: 2px solid rgba(233,69,96,0.3) !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        backdrop-filter: blur(10px) !important;
+        overflow: hidden !important;
+    }
+
+    .sport-category-nav-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .sport-category-nav-btn:hover::before {
+        left: 100%;
+    }
+
+    .sport-category-nav-btn:hover {
+        background: linear-gradient(135deg, rgba(233,69,96,0.25), rgba(255,107,107,0.25)) !important;
+        border-color: rgba(233,69,96,0.6) !important;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(233,69,96,0.3), 0 0 0 1px rgba(233,69,96,0.1) !important;
+    }
+
+    .sport-category-nav-btn i {
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+
+    .sport-category-nav-btn:hover i {
+        transform: rotate(180deg);
+    }
+
+    .sport-category-nav-btn .dropdown-toggle::after {
+        position: relative;
+        z-index: 2;
+    }
+
+    /* Enhanced dropdown menus */
+    .sport-dropdown-menu {
+        border-radius: 16px !important;
+        border: 2px solid rgba(233,69,96,0.2) !important;
+        backdrop-filter: blur(15px) !important;
+        animation: dropdownFadeIn 0.3s ease !important;
+    }
+
+    @keyframes dropdownFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Enhanced dropdown items */
+    .sport-dropdown-item {
+        position: relative;
+        padding: 0.75rem 1.25rem !important;
+        border-radius: 10px !important;
+        margin: 4px 8px !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        overflow: hidden !important;
+        color: #fff !important;
+    }
+
+    .sport-dropdown-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(233,69,96,0.1), transparent);
+        transition: left 0.4s ease;
+    }
+
+    .sport-dropdown-item:hover::before {
+        left: 100%;
+    }
+
+    .sport-dropdown-item:hover {
+        background: linear-gradient(135deg, rgba(233,69,96,0.2), rgba(255,107,107,0.15)) !important;
+        transform: translateX(-5px);
+        box-shadow: 0 4px 15px rgba(233,69,96,0.2) !important;
+    }
+
+    /* Enhanced cart button */
+    .sport-cart-btn {
+        position: relative;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15)) !important;
+        border: 2px solid rgba(233,69,96,0.3) !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        backdrop-filter: blur(10px) !important;
+        overflow: hidden !important;
+    }
+
+    .sport-cart-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .sport-cart-btn:hover::before {
+        left: 100%;
+    }
+
+    .sport-cart-btn:hover {
+        background: linear-gradient(135deg, rgba(233,69,96,0.25), rgba(255,107,107,0.25)) !important;
+        border-color: rgba(233,69,96,0.6) !important;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(233,69,96,0.3), 0 0 0 1px rgba(233,69,96,0.1) !important;
+    }
+
+    .sport-cart-btn i {
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+
+    .sport-cart-btn:hover i {
+        transform: rotate(360deg);
+    }
+
+    /* Enhanced login button */
+    .sport-login-btn {
+        position: relative;
+        padding: 0.5rem 1.5rem !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, #e94560, #ff6b6b) !important;
+        border: 2px solid rgba(233,69,96,0.5) !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        backdrop-filter: blur(10px) !important;
+        overflow: hidden !important;
+        box-shadow: 0 4px 15px rgba(233,69,96,0.3) !important;
+    }
+
+    .sport-login-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .sport-login-btn:hover::before {
+        left: 100%;
+    }
+
+    .sport-login-btn:hover {
+        background: linear-gradient(135deg, #ff6b6b, #e94560) !important;
+        border-color: rgba(255,107,107,0.7) !important;
+        transform: translateY(-2px) scale(1.05);
+        box-shadow: 0 12px 35px rgba(233,69,96,0.4), 0 0 0 1px rgba(233,69,96,0.2) !important;
+    }
+
+    .sport-login-btn i {
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+
+    .sport-login-btn:hover i {
+        transform: rotate(-15deg) scale(1.1);
+    }
+
+    /* Enhanced user button (matches cart button) */
+    .sport-user-btn {
+        position: relative;
+        padding: 0.5rem 1.2rem !important;
+        border-radius: 12px !important;
+        background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15)) !important;
+        border: 2px solid rgba(233,69,96,0.3) !important;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        backdrop-filter: blur(10px) !important;
+        overflow: hidden !important;
+        color: #fff !important;
+    }
+
+    .sport-user-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .sport-user-btn:hover::before {
+        left: 100%;
+    }
+
+    .sport-user-btn:hover {
+        background: linear-gradient(135deg, rgba(233,69,96,0.25), rgba(255,107,107,0.25)) !important;
+        border-color: rgba(233,69,96,0.6) !important;
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 8px 25px rgba(233,69,96,0.3), 0 0 0 1px rgba(233,69,96,0.1) !important;
+        color: #fff !important;
+    }
+
+    .sport-user-btn i {
+        position: relative;
+        z-index: 2;
+        transition: transform 0.3s ease;
+    }
+
+    .sport-user-btn:hover i {
+        transform: rotate(180deg);
+    }
 </style>

@@ -54,14 +54,17 @@
 
                                 <div class="sport-form-group">
                                     <label>دسته‌بندی والد</label>
-                                    <select name="parent_id" class="form-control sport-form-control">
-                                        <option value="">انتخاب دسته‌بندی والد (اختیاری)</option>
-                                        @foreach($categories as $cat)
-                                            <option value="{{ $cat->id }}" {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : '' }}>
-                                                {{ $cat->name }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-folder-open input-icon"></i>
+                                        <select name="parent_id" class="form-control sport-form-control">
+                                            <option value="">انتخاب دسته‌بندی والد (اختیاری)</option>
+                                            @foreach($categories as $cat)
+                                                <option value="{{ $cat->id }}" {{ old('parent_id', $category->parent_id) == $cat->id ? 'selected' : '' }}>
+                                                    {{ $cat->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
 
                                 <div class="sport-form-group">
@@ -71,7 +74,10 @@
                                             <img src="{{ asset('storage/'.$category->image) }}" alt="{{ $category->name }}" class="sport-thumb" style="width:80px;height:80px;">
                                         </div>
                                     @endif
-                                    <input type="file" name="image" class="form-control sport-form-control" accept="image/*">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-image input-icon"></i>
+                                        <input type="file" name="image" class="form-control sport-form-control" accept="image/*">
+                                    </div>
                                     <small class="text-muted">فرمت‌های مجاز: jpg, jpeg, png, webp - حداکثر ۲ مگابایت</small>
                                 </div>
 

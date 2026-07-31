@@ -26,7 +26,7 @@
                                     src="{{ $firstImage ? asset('storage/'.$firstImage->image_path) : 'https://picsum.photos/400/250' }}"
                                     class="card-img-top"
                                     alt="{{ $product->name }}">
-                                <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-2 rounded-circle p-2"
+                                <button type="button" class="sport-cart-remove-btn"
                                         onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')"
                                         title="حذف از سبد">
                                     <i class="bi bi-trash"></i>
@@ -59,7 +59,7 @@
                                         <form action="{{ route('cart.add') }}" method="POST" class="d-inline-flex align-items-center">
                                             @csrf
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="btn btn-sm qty-btn sport-btn-primary">
+                                            <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-primary">
                                                 <i class="bi bi-plus-lg"></i>
                                             </button>
                                         </form>
@@ -68,7 +68,7 @@
                                             <form action="{{ route('cart.decrease') }}" method="POST" class="d-inline-flex align-items-center">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="btn btn-sm qty-btn sport-btn-outline">
+                                                <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-outline">
                                                     <i class="bi bi-dash-lg"></i>
                                                 </button>
                                             </form>
@@ -76,7 +76,7 @@
                                             <form action="{{ route('cart.remove') }}" method="POST" class="d-inline-flex align-items-center" onsubmit="return confirm('آیا از حذف این کالا مطمئن هستید؟');">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="btn btn-sm qty-btn sport-btn-outline">
+                                                <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-outline">
                                                     <i class="bi bi-dash-lg"></i>
                                                 </button>
                                             </form>
@@ -97,7 +97,7 @@
             <a href="{{ route('home') }}" class="btn sport-btn-outline">
                 <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه
             </a>
-            <button class="btn sport-btn-primary btn-lg px-5">
+            <button class="sport-cart-checkout-btn">
                 <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
             </button>
         </div>

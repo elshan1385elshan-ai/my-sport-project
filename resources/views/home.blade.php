@@ -70,11 +70,9 @@
     <div class="row g-4 justify-content-center">
         @foreach($childCategories as $cat)
             <div class="col-6 col-md-3 col-lg-2">
-                <a href="{{ route('category.show', $cat) }}" class="text-decoration-none">
-                    <div class="text-center">
-                        <img src="{{ asset('storage/'.$cat->image) }}" alt="{{ $cat->name }}" style="width:100px; height:100px; object-fit:cover; border-radius:50%; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-                        <p class="mt-2" style="color:#333; font-weight:500;">{{ $cat->name }}</p>
-                    </div>
+                <a href="{{ route('category.show', $cat) }}" class="sport-category-item text-decoration-none text-center">
+                    <img src="{{ asset('storage/'.$cat->image) }}" alt="{{ $cat->name }}">
+                    <p>{{ $cat->name }}</p>
                 </a>
             </div>
         @endforeach
@@ -88,11 +86,9 @@
     <div class="row g-4 justify-content-center">
         @foreach($brands as $brand)
             <div class="col-6 col-md-3 col-lg-2">
-                <a href="{{ route('brand.show', $brand) }}" class="text-decoration-none">
-                    <div class="text-center">
-                        <img src="{{ asset('storage/'.$brand->image) }}" alt="{{ $brand->name }}" style="width:100px; height:100px; object-fit:cover; border-radius:50%; box-shadow:0 4px 15px rgba(0,0,0,0.1);">
-                        <p class="mt-2" style="color:#333; font-weight:500;">{{ $brand->name }}</p>
-                    </div>
+                <a href="{{ route('brand.show', $brand) }}" class="sport-brand-item text-decoration-none text-center">
+                    <img src="{{ asset('storage/'.$brand->image) }}" alt="{{ $brand->name }}">
+                    <p>{{ $brand->name }}</p>
                 </a>
             </div>
         @endforeach

@@ -21,32 +21,16 @@
     @include('layouts.partials.nav')
 
     @if(Route::currentRouteName() === 'home')
-        <header class="hero-section position-relative">
-            <div class="hero-background"></div>
-            <style>
-                /* بنر صفحه home */
-                .hero-section {
-                    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('{{ asset('images/nou camp.webp') }}');
-                    background-size: cover;
-                    background-position: center;
-                    background-repeat: no-repeat;
-                    height: 500px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    color: white;
-                    text-align: center;
-                }
-                .hero-section h1 { font-size: 3.5rem; font-weight: bold; }
-            </style>
-
+        <header class="hero-section position-relative" style="background: linear-gradient(135deg, rgba(26,26,46,0.85), rgba(15,52,96,0.85)), url('https://images.unsplash.com/photo-1517649763962-0c623066013b?w=1920&q=80');">
             <div class="container position-relative z-3 h-100 d-flex align-items-center">
                 <div class="row justify-content-center text-center w-100">
                     <div class="col-lg-15">
                         <h1 class="display-3 fw-bold text-white mb-4">
                             {{ str_replace('{app_name}', $appSettings['app_name'], $appSettings['welcome_message'] ?? 'به فروشگاه {app_name} خوش آمدید') }}
                         </h1>
-                        <a href="#content" class="btn btn-danger btn-lg px-5 py-3">مشاهده همه کالاها</a>
+                        <a href="#content" class="sport-hero-btn">
+                            <i class="bi bi-arrow-down-circle"></i> مشاهده همه کالاها
+                        </a>
                     </div>
                 </div>
             </div>

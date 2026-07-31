@@ -124,6 +124,30 @@
               </ul>
             </li>
 
+            <li class="nav-item has-treeview {{ request()->is('features*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-tags"></i>
+                <p>
+                  ویژگی‌ها
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('features.create') }}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>ایجاد ویژگی</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('features.index') }}" class="nav-link {{ request()->routeIs('features.index') ? 'active' : '' }}">
+                    <i class="fa fa-list nav-icon lists-color"></i>
+                    <p>ویژگی‌ها</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             <li class="nav-item">
               <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-picture-o"></i>

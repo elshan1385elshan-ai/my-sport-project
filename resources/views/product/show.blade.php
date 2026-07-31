@@ -27,10 +27,9 @@
                         <div class="col-3">
                             <img
                                 src="{{ asset('storage/'.$image->image_path) }}"
-                                class="img-fluid rounded border cursor-pointer thumb-img"
-                                style="border: 2px solid transparent; transition: border-color 0.2s;"
+                                class="img-fluid thumb-img"
                                 alt="{{ $product->name }}"
-                                onclick="document.getElementById('mainProductImage').src = this.src; document.querySelectorAll('.thumb-img').forEach(t => t.style.borderColor = 'transparent'); this.style.borderColor = '#0f3460';">
+                                onclick="document.getElementById('mainProductImage').src = this.src; document.querySelectorAll('.thumb-img').forEach(t => t.style.borderColor = 'rgba(233,69,96,0.2)'); this.style.borderColor = 'rgba(233,69,96,0.6)';">
                         </div>
                     @endforeach
                 </div>
@@ -50,7 +49,7 @@
                 <p class="fs-3 fw-bold mb-3 price-tag">{{ number_format($product->price) }} تومان</p>
             @endif
 
-            <div class="d-flex align-items-center gap-3 p-3 mb-4 rounded-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
+            <div class="d-flex align-items-center gap-3 p-3 mb-4 rounded-3 sport-detail-stock-box">
                 @if($product->stock > 0)
                     <div class="d-flex align-items-center gap-2">
                         <i class="bi bi-box-seam fs-4" style="color: #0f3460;"></i>
@@ -86,7 +85,7 @@
             <form action="{{ route('cart.add') }}" method="POST" class="mt-4">
                 @csrf
                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                <button type="submit" class="btn sport-btn-primary btn-lg px-5 w-100">
+                <button type="submit" class="btn sport-detail-buy-btn btn-lg w-100">
                     <i class="bi bi-cart-plus"></i> خرید کالا
                 </button>
             </form>

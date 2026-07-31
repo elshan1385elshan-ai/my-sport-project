@@ -46,7 +46,7 @@
                                 @endif
 
                                 <div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="sport-form-group">
                                             <label>نام محصول <span class="text-danger">*</span></label>
                                             <div class="sport-input-wrap">
@@ -55,7 +55,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="sport-form-group">
                                             <label>قیمت <span class="text-danger">*</span></label>
                                             <div class="sport-input-wrap">
@@ -64,7 +64,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
                                         <div class="sport-form-group">
                                             <label>تعداد موجودی</label>
                                             <div class="sport-input-wrap">
@@ -88,26 +88,32 @@
                                     <div class="col-md-4">
                                         <div class="sport-form-group">
                                             <label>دسته‌بندی <span class="text-danger">*</span></label>
-                                            <select name="category_id" class="form-control sport-form-control" required>
-                                                @foreach($categories as $category)
-                                                    <option value="{{ $category->id }}" {{ ($product->category_id == $category->id) ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            <div class="sport-input-wrap">
+                                                <i class="fa fa-sitemap input-icon"></i>
+                                                <select name="category_id" class="form-control sport-form-control" required>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" {{ ($product->category_id == $category->id) ? 'selected' : '' }}>
+                                                            {{ $category->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="sport-form-group">
                                             <label>برند</label>
-                                            <select name="brand_id" class="form-control sport-form-control">
-                                                <option value="">-- بدون برند --</option>
-                                                @foreach($brands as $brand)
-                                                    <option value="{{ $brand->id }}" {{ ($product->brand_id == $brand->id) ? 'selected' : '' }}>
-                                                        {{ $brand->name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+                                            <div class="sport-input-wrap">
+                                                <i class="fa fa-tag input-icon"></i>
+                                                <select name="brand_id" class="form-control sport-form-control">
+                                                    <option value="">-- بدون برند --</option>
+                                                    @foreach($brands as $brand)
+                                                        <option value="{{ $brand->id }}" {{ ($product->brand_id == $brand->id) ? 'selected' : '' }}>
+                                                            {{ $brand->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -125,7 +131,10 @@
 
                                 <div class="sport-form-group">
                                     <label>افزودن تصاویر جدید</label>
-                                    <input type="file" name="images[]" multiple class="form-control sport-form-control">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-image input-icon"></i>
+                                        <input type="file" name="images[]" multiple class="form-control sport-form-control">
+                                    </div>
                                 </div>
 
                                 <div class="sport-form-group">
