@@ -597,8 +597,8 @@
     position: absolute;
     top: 12px;
     right: 12px;
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     background: linear-gradient(135deg, rgba(220,53,69,0.9), rgba(255,99,132,0.9));
     border: 2px solid rgba(255,255,255,0.3);
@@ -615,8 +615,8 @@
 }
 
 .sport-cart-qty-btn {
-    width: 38px;
-    height: 38px;
+    width: 44px;
+    height: 44px;
     border-radius: 10px !important;
     display: inline-flex;
     align-items: center;
@@ -632,6 +632,20 @@
 }
 .sport-cart-qty-btn:hover i {
     transform: rotate(180deg);
+}
+
+/* Standardize cart action buttons */
+.sport-cart-action-btn {
+    height: 44px;
+    padding: 0 20px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
 }
 
 .sport-cart-checkout-btn {

@@ -12,4 +12,9 @@ class Feature extends Model
     {
         return $this->hasMany(FeatureValue::class)->orderBy('sort_order');
     }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class, 'category_feature');
+    }
 }

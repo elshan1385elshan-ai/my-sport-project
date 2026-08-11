@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class CategoryController extends Controller
 {
@@ -48,6 +49,8 @@ class CategoryController extends Controller
 
         Category::create($validated);
 
+        Cache::forget('nav_categories');
+
         return redirect()->route('categories.index')->with('success', 'دسته‌بندی با موفقیت ثبت شد!');
     }
 
@@ -57,7 +60,7 @@ class CategoryController extends Controller
     public function show(string $id)
     {
         $category = Category::with('products.images')->findOrFail($id);
-        $products = $category->products()->latest()->paginate(12);
+        $products = $category->products()->with('categories')->latest()->paginate(12);
 
         return view('category.show', compact('category', 'products'));
     }
@@ -99,6 +102,8 @@ class CategoryController extends Controller
 
         $category->update($validated);
 
+        Cache::forget('nav_categories');
+
         return redirect()->route('categories.index')->with('success', 'دسته‌بندی با موفقیت بروزرسانی شد!');
     }
 
@@ -114,6 +119,8 @@ class CategoryController extends Controller
         }
 
         $category->delete();
+
+        Cache::forget('nav_categories');
 
         return redirect()->route('categories.index')->with('success', 'دسته‌بندی با موفقیت حذف شد!');
     }

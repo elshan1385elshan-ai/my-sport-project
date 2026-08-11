@@ -30,7 +30,7 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
-        $products = Product::with(['images', 'category'])
+        $products = Product::with(['images', 'categories'])
             ->whereIn('id', array_keys($cart))
             ->get()
             ->keyBy('id');

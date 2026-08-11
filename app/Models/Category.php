@@ -14,7 +14,8 @@ class Category extends Model
 
     public function products()
     {
-        return $this->hasMany(Product::class, 'category_id');
+        return $this->belongsToMany(Product::class, 'category_product')
+            ->withTimestamps();
     }
 
     public function parent()
@@ -25,5 +26,15 @@ class Category extends Model
     public function children()
     {
         return $this->hasMany(Category::class, 'parent_id');
+    }
+
+    public function childrenRecursive()
+    {
+        return $this->hasMany(Category::class, 'parent_id')->with('childrenRecursive');
+    }
+
+    public function features()
+    {
+        return $this->belongsToMany(Feature::class, 'category_feature');
     }
 }

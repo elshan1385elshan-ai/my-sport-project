@@ -85,20 +85,6 @@
                                         </div>
                                         <div class="col-md-4">
                                             <div class="sport-form-group">
-                                                <label>دسته‌بندی <span class="text-danger">*</span></label>
-                                                <div class="sport-input-wrap">
-                                                    <i class="fa fa-sitemap input-icon"></i>
-                                                    <select name="category_id" class="form-control sport-form-control" required>
-                                                        <option value="">-- انتخاب کنید --</option>
-                                                        @foreach($categories as $category)
-                                                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="sport-form-group">
                                                 <label>برند</label>
                                                 <div class="sport-input-wrap">
                                                     <i class="fa fa-tag input-icon"></i>
@@ -111,6 +97,28 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="sport-form-group">
+                                        <label>دسته‌بندی‌ها <span class="text-danger">*</span></label>
+                                        <div class="border rounded p-3" style="max-height: 240px; overflow-y: auto; border: 2px solid #e9ecef !important;">
+                                            @if($categories && $categories->isNotEmpty())
+                                                @include('admin.features.partials.category-tree', [
+                                                    'categories' => $categories,
+                                                    'depth' => 0,
+                                                    'selectedCategories' => old('categories', [])
+                                                ])
+                                            @else
+                                                <p class="text-muted text-center mb-0">هیچ دسته‌بندی یافت نشد.</p>
+                                            @endif
+                                        </div>
+                                        <small class="d-block text-muted mt-2">می‌توانید چند دسته‌بندی را برای یک محصول انتخاب کنید.</small>
+                                    </div>
+
+                                    <div class="sport-form-group" id="product-features-section" style="display:none;">
+                                        <label>ویژگی‌های دسته‌بندی</label>
+                                        <div id="product-features-container" class="row g-3"></div>
+                                        <small class="text-muted">برای هر ویژگی، مقدار مورد نظر را انتخاب کنید.</small>
                                     </div>
 
                                     <div class="sport-form-group">
@@ -141,3 +149,70 @@
         </section>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+  $(document).ready(function() {
+    var byCategoriesUrl = "{{ route('features.byCategories') }}";
+
+    function loadFeatures() {
+      var categoryIds = $('input[name="categories[]"]:checked').map(function() {
+        return $(this).val();
+      }).get();
+
+      if (!categoryIds.length) {
+        $('#product-features-section').hide();
+        $('#product-features-container').empty();
+        return;
+      }
+
+      $.ajax({
+        url: byCategoriesUrl,
+        type: 'POST',
+        data: { _token: '{{ csrf_token() }}', category_ids: categoryIds },
+        dataType: 'json',
+        success: function(features) {
+          $('#product-features-container').empty();
+
+          if (!features.length) {
+            $('#product-features-section').hide();
+            return;
+          }
+
+          features.forEach(function(feature) {
+            var col = $('<div class="col-md-6 col-lg-4">');
+            var group = $('<div class="sport-form-group">');
+            group.append('<label>' + feature.name + '</label>');
+
+            var select = $('<select>')
+              .attr('name', 'feature_values[]')
+              .addClass('form-control sport-form-control')
+              .append('<option value="">-- انتخاب مقدار --</option>');
+
+            feature.values.forEach(function(v) {
+              select.append('<option value="' + v.id + '">' + v.value + '</option>');
+            });
+
+            group.append(select);
+            col.append(group);
+            $('#product-features-container').append(col);
+          });
+
+          $('#product-features-section').show();
+        },
+        error: function() {
+          $('#product-features-section').hide();
+        }
+      });
+    }
+
+    $(document).on('change', 'input[name="categories[]"]', function() {
+      loadFeatures();
+    });
+
+    if ($('input[name="categories[]"]:checked').length) {
+      loadFeatures();
+    }
+  });
+</script>
+@endpush

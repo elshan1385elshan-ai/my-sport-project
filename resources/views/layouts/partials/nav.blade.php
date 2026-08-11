@@ -305,12 +305,23 @@
     .sport-cart-btn {
         position: relative;
         padding: 0.5rem 1.2rem !important;
+        min-width: 48px;
+        min-height: 48px;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: middle;
         border-radius: 12px !important;
         background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15)) !important;
         border: 2px solid rgba(233,69,96,0.3) !important;
         transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
         backdrop-filter: blur(10px) !important;
-        overflow: hidden !important;
+        overflow: visible !important;
+    }
+
+    .sport-cart-btn .badge {
+        position: relative;
+        z-index: 3;
     }
 
     .sport-cart-btn::before {
@@ -349,6 +360,12 @@
     .sport-login-btn {
         position: relative;
         padding: 0.5rem 1.5rem !important;
+        min-width: 48px;
+        min-height: 48px;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: middle;
         border-radius: 12px !important;
         background: linear-gradient(135deg, #e94560, #ff6b6b) !important;
         border: 2px solid rgba(233,69,96,0.5) !important;
@@ -394,6 +411,12 @@
     .sport-user-btn {
         position: relative;
         padding: 0.5rem 1.2rem !important;
+        min-width: 48px;
+        min-height: 48px;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: middle;
         border-radius: 12px !important;
         background: linear-gradient(135deg, rgba(233,69,96,0.15), rgba(255,107,107,0.15)) !important;
         border: 2px solid rgba(233,69,96,0.3) !important;

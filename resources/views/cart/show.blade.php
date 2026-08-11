@@ -37,7 +37,7 @@
                                 <h5 class="card-title text-truncate">{{ $product->name }}</h5>
 
                                 <p class="text-muted small mb-2">
-                                    <span class="badge text-dark border" style="background: rgba(15,52,96,0.08);">{{ $product->category->name ?? 'بدون دسته' }}</span>
+                                    <span class="badge text-dark border" style="background: rgba(15,52,96,0.08);">{{ $product->categories->first()->name ?? 'بدون دسته' }}</span>
                                 </p>
 
                                 @if($product->description)
@@ -83,7 +83,7 @@
                                         @endif
                                     </div>
 
-                                    <button type="button" class="btn sport-btn-outline w-100" onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')">
+                                    <button type="button" class="btn sport-btn-outline sport-cart-action-btn w-100" onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')">
                                         <i class="bi bi-trash me-1"></i> حذف از سبد
                                     </button>
                                 </div>
@@ -94,10 +94,10 @@
         </div>
 
         <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
-            <a href="{{ route('home') }}" class="btn sport-btn-outline">
+            <a href="{{ route('home') }}" class="btn sport-btn-outline sport-cart-action-btn w-100">
                 <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه
             </a>
-            <button class="sport-cart-checkout-btn">
+            <button class="btn sport-btn-outline sport-cart-checkout-btn sport-cart-action-btn w-100">
                 <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
             </button>
         </div>

@@ -21,8 +21,8 @@
                         @if($product->discount > 0)
                             <span class="sport-card-discount">-{{ $product->discount }}%</span>
                         @endif
-                        @if($product->category)
-                            <span class="sport-card-category">{{ $product->category->name }}</span>
+                        @if($product->categories->isNotEmpty())
+                            <span class="sport-card-category">{{ $product->categories->first()->name }}</span>
                         @endif
                     </div>
 

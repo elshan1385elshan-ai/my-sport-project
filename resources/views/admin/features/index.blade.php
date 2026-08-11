@@ -38,7 +38,7 @@
                                 <tr>
                                     <th style="width: 60px;">#</th>
                                     <th>نام ویژگی</th>
-                                    <th style="width: 120px;">تعداد مقادیر</th>
+                                    <th style="width: 120px;">مقادیر</th>
                                     <th style="width: 200px;">عملیات</th>
                                 </tr>
                             </thead>
@@ -48,7 +48,9 @@
                                         <td class="fw-bold">{{ $index + 1 }}</td>
                                         <td class="fw-bold">{{ $feature->name }}</td>
                                         <td>
-                                            <span class="badge bg-info">{{ $feature->values_count }}</span>
+                                            <a href="{{ route('features.values', $feature->id) }}" class="btn btn-info btn-sm sport-btn-info">
+                                                <i class="fa fa-list-ul"></i> نمایش مقادیر ({{ $feature->values_count }})
+                                            </a>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">

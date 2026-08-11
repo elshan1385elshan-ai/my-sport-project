@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\AppSetting;
 use App\Models\Category;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,7 +28,12 @@ class AppServiceProvider extends ServiceProvider
             $appSettings['copyright_display'] = AppSetting::copyrightText($appSettings);
 
             $view->with('appSettings', $appSettings);
-            $view->with('navCategories', Category::whereNull('parent_id')->with('children')->select(['id', 'name'])->get());
+        });
+
+        View::composer(['layouts.partials.nav', 'layouts.partials.footer'], function ($view) {
+            $view->with('navCategories', Cache::remember('nav_categories', 3600, function () {
+                return Category::whereNull('parent_id')->with('children')->select(['id', 'name'])->get();
+            }));
         });
     }
 }

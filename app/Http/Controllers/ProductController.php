@@ -21,7 +21,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('user', 'category', 'images')->latest()->paginate(5);
+        $products = Product::with('user', 'categories', 'images')->latest()->paginate(5);
 
         return view('admin.products.index', compact('products'));
     }
@@ -31,7 +31,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::with('childrenRecursive')->whereNull('parent_id')->get();
         $brands = Brand::all();
 
         return view('admin.products.create', compact('categories', 'brands'));
@@ -47,7 +47,8 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -57,6 +58,7 @@ class ProductController extends Controller
            'name.unique'   => 'محصولی با این نام قبلاً ثبت شده است.',
            'price.required' => 'وارد کردن قیمت محصول الزامی است.',
            'price.numeric'   => 'قیمت محصول را صحیح وارد کن.',
+           'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
         ]);
 
         $product = Product::create([
@@ -65,11 +67,16 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
-            'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'user_id' => auth()->id(),
             'description' => $request->description,
         ]);
+
+        $product->categories()->sync($request->categories);
+
+        if ($request->filled('feature_values')) {
+            $product->featureValues()->sync(array_filter($request->feature_values));
+        }
 
         if ($request->hasFile('images')) {
 
@@ -100,9 +107,24 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load(['images', 'category', 'user.shopAddress']);
+        $product->load(['images', 'categories', 'user.shopAddress', 'featureValues.feature', 'reviews.user']);
 
-        return view('product.show', compact('product'));
+        $relatedIds = $product->categories->pluck('id');
+        $relatedProducts = Product::whereHas('categories', function ($query) use ($relatedIds) {
+            $query->whereIn('categories.id', $relatedIds);
+        })
+        ->where('id', '!=', $product->id)
+        ->latest()
+        ->limit(3)
+        ->get();
+
+        $avgRating = round($product->reviews->avg('rating'), 1);
+        $reviews = $product->reviews;
+        $userReview = auth()->check()
+            ? $reviews->firstWhere('user_id', auth()->id())
+            : null;
+
+        return view('product.show', compact('product', 'relatedProducts', 'avgRating', 'reviews', 'userReview'));
     }
 
     /**
@@ -110,10 +132,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $categories = Category::all();
+        $categories = Category::with('childrenRecursive')->whereNull('parent_id')->get();
         $brands = Brand::all();
+        $selectedCategories = $product->categories()->pluck('categories.id')->toArray();
 
-        return view('admin.products.edit', compact('product', 'categories', 'brands'));
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'selectedCategories'));
     }
 
     /**
@@ -128,7 +151,8 @@ class ProductController extends Controller
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
-            'category_id' => 'required|exists:categories,id',
+            'categories' => 'required|array',
+            'categories.*' => 'exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
@@ -138,6 +162,7 @@ class ProductController extends Controller
             'price.required' => 'قیمت محصول الزامی است.',
             'price.numeric' => 'قیمت باید عدد باشد.',
             'descriotion.required' => 'توضیحات محصول وارد شده الزامی است.',
+            'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
         ]);
 
         $product->update([
@@ -146,10 +171,17 @@ class ProductController extends Controller
             'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
             'slug' => \Str::slug($request->name),
-            'category_id' => $request->category_id,
             'brand_id' => $request->brand_id,
             'description' => $request->description,
         ]);
+
+        $product->categories()->sync($request->categories);
+
+        if ($request->filled('feature_values')) {
+            $product->featureValues()->sync(array_filter($request->feature_values));
+        } else {
+            $product->featureValues()->detach();
+        }
 
         if ($request->hasFile('images')) {
 
@@ -196,7 +228,7 @@ class ProductController extends Controller
             return response()->json([]);
         }
 
-        $products = Product::with('images', 'category')->where('name', 'LIKE', "%{$query}%")->orWhere('price', 'LIKE', "%{$query}%")->paginate(10);
+        $products = Product::with('images', 'categories')->where('name', 'LIKE', "%{$query}%")->orWhere('price', 'LIKE', "%{$query}%")->paginate(10);
 
         return view('search.results', compact('query', 'products'));
     }

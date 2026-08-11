@@ -65,7 +65,10 @@
 
                                 <div class="sport-form-group">
                                     <label>تصویر جدید (اختیاری)</label>
-                                    <input type="file" name="image" class="form-control sport-form-control" accept="image/*">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-image input-icon"></i>
+                                        <input type="file" name="image" class="form-control sport-form-control" accept="image/*">
+                                    </div>
                                     <small class="text-muted">فرمت‌های مجاز: jpg, jpeg, png, webp - حداکثر ۲ مگابایت</small>
                                 </div>
 

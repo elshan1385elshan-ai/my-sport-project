@@ -62,10 +62,13 @@
 
                         <div class="sport-form-group">
                             <label>نقش <span class="text-danger">*</span></label>
-                            <select class="form-control sport-form-control" name="role" required>
-                                <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>کاربر</option>
-                                <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>مدیر</option>
-                            </select>
+                            <div class="sport-input-wrap">
+                                <i class="fa fa-shield input-icon"></i>
+                                <select class="form-control sport-form-control" name="role" required>
+                                    <option value="user" {{ old('role', $user->role) === 'user' ? 'selected' : '' }}>کاربر</option>
+                                    <option value="admin" {{ old('role', $user->role) === 'admin' ? 'selected' : '' }}>مدیر</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="sport-form-group">

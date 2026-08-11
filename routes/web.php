@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\FeatureController;
 use App\Http\Controllers\MediaController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
@@ -25,6 +26,8 @@ Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
+
+Route::middleware('auth')->post('/product/{product}/review', [ReviewController::class, 'store'])->name('product.review.store');
 // بخش پروفایل کاربر
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -70,6 +73,12 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::resource('/categories', CategoryController::class);
     Route::resource('/brands', BrandController::class);
     Route::resource('/features', FeatureController::class);
+    Route::get('/features/by-category/{category}', [FeatureController::class, 'byCategory'])->name('features.byCategory');
+    Route::post('/features/by-categories', [FeatureController::class, 'byCategories'])->name('features.byCategories');
+    Route::get('/features/{feature}/values', [FeatureController::class, 'values'])->name('features.values');
+    Route::post('/features/{feature}/values', [FeatureController::class, 'storeValue'])->name('features.values.store');
+    Route::put('/features/values/{value}', [FeatureController::class, 'updateValue'])->name('features.values.update');
+    Route::delete('/features/values/{value}', [FeatureController::class, 'destroyValue'])->name('features.values.destroy');
 
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');

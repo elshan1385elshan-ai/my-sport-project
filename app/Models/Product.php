@@ -15,7 +15,6 @@ class Product extends Model
         'discount',
         'description',
         'slug',
-        'category_id',
         'brand_id',
         'user_id',
         'stock',
@@ -62,13 +61,25 @@ class Product extends Model
         return $this->hasMany(SportImage::class);
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsToMany(Category::class, 'category_product')
+            ->withTimestamps();
     }
 
     public function brand()
     {
         return $this->belongsTo(Brand::class);
+    }
+
+    public function featureValues()
+    {
+        return $this->belongsToMany(FeatureValue::class, 'product_feature_value')
+            ->withTimestamps();
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class)->latest();
     }
 }

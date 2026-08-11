@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="{{asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="stylesheet" href="{{asset('dist/css/bootstrap-rtl.min.css')}}">
-  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ time() }}">
+  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ filemtime(public_path('dist/css/custom-style.css')) }}">
   <style>
     .swal2-container { z-index: 9999 !important; }
     body, .wrapper, .main-header, .main-sidebar, .content-wrapper, .main-footer { font-family: {{ $appSettings['font_family'] ?? "'Vazir', sans-serif" }} !important; }

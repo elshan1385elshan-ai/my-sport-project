@@ -58,7 +58,7 @@
                                         <td class="fw-bold">{{ $product->name }}</td>
                                         <td>
                                             <span class="badge bg-info text-dark">
-                                                {{ $product->category->name ?? 'بدون دسته' }}
+                                                {{ $product->categories->first()->name ?? 'بدون دسته' }}
                                             </span>
                                         </td>
                                         <td>

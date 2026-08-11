@@ -38,7 +38,7 @@ class HomeController extends Controller
 
     public function home()
     {
-        $products = Product::with(['images', 'category'])
+        $products = Product::with(['images', 'categories'])
             ->latest()
             ->limit(12)
             ->get();

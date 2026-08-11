@@ -938,6 +938,19 @@ body {
 .sport-action-btn.btn-edit { background: linear-gradient(135deg, #f39c12, #e67e22); }
 .sport-action-btn.btn-delete { background: linear-gradient(135deg, #e74c3c, #c0392b); }
 
+/* Feature value badge */
+.sport-value-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #1a1a2e;
+    background: linear-gradient(135deg, rgba(233,69,96,0.12), rgba(255,107,107,0.12));
+    border: 1px solid rgba(233,69,96,0.25);
+    box-shadow: 0 2px 8px rgba(233,69,96,0.08);
+}
+
 /* ===== 11. FORM CONTROLS ===== */
 
 .sport-form-control {
@@ -957,6 +970,11 @@ body {
 }
 
 select.sport-form-control {
+    height: 46px;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 44px !important;
+    line-height: normal;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
     background-repeat: no-repeat;

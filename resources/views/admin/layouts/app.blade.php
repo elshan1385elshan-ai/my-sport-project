@@ -29,7 +29,7 @@
   <!-- bootstrap rtl -->
   <link rel="stylesheet" href="{{asset('dist/css/bootstrap-rtl.min.css')}}">
   <!-- template rtl version -->
-  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ time() }}">
+  <link rel="stylesheet" href="{{asset('dist/css/custom-style.css')}}?v={{ filemtime(public_path('dist/css/custom-style.css')) }}">
   <style>
     .swal2-container { z-index: 9999 !important; }
     body, .wrapper, .main-header, .main-sidebar, .content-wrapper, .main-footer { font-family: {{ $appSettings['font_family'] ?? "'Vazir', sans-serif" }} !important; }

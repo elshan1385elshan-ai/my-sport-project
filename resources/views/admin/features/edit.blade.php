@@ -80,6 +80,26 @@
                                     <button type="button" class="btn btn-sm btn-outline-info mt-1" id="add-value">
                                         <i class="fa fa-plus"></i> افزودن مقدار
                                     </button>
+                                    <small class="d-block text-muted mt-2">برای ویژگی‌هایی مانند سایز، مقادیر را وارد کنید (مثال: S, M, L, XL)</small>
+                                </div>
+
+                                <div class="sport-form-group">
+                                    <label>دسته‌بندی‌های مرتبط</label>
+                                    <div class="border rounded p-3" style="max-height: 280px; overflow-y: auto; border: 2px solid #e9ecef !important;">
+                                        @if($categories && $categories->isNotEmpty())
+                                            @php
+                                                $selectedCategories = old('categories', $feature->categories->pluck('id')->toArray());
+                                            @endphp
+                                            @include('admin.features.partials.category-tree', [
+                                                'categories' => $categories,
+                                                'depth' => 0,
+                                                'selectedCategories' => $selectedCategories
+                                            ])
+                                        @else
+                                            <p class="text-muted text-center mb-0">هیچ دسته‌بندی یافت نشد.</p>
+                                        @endif
+                                    </div>
+                                    <small class="d-block text-muted mt-2">دسته‌بندی‌هایی که این ویژگی به آن‌ها اختصاص می‌یابد. چندین مورد را انتخاب کنید.</small>
                                 </div>
 
                                 <div class="d-flex gap-2">
