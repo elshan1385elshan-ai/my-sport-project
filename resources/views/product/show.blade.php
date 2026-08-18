@@ -40,7 +40,7 @@
         <div class="col-md-6">
             <h2 class="mb-3 fw-bold" style="color:#1a1a2e;">{{ $product->name }}</h2>
 
-            @if($product->discount > 0)
+            @if($product->discount_active)
                 <p class="mb-2">
                     <del class="text-muted fs-5">{{ number_format($product->price) }} تومان</del>
                     <span class="text-success fw-bold fs-3 me-2">{{ number_format($product->discounted_price) }} تومان</span>
@@ -302,6 +302,18 @@
 
 @push('scripts')
 <script>
+  @if(session('success'))
+    Swal.fire({
+      icon: 'success',
+      title: 'اضافه شد!',
+      text: '{{ session("success") }}',
+      confirmButtonText: 'باشه',
+      confirmButtonColor: '#0f3460',
+      timer: 3000,
+      timerProgressBar: true
+    });
+  @endif
+
   document.querySelectorAll('.sport-star-picker').forEach(function(picker) {
     var labels = picker.querySelectorAll('.sport-star-label');
     var stars = labels.length;

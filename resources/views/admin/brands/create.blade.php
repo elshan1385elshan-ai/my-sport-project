@@ -53,11 +53,12 @@
 
                                 <div class="sport-form-group">
                                     <label>تصویر برند</label>
-                                    <div class="sport-input-wrap">
-                                        <i class="fa fa-image input-icon"></i>
-                                        <input type="file" name="image" class="form-control sport-form-control" accept="image/*">
+                                    <div class="sport-file-upload">
+                                        <input type="file" name="image" accept="image/*">
+                                        <i class="fa fa-cloud-upload upload-icon"></i>
+                                        <span class="upload-text">فایل را اینجا بکشید یا کلیک کنید</span>
+                                        <div class="upload-hint">JPG, PNG, WebP — حداکثر ۲ مگابایت</div>
                                     </div>
-                                    <small class="text-muted">فرمت‌های مجاز: jpg, jpeg, png, webp - حداکثر ۲ مگابایت</small>
                                 </div>
 
                                 <div class="d-flex gap-2">

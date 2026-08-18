@@ -974,6 +974,8 @@ select.sport-form-control {
     padding-top: 0 !important;
     padding-bottom: 0 !important;
     padding-left: 44px !important;
+    text-align: center;
+    text-align-last: center;
     line-height: normal;
     cursor: pointer;
     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
@@ -982,6 +984,13 @@ select.sport-form-control {
     background-size: 16px 12px;
     -webkit-appearance: none;
     appearance: none;
+}
+
+select.sport-form-control option {
+    text-align: center;
+    text-align-last: center;
+    padding: 8px 12px;
+    font-weight: 500;
 }
 
 textarea.sport-form-control { min-height: 100px; resize: vertical; }
@@ -1046,6 +1055,303 @@ textarea.sport-form-control { min-height: 100px; resize: vertical; }
 
 .sport-input-wrap .sport-form-control { padding-right: 46px !important; }
 .sport-input-wrap .sport-form-control:focus ~ .input-icon { color: #e94560; }
+
+/* ===== 11B. FORM BUTTONS (Admin Layout) ===== */
+
+.sport-btn-primary {
+    background: linear-gradient(90deg, #e94560, #ff6b6b) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    box-shadow: 0 4px 14px rgba(233,69,96,0.35);
+    transition: all 0.25s ease;
+    color: #fff !important;
+    font-weight: 600;
+    padding: 10px 24px;
+}
+.sport-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(233,69,96,0.45);
+    color: #fff !important;
+}
+.sport-btn-primary i { margin-left: 6px; }
+
+/* ===== 11C. FORM SECTION HEADINGS ===== */
+
+.sport-form-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 18px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(233,69,96,0.1);
+}
+.sport-form-section:first-child { margin-top: 4px; }
+.sport-form-section h5 {
+    font-weight: 700;
+    color: #1a1a2e;
+    font-size: 0.95rem;
+    margin: 0;
+    white-space: nowrap;
+}
+.sport-form-section h5 i {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    color: #fff;
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    margin-left: 10px;
+    box-shadow: 0 3px 10px rgba(233,69,96,0.25);
+}
+.sport-form-section::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(233,69,96,0.15), transparent);
+}
+
+/* ===== 11D. FILE UPLOAD ZONE ===== */
+
+.sport-file-upload {
+    border: 2px dashed rgba(233,69,96,0.25);
+    border-radius: 14px;
+    padding: 28px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(233,69,96,0.02), rgba(255,107,107,0.03));
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.sport-file-upload:hover {
+    border-color: #e94560;
+    background: linear-gradient(135deg, rgba(233,69,96,0.05), rgba(255,107,107,0.06));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(233,69,96,0.08);
+}
+.sport-file-upload input[type="file"] {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+}
+.sport-file-upload .upload-icon {
+    font-size: 2.2rem;
+    color: #e94560;
+    margin-bottom: 8px;
+    display: block;
+}
+.sport-file-upload .upload-text {
+    color: #6c757d;
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+.sport-file-upload .upload-hint {
+    color: #adb5bd;
+    font-size: 0.78rem;
+    margin-top: 4px;
+}
+
+/* ===== 11E. FORM CARD FOOTER ===== */
+
+.sport-card > .card-footer {
+    background: rgba(248,249,252,0.8) !important;
+    backdrop-filter: blur(8px);
+    border-top: 1px solid rgba(233,69,96,0.08) !important;
+    padding: 18px 24px !important;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===== 11F. CATEGORY TREE CONTAINER ===== */
+
+.sport-tree-container {
+    border: 2px solid #e9ecef !important;
+    border-radius: 14px !important;
+    padding: 16px 18px !important;
+    max-height: 260px;
+    overflow-y: auto;
+    background: #fff;
+    transition: border-color 0.3s ease;
+}
+.sport-tree-container:focus-within {
+    border-color: #e94560 !important;
+    box-shadow: 0 0 0 4px rgba(233,69,96,0.08);
+}
+.sport-tree-container::-webkit-scrollbar { width: 6px; }
+.sport-tree-container::-webkit-scrollbar-track { background: transparent; }
+.sport-tree-container::-webkit-scrollbar-thumb { background: rgba(233,69,96,0.2); border-radius: 3px; }
+.sport-tree-container::-webkit-scrollbar-thumb:hover { background: rgba(233,69,96,0.35); }
+
+.sport-tree-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    margin: 0;
+    border-bottom: 1px solid rgba(0,0,0,0.03);
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.sport-tree-item:last-child { border-bottom: none; }
+.sport-tree-item:hover { background: rgba(233,69,96,0.03); }
+.sport-tree-checkbox {
+    flex-shrink: 0;
+    margin: 0;
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    accent-color: #e94560;
+}
+.sport-tree-text {
+    font-size: 0.88rem;
+    color: #1a1a2e;
+    font-weight: 500;
+    text-align: center;
+    flex: 1;
+}
+.sport-tree-checkbox:checked + .sport-tree-text {
+    color: #e94560;
+    font-weight: 600;
+}
+
+/* ===== 11G. FORM VALIDATION STATES ===== */
+
+.sport-form-group.has-error .sport-form-control,
+.sport-form-group.has-error .sport-input-wrap .sport-form-control {
+    border-color: #e74c3c !important;
+    box-shadow: 0 0 0 3px rgba(231,76,60,0.1);
+}
+.sport-form-group .field-error {
+    display: block;
+    color: #e74c3c;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-top: 6px;
+    padding-right: 4px;
+}
+
+/* ===== 11H. PROFILE FORM STYLES ===== */
+
+.sport-profile-cover {
+    position: relative;
+    height: 180px;
+    border-radius: 20px 20px 0 0;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+    overflow: hidden;
+}
+.sport-profile-cover::before {
+    content: '';
+    position: absolute;
+    top: -50%; right: -10%;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(233,69,96,0.15), transparent 70%);
+    border-radius: 50%;
+}
+.sport-profile-cover::after {
+    content: '';
+    position: absolute;
+    bottom: -40%; left: -5%;
+    width: 250px; height: 250px;
+    background: radial-gradient(circle, rgba(15,52,96,0.15), transparent 70%);
+    border-radius: 50%;
+}
+
+.sport-profile-avatar {
+    position: relative;
+    margin-top: -54px;
+    z-index: 2;
+    display: inline-block;
+}
+.sport-profile-avatar .sport-avatar {
+    border: 5px solid #fff;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+.sport-profile-avatar .avatar-upload-btn {
+    position: absolute;
+    bottom: 4px; left: 4px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e94560, #ff6b6b);
+    color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    border: 3px solid #fff;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(233,69,96,0.3);
+    transition: all 0.2s ease;
+    z-index: 3;
+}
+.sport-profile-avatar .avatar-upload-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 18px rgba(233,69,96,0.45);
+}
+.sport-profile-avatar input[type="file"] {
+    display: none;
+}
+
+.sport-profile-info {
+    text-align: center;
+    padding: 0 24px 20px;
+}
+.sport-profile-info h4 {
+    font-weight: 700;
+    color: #1a1a2e;
+    margin: 8px 0 2px;
+}
+.sport-profile-info p {
+    color: #6c757d;
+    font-size: 0.88rem;
+    margin: 0;
+}
+
+.sport-profile-stat {
+    text-align: center;
+    padding: 16px 12px;
+    border-radius: 14px;
+    background: rgba(248,249,252,0.6);
+    transition: all 0.3s ease;
+}
+.sport-profile-stat:hover {
+    background: rgba(248,249,252,1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+}
+.sport-profile-stat h4 {
+    font-weight: 800;
+    font-size: 1.4rem;
+    margin: 0 0 2px;
+    color: #1a1a2e;
+}
+.sport-profile-stat p {
+    font-size: 0.78rem;
+    color: #6c757d;
+    margin: 0;
+    font-weight: 500;
+}
+
+/* ===== 11I. DISCOUNT TOGGLE ===== */
+
+.sport-discount-toggle {
+    transition: all 0.3s ease;
+}
+.sport-discount-toggle:hover {
+    border-color: rgba(243,156,18,0.3) !important;
+    box-shadow: 0 2px 8px rgba(243,156,18,0.08);
+}
+.sport-discount-toggle .form-check-input:checked {
+    background-color: #f39c12;
+    border-color: #f39c12;
+}
+.sport-discount-toggle .form-check-input:focus {
+    box-shadow: 0 0 0 3px rgba(243,156,18,0.2);
+    border-color: #f39c12;
+}
 
 /* ===== 12. MISC ===== */
 
@@ -1117,6 +1423,8 @@ textarea.sport-form-control { min-height: 100px; resize: vertical; }
 
 .text-sm { font-size: 0.75rem !important; }
 .text-xs { font-size: 0.65rem !important; }
+.text-purple { color: #6f42c1 !important; }
+.text-orange { color: #e67e22 !important; }
 
 /* ===== 13. KEYFRAMES ===== */
 

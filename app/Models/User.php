@@ -23,6 +23,9 @@ class User extends Authenticatable
         'shop_social',
         'seller_status',
         'seller_verified_at',
+        'last_name',
+        'phone',
+        'avatar',
     ];
 
     protected $hidden = [

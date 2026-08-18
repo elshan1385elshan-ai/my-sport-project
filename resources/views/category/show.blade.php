@@ -25,7 +25,7 @@
                                 class="sport-card-img"
                                 alt="{{ $product->name }}">
                         </a>
-                        @if($product->discount > 0)
+                        @if($product->discount_active)
                             <span class="sport-card-discount">-{{ $product->discount }}%</span>
                         @endif
                         @if($product->categories->isNotEmpty())
@@ -39,12 +39,12 @@
                         </a>
 
                         <div class="sport-card-price-row">
-                            @if($product->discount > 0)
-                                <span class="sport-card-price-current">{{ number_format($product->discounted_price) }} تومان</span>
-                                <span class="sport-card-price-old">{{ number_format($product->price) }} تومان</span>
-                            @else
-                                <span class="sport-card-price-current">{{ number_format($product->price) }} تومان</span>
-                            @endif
+@if($product->discount_active)
+                            <span class="sport-card-price-current">{{ number_format($product->discounted_price) }} تومان</span>
+                            <span class="sport-card-price-old">{{ number_format($product->price) }} تومان</span>
+                        @else
+                            <span class="sport-card-price-current">{{ number_format($product->price) }} تومان</span>
+                        @endif
                         </div>
 
                         <div class="sport-card-stock">

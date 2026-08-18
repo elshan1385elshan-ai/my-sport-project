@@ -10,12 +10,51 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // // متدهای آینده (مثلاً نمایش همه محصولات)
-    // public function index()
-    // {
-    //     $products = Product::all();
-    //     return view('products.index', compact('products'));
-    // }
+    private function jalaliToGregorian($jalaliDate): ?\Carbon\Carbon
+    {
+        $jalaliDate = trim($jalaliDate);
+        $time = '00:00:00';
+        if (preg_match('/(\d{4}\/\d{1,2}\/\d{1,2})\s+(\d{1,2}):(\d{1,2})/', $jalaliDate, $m)) {
+            $jalaliDate = $m[1];
+            $time = sprintf('%02d:%02d:00', (int)$m[2], (int)$m[3]);
+        }
+        $parts = explode('/', str_replace(['\\', '-', '.'], '/', $jalaliDate));
+        if (count($parts) !== 3) return null;
+        $jY = (int)$parts[0];
+        $jM = (int)$parts[1];
+        $jD = (int)$parts[2];
+        if ($jY < 1300 || $jY > 1500 || $jM < 1 || $jM > 12 || $jD < 1 || $jD > 31) return null;
+        $baseJalali = \Carbon\Carbon::create(2024, 3, 20);
+        $daysInJalaliMonth = [0,31,31,31,31,31,31,30,30,30,30,30,29];
+        if ($jY % 4 === 3) $daysInJalaliMonth[12] = 30;
+        $totalDays = 0;
+        for ($y = 1403; $y < $jY; $y++) { $totalDays += ($y % 4 === 3) ? 366 : 365; }
+        for ($m2 = 1; $m2 < $jM; $m2++) { $totalDays += $daysInJalaliMonth[$m2]; }
+        $totalDays += $jD - 1;
+        $gregorian = $baseJalali->copy()->addDays($totalDays);
+        list($h, $mi, $s) = explode(':', $time);
+        $gregorian->setTime((int)$h, (int)$mi, (int)$s);
+        return $gregorian;
+    }
+
+    private function shamsiToGregorian(?string $date): ?\Carbon\Carbon
+    {
+        if (empty($date)) return null;
+        $date = trim($date);
+        if (preg_match('/^1[34]\d{2}\//', $date)) {
+            $date = str_replace(['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'], ['0','1','2','3','4','5','6','7','8','9'], $date);
+            $date = str_replace(['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'], ['0','1','2','3','4','5','6','7','8','9'], $date);
+            return $this->jalaliToGregorian($date);
+        }
+        try { return \Carbon\Carbon::parse($date); } catch (\Exception $e) { return null; }
+    }
+
+    private function normalizePersianNumerals(?string $value): ?string
+    {
+        if ($value === null) return null;
+        return str_replace(['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'], ['0','1','2','3','4','5','6','7','8','9'], $value);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -42,11 +81,17 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge([
+            'discount' => $this->normalizePersianNumerals($request->input('discount')),
+            'discount_ends_at' => $this->normalizePersianNumerals($request->input('discount_ends_at')),
+        ]);
+
         $request->validate([
             'name' => 'required|unique:products,name',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
+            'discount_ends_at' => 'nullable|date',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
@@ -61,11 +106,14 @@ class ProductController extends Controller
            'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
         ]);
 
+        $discountEndsAt = $this->shamsiToGregorian($request->input('discount_ends_at'));
+
         $product = Product::create([
             'name' => $request->name,
             'price' => $request->price,
             'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
+            'discount_ends_at' => $discountEndsAt,
             'slug' => \Str::slug($request->name),
             'brand_id' => $request->brand_id,
             'user_id' => auth()->id(),
@@ -146,11 +194,17 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        $request->merge([
+            'discount' => $this->normalizePersianNumerals($request->input('discount')),
+            'discount_ends_at' => $this->normalizePersianNumerals($request->input('discount_ends_at')),
+        ]);
+
         $request->validate([
             'name' => 'required|unique:products,name,'.$product->id,
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'discount' => 'nullable|integer',
+            'discount_ends_at' => 'nullable|date',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
             'brand_id' => 'nullable|exists:brands,id',
@@ -161,15 +215,17 @@ class ProductController extends Controller
             'name.unique' => 'این محصول قبلاً ثبت شده است.',
             'price.required' => 'قیمت محصول الزامی است.',
             'price.numeric' => 'قیمت باید عدد باشد.',
-            'descriotion.required' => 'توضیحات محصول وارد شده الزامی است.',
             'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
         ]);
+
+        $discountEndsAt = $this->shamsiToGregorian($request->input('discount_ends_at'));
 
         $product->update([
             'name' => $request->name,
             'price' => $request->price,
             'stock' => $request->stock,
             'discount' => $request->discount ?? 0,
+            'discount_ends_at' => $discountEndsAt,
             'slug' => \Str::slug($request->name),
             'brand_id' => $request->brand_id,
             'description' => $request->description,

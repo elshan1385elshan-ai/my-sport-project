@@ -4,7 +4,7 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
       </li>
       <li class="nav-item">
-        <a href="{{ route('home') }}" class="nav-link sport-nav-btn"><i class="fa fa-external-link ml-1"></i> مشاهده سایت</a>
+        <a href="{{ route('home') }}" class="nav-link sport-nav-btn"><i class="fa fa-external-link ml-1"></i> بازگشت به سایت</a>
       </li>
       <li class="nav-item">
         <a href="{{ route('user.dashboard') }}" class="nav-link sport-nav-btn"><i class="fa fa-dashboard ml-1"></i> خانه</a>

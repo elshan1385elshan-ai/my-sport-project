@@ -3,16 +3,16 @@
         $isChecked = in_array($category->id, $selectedCategories);
         $prefix = str_repeat('- ', $depth);
     @endphp
-    <div class="form-check mb-1">
+    <label class="sport-tree-item" for="cat-{{ $category->id }}">
         <input type="checkbox" name="categories[]" value="{{ $category->id }}"
-               class="form-check-input sport-category-checkbox"
+               class="sport-tree-checkbox"
                id="cat-{{ $category->id }}"
                {{ $isChecked ? 'checked' : '' }}>
-        <label class="form-check-label w-100" for="cat-{{ $category->id }}">
+        <span class="sport-tree-text">
             <span class="d-inline-block" style="margin-left: {{ $depth * 12 }}px;">{{ $prefix }}</span>
             {{ $category->name }}
-        </label>
-    </div>
+        </span>
+    </label>
     @if($category->childrenRecursive->isNotEmpty())
         @include('admin.features.partials.category-tree', [
             'categories' => $category->childrenRecursive,

@@ -43,42 +43,55 @@
                                     </div>
                                 @endif
 
-                                <h5 class="mb-3 text-muted">نام و هویت</h5>
-                                <div class="form-group">
+                                <div class="sport-form-section">
+                                    <h5><i class="fa fa-info-circle"></i> نام و هویت</h5>
+                                </div>
+                                <div class="sport-form-group">
                                     <label>نام اپلیکیشن</label>
-                                    <input type="text" class="form-control sport-form-control" name="app_name"
-                                           value="{{ old('app_name', $settings['app_name']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-building input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="app_name"
+                                               value="{{ old('app_name', $settings['app_name']) }}">
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>پیشوند عنوان صفحات</label>
-                                    <input type="text" class="form-control sport-form-control" name="page_title_prefix"
-                                           value="{{ old('page_title_prefix', $settings['page_title_prefix']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-heading input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="page_title_prefix"
+                                               value="{{ old('page_title_prefix', $settings['page_title_prefix']) }}">
+                                    </div>
                                 </div>
 
-                                <hr>
-                                <h5 class="mb-3 text-muted">فونت</h5>
-                                <div class="form-group">
+                                <div class="sport-form-section">
+                                    <h5><i class="fa fa-font"></i> فونت</h5>
+                                </div>
+                                <div class="sport-form-group">
                                     <label>فونت سایت</label>
-                                    <select class="form-control sport-form-control" name="font_family">
-                                        @foreach($fontOptions as $value => $label)
-                                            <option value="{{ $value }}" {{ old('font_family', $settings['font_family'] ?? "'Vazir', sans-serif") === $value ? 'selected' : '' }}>
-                                                {{ $label }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-font input-icon"></i>
+                                        <select class="form-control sport-form-control" name="font_family">
+                                            @foreach($fontOptions as $value => $label)
+                                                <option value="{{ $value }}" {{ old('font_family', $settings['font_family'] ?? "'Vazir', sans-serif") === $value ? 'selected' : '' }}>
+                                                    {{ $label }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                     <small class="text-muted">فونت انتخابی در تمام صفحات پنل مدیریت و سایت عمومی اعمال می‌شود.</small>
                                 </div>
 
-                                <hr>
-                                <h5 class="mb-3 text-muted">آیکون‌ها</h5>
+                                <div class="sport-form-section">
+                                    <h5><i class="fa fa-icons"></i> آیکون‌ها</h5>
+                                </div>
                                 <p class="text-muted small mb-3">می‌توانید از آیکون‌های پیش‌فرض یا تصاویر آپلود شده استفاده کنید.</p>
 
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="sport-form-group">
                                             <label>آیکون پنل مدیریت</label>
-                                            <div class="mb-2">
+                                            <div class="mb-3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="admin_icon_type"
                                                            id="admin_icon_type_font" value="font"
@@ -94,21 +107,28 @@
                                             </div>
 
                                             <div id="admin-icon-font-section" class="{{ old('admin_icon_type', $settings['admin_icon_type'] ?? 'font') === 'custom' ? 'd-none' : '' }}">
-                                                <select class="form-control sport-form-control" name="admin_icon" id="admin_icon">
-                                                    @foreach($adminIconOptions as $value => $label)
-                                                        <option value="{{ $value }}" {{ old('admin_icon', $settings['admin_icon']) === $value ? 'selected' : '' }}>
-                                                            {{ $label }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="sport-input-wrap">
+                                                    <i class="fa fa-icons input-icon"></i>
+                                                    <select class="form-control sport-form-control" name="admin_icon" id="admin_icon">
+                                                        @foreach($adminIconOptions as $value => $label)
+                                                            <option value="{{ $value }}" {{ old('admin_icon', $settings['admin_icon']) === $value ? 'selected' : '' }}>
+                                                                {{ $label }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <div id="admin-icon-custom-section" class="{{ old('admin_icon_type', $settings['admin_icon_type'] ?? 'font') === 'custom' ? '' : 'd-none' }}">
                                                 <div class="mb-2">
                                                     <label class="small">آپلود تصویر جدید</label>
-                                                    <input type="file" class="form-control-file" name="admin_icon_upload" accept="image/*">
+                                                    <div class="sport-file-upload">
+                                                        <input type="file" name="admin_icon_upload" accept="image/*">
+                                                        <i class="fa fa-cloud-upload upload-icon"></i>
+                                                        <span class="upload-text">انتخاب تصویر</span>
+                                                    </div>
                                                 </div>
-                                                <div class="mb-2">
+                                                <div class="mt-2">
                                                     <label class="small">یا انتخاب از رسانه‌ها</label>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control sport-form-control"
@@ -116,13 +136,13 @@
                                                                value="{{ old('admin_icon_custom', $settings['admin_icon_custom'] ?? '') }}"
                                                                placeholder="مسیر فایل" readonly>
                                                         <div class="input-group-append">
-                                                            <button type="button" class="btn btn-info" onclick="openMediaBrowser('admin_icon_custom', 'admin-icon-preview')">
+                                                            <button type="button" class="btn sport-btn-info" onclick="openMediaBrowser('admin_icon_custom', 'admin-icon-preview')">
                                                                 <i class="fa fa-folder-open"></i> مرور
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="admin-icon-preview" class="text-center p-2 border rounded {{ empty(old('admin_icon_custom', $settings['admin_icon_custom'] ?? '')) ? 'd-none' : '' }}">
+                                                <div id="admin-icon-preview" class="text-center p-2 border rounded mt-2 {{ empty(old('admin_icon_custom', $settings['admin_icon_custom'] ?? '')) ? 'd-none' : '' }}">
                                                     @if(!empty(old('admin_icon_custom', $settings['admin_icon_custom'] ?? '')))
                                                         <img src="{{ Storage::url(old('admin_icon_custom', $settings['admin_icon_custom'])) }}" style="max-height: 60px;">
                                                     @endif
@@ -132,9 +152,9 @@
                                     </div>
 
                                     <div class="col-md-6">
-                                        <div class="form-group">
+                                        <div class="sport-form-group">
                                             <label>آیکون سایت عمومی</label>
-                                            <div class="mb-2">
+                                            <div class="mb-3">
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="public_icon_type"
                                                            id="public_icon_type_font" value="font"
@@ -150,21 +170,28 @@
                                             </div>
 
                                             <div id="public-icon-font-section" class="{{ old('public_icon_type', $settings['public_icon_type'] ?? 'font') === 'custom' ? 'd-none' : '' }}">
-                                                <select class="form-control sport-form-control" name="public_icon" id="public_icon">
-                                                    @foreach($publicIconOptions as $value => $label)
-                                                        <option value="{{ $value }}" {{ old('public_icon', $settings['public_icon']) === $value ? 'selected' : '' }}>
-                                                            {{ $label }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
+                                                <div class="sport-input-wrap">
+                                                    <i class="fa fa-icons input-icon"></i>
+                                                    <select class="form-control sport-form-control" name="public_icon" id="public_icon">
+                                                        @foreach($publicIconOptions as $value => $label)
+                                                            <option value="{{ $value }}" {{ old('public_icon', $settings['public_icon']) === $value ? 'selected' : '' }}>
+                                                                {{ $label }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                             </div>
 
                                             <div id="public-icon-custom-section" class="{{ old('public_icon_type', $settings['public_icon_type'] ?? 'font') === 'custom' ? '' : 'd-none' }}">
                                                 <div class="mb-2">
                                                     <label class="small">آپلود تصویر جدید</label>
-                                                    <input type="file" class="form-control-file" name="public_icon_upload" accept="image/*">
+                                                    <div class="sport-file-upload">
+                                                        <input type="file" name="public_icon_upload" accept="image/*">
+                                                        <i class="fa fa-cloud-upload upload-icon"></i>
+                                                        <span class="upload-text">انتخاب تصویر</span>
+                                                    </div>
                                                 </div>
-                                                <div class="mb-2">
+                                                <div class="mt-2">
                                                     <label class="small">یا انتخاب از رسانه‌ها</label>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control sport-form-control"
@@ -172,13 +199,13 @@
                                                                value="{{ old('public_icon_custom', $settings['public_icon_custom'] ?? '') }}"
                                                                placeholder="مسیر فایل" readonly>
                                                         <div class="input-group-append">
-                                                            <button type="button" class="btn btn-info" onclick="openMediaBrowser('public_icon_custom', 'public-icon-preview')">
+                                                            <button type="button" class="btn sport-btn-info" onclick="openMediaBrowser('public_icon_custom', 'public-icon-preview')">
                                                                 <i class="fa fa-folder-open"></i> مرور
                                                             </button>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div id="public-icon-preview" class="text-center p-2 border rounded {{ empty(old('public_icon_custom', $settings['public_icon_custom'] ?? '')) ? 'd-none' : '' }}">
+                                                <div id="public-icon-preview" class="text-center p-2 border rounded mt-2 {{ empty(old('public_icon_custom', $settings['public_icon_custom'] ?? '')) ? 'd-none' : '' }}">
                                                     @if(!empty(old('public_icon_custom', $settings['public_icon_custom'] ?? '')))
                                                         <img src="{{ Storage::url(old('public_icon_custom', $settings['public_icon_custom'])) }}" style="max-height: 60px;">
                                                     @endif
@@ -188,64 +215,90 @@
                                     </div>
                                 </div>
 
-                                <hr>
-                                <h5 class="mb-3 text-muted">متون</h5>
-
-                                <div class="form-group">
-                                    <label>پیام خوش‌آمدگویی صفحه اصلی</label>
-                                    <input type="text" class="form-control sport-form-control" name="welcome_message"
-                                           value="{{ old('welcome_message', $settings['welcome_message']) }}">
+                                <div class="sport-form-section">
+                                    <h5><i class="fa fa-align-right"></i> متون</h5>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
+                                    <label>پیام خوش‌آمدگویی صفحه اصلی</label>
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-comment input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="welcome_message"
+                                               value="{{ old('welcome_message', $settings['welcome_message']) }}">
+                                    </div>
+                                </div>
+
+                                <div class="sport-form-group">
                                     <label>توضیح فوتر</label>
                                     <textarea class="form-control sport-form-control" name="footer_description" rows="2">{{ old('footer_description', $settings['footer_description']) }}</textarea>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>متن placeholder جستجو</label>
-                                    <input type="text" class="form-control sport-form-control" name="search_placeholder"
-                                           value="{{ old('search_placeholder', $settings['search_placeholder']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-search input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="search_placeholder"
+                                               value="{{ old('search_placeholder', $settings['search_placeholder']) }}">
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>متن کپی‌رایت</label>
-                                    <input type="text" class="form-control sport-form-control" name="copyright_text"
-                                           value="{{ old('copyright_text', $settings['copyright_text']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-copyright input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="copyright_text"
+                                               value="{{ old('copyright_text', $settings['copyright_text']) }}">
+                                    </div>
                                     <small class="text-muted">می‌توانید از <code>{app_name}</code> برای درج نام اپلیکیشن استفاده کنید.</small>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>زیرعنوان پنل مدیریت</label>
-                                    <input type="text" class="form-control sport-form-control" name="admin_panel_subtitle"
-                                           value="{{ old('admin_panel_subtitle', $settings['admin_panel_subtitle']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-text-width input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="admin_panel_subtitle"
+                                               value="{{ old('admin_panel_subtitle', $settings['admin_panel_subtitle']) }}">
+                                    </div>
                                 </div>
 
-                                <hr>
-                                <h5 class="mb-3 text-muted">اطلاعات تماس</h5>
+                                <div class="sport-form-section">
+                                    <h5><i class="fa fa-address-card"></i> اطلاعات تماس</h5>
+                                </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>آدرس</label>
-                                    <input type="text" class="form-control sport-form-control" name="contact_address"
-                                           value="{{ old('contact_address', $settings['contact_address']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-map-marker input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="contact_address"
+                                               value="{{ old('contact_address', $settings['contact_address']) }}">
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>تلفن</label>
-                                    <input type="text" class="form-control sport-form-control" name="contact_phone"
-                                           value="{{ old('contact_phone', $settings['contact_phone']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-phone input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="contact_phone"
+                                               value="{{ old('contact_phone', $settings['contact_phone']) }}">
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>ایمیل</label>
-                                    <input type="email" class="form-control sport-form-control" name="contact_email"
-                                           value="{{ old('contact_email', $settings['contact_email']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-envelope input-icon"></i>
+                                        <input type="email" class="form-control sport-form-control" name="contact_email"
+                                               value="{{ old('contact_email', $settings['contact_email']) }}">
+                                    </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="sport-form-group">
                                     <label>ساعات کاری</label>
-                                    <input type="text" class="form-control sport-form-control" name="contact_hours"
-                                           value="{{ old('contact_hours', $settings['contact_hours']) }}">
+                                    <div class="sport-input-wrap">
+                                        <i class="fa fa-clock-o input-icon"></i>
+                                        <input type="text" class="form-control sport-form-control" name="contact_hours"
+                                               value="{{ old('contact_hours', $settings['contact_hours']) }}">
+                                    </div>
                                 </div>
                             </div>
 

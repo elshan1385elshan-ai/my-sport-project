@@ -72,7 +72,7 @@
 
                                 <div class="sport-form-group">
                                     <label>دسته‌بندی‌های مرتبط</label>
-                                    <div class="border rounded p-3" style="max-height: 280px; overflow-y: auto; border: 2px solid #e9ecef !important;">
+                                    <div class="sport-tree-container">
                                         @if($categories && $categories->isNotEmpty())
                                             @include('admin.features.partials.category-tree', [
                                                 'categories' => $categories,

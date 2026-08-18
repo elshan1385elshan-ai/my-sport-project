@@ -1,381 +1,188 @@
 @extends('admin.layouts.app')
 @section('content')
 <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <div class="sport-page-header">
       <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-0">
           <div class="col-sm-6">
-            <h1>پروفایل</h1>
+            <h1 class="header-icon-purple"><i class="fa fa-user-circle"></i> پروفایل کاربری</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-left">
-              <li class="breadcrumb-item"><a href="#">خانه</a></li>
-              <li class="breadcrumb-item active">پروفایل کاربری</li>
+              <li class="breadcrumb-item"><a href="{{ route('admin.dashboard') }}">داشبورد</a></li>
+              <li class="breadcrumb-item active">پروفایل</li>
             </ol>
           </div>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
+      </div>
+    </div>
 
-    <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
-
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-              <div class="card-body box-profile">
-                <div class="text-center">
-                  <img class="profile-user-img img-fluid img-circle"
-                       src="../../dist/img/user4-128x128.jpg"
-                       alt="User profile picture">
+          {{-- Profile Info Card --}}
+          <div class="col-lg-4">
+            <div class="card sport-card sport-card-purple">
+              <div class="sport-profile-cover"></div>
+              <div class="card-body" style="padding-top: 0;">
+                <div class="sport-profile-avatar">
+                  <div class="sport-avatar sport-avatar-xl sport-avatar-gradient-4">
+                    @if(auth()->user()->avatar)
+                      <img src="{{ asset('storage/'.auth()->user()->avatar) }}" alt="{{ auth()->user()->name }}">
+                    @else
+                      {{ mb_substr(auth()->user()->name, 0, 1) }}
+                    @endif
+                  </div>
+                  <label class="avatar-upload-btn" title="تغییر تصویر">
+                    <i class="fa fa-camera"></i>
+                    <input type="file" form="profile-form" name="avatar" accept="image/*">
+                  </label>
                 </div>
-
-                <h3 class="profile-username text-center">فاطمه برهمند</h3>
-
-                <p class="text-muted text-center">مهندس نرم افزار</p>
-
-                <ul class="list-group list-group-unbordered mb-3">
-                  <li class="list-group-item">
-                    <b>دنبال شونده</b> <a class="float-right">1,322</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>دنبال کننده</b> <a class="float-right">543</a>
-                  </li>
-                  <li class="list-group-item">
-                    <b>دوستان</b> <a class="float-right">13,287</a>
-                  </li>
-                </ul>
-
-                <a href="#" class="btn btn-primary btn-block"><b>دنبال کردن</b></a>
+                <div class="sport-profile-info">
+                  <h4>{{ auth()->user()->name }}</h4>
+                  <p>{{ auth()->user()->email }}</p>
+                  <span class="status-badge {{ auth()->user()->role === 'admin' ? 'status-badge-warning' : 'status-badge-success' }}">
+                    <i class="fa {{ auth()->user()->role === 'admin' ? 'fa-shield' : 'fa-user' }}"></i>
+                    {{ auth()->user()->role === 'admin' ? 'مدیر سیستم' : 'کاربر عادی' }}
+                  </span>
+                </div>
+                <hr style="border-color: rgba(0,0,0,0.05);">
+                <div class="d-flex justify-content-around">
+                  <div class="sport-profile-stat">
+                    <h4 class="text-purple">{{ auth()->user()->orders_count ?? 0 }}</h4>
+                    <p>سفارش</p>
+                  </div>
+                  <div class="sport-profile-stat">
+                    <h4 class="text-orange">{{ auth()->user()->created_at->diffForHumans() }}</h4>
+                    <p>عضویت</p>
+                  </div>
+                </div>
               </div>
-              <!-- /.card-body -->
             </div>
-            <!-- /.card -->
+          </div>
 
-            <!-- About Me Box -->
-            <div class="card card-primary">
+          {{-- Edit Form --}}
+          <div class="col-lg-8">
+            <div class="card sport-card sport-card-purple">
               <div class="card-header">
-                <h3 class="card-title">درباره من</h3>
+                <span class="card-icon icon-purple"><i class="fa fa-user-edit"></i></span>
+                <h3 class="card-title">ویرایش اطلاعات</h3>
               </div>
-              <!-- /.card-header -->
-              <div class="card-body">
-                <strong><i class="fa fa-book mr-1"></i> تحصیلات</strong>
 
-                <p class="text-muted">
-                  لیسانس نرم افزار کامپیوتر
-                </p>
+              <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data" id="profile-form">
+                @csrf
+                @method('PATCH')
 
-                <hr>
-
-                <strong><i class="fa fa-map-marker mr-1"></i> موقعیت</strong>
-
-                <p class="text-muted">ایران، مازندران</p>
-
-                <hr>
-
-                <strong><i class="fa fa-pencil mr-1"></i> مهارت‌ها</strong>
-
-                <p class="text-muted">
-                  <span class="badge badge-danger">UI Design</span>
-                  <span class="badge badge-success">Coding</span>
-                  <span class="badge badge-info">Javascript</span>
-                  <span class="badge badge-warning">PHP</span>
-                  <span class="badge badge-primary">Node.js</span>
-                </p>
-
-                <hr>
-
-                <strong><i class="fa fa-file-text-o mr-1"></i> یادداشت</strong>
-
-                <p class="text-muted">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است.</p>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-          <!-- /.col -->
-          <div class="col-md-9">
-            <div class="card">
-              <div class="card-header p-2">
-                <ul class="nav nav-pills">
-                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">فعالیت‌ها</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">تایم لاین</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">تنظیمات</a></li>
-                </ul>
-              </div><!-- /.card-header -->
-              <div class="card-body">
-                <div class="tab-content">
-                  <div class="active tab-pane" id="activity">
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
-                        <span class="username">
-                          <a href="#">حسام موسوی</a>
-                          <a href="#" class="float-left btn-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                        <span class="description">ارسال شده در 25 آذر 1397</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
-                      </p>
-
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fa fa-share mr-1"></i> اشتراک گذاری</a>
-                        <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up mr-1"></i> لایک</a>
-                        <span class="float-left">
-                          <a href="#" class="link-black text-sm">
-                            <i class="fa fa-comments-o mr-1"></i> نظر (5)
-                          </a>
-                        </span>
-                      </p>
-
-                      <input class="form-control form-control-sm" type="text" placeholder="نظر خود را وارد کنید">
+                <div class="card-body">
+                  @if ($errors->any())
+                    <div class="alert alert-danger">
+                      <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                          <li>{{ $error }}</li>
+                        @endforeach
+                      </ul>
                     </div>
-                    <!-- /.post -->
+                  @endif
 
-                    <!-- Post -->
-                    <div class="post clearfix">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="../../dist/img/user7-128x128.jpg" alt="User Image">
-                        <span class="username">
-                          <a href="#">نینا الکس</a>
-                          <a href="#" class="float-left btn-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                        <span class="description">ارسال شده - 3 روز پیش</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <p>
-                        لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ و با استفاده از طراحان گرافیک است. چاپگرها و متون بلکه روزنامه و مجله در ستون و سطرآنچنان که لازم است و برای شرایط فعلی تکنولوژی مورد نیاز و کاربردهای متنوع با هدف بهبود ابزارهای کاربردی می باشد.
-                      </p>
+                  <div class="sport-form-section">
+                    <h5><i class="fa fa-user"></i> اطلاعات شخصی</h5>
+                  </div>
 
-                      <form class="form-horizontal">
-                        <div class="input-group input-group-sm mb-0">
-                          <input class="form-control form-control-sm" placeholder="نظر خود را تایپ کنید">
-                          <div class="input-group-append">
-                            <button type="submit" class="btn btn-danger">ارسال</button>
-                          </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="sport-form-group">
+                        <label>نام <span class="text-danger">*</span></label>
+                        <div class="sport-input-wrap">
+                          <i class="fa fa-user input-icon"></i>
+                          <input type="text" class="form-control sport-form-control" name="name"
+                                 value="{{ old('name', auth()->user()->name) }}" required>
                         </div>
-                      </form>
+                      </div>
                     </div>
-                    <!-- /.post -->
-
-                    <!-- Post -->
-                    <div class="post">
-                      <div class="user-block">
-                        <img class="img-circle img-bordered-sm" src="../../dist/img/user6-128x128.jpg" alt="User Image">
-                        <span class="username">
-                          <a href="#">محمد محمدی</a>
-                          <a href="#" class="float-left btn-tool"><i class="fa fa-times"></i></a>
-                        </span>
-                        <span class="description">ارسال شده - 5 روز پیش</span>
-                      </div>
-                      <!-- /.user-block -->
-                      <div class="row mb-3">
-                        <div class="col-sm-6">
-                          <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
+                    <div class="col-md-6">
+                      <div class="sport-form-group">
+                        <label>نام خانوادگی</label>
+                        <div class="sport-input-wrap">
+                          <i class="fa fa-user input-icon"></i>
+                          <input type="text" class="form-control sport-form-control" name="last_name"
+                                 value="{{ old('last_name', auth()->user()->last_name ?? '') }}">
                         </div>
-                        <!-- /.col -->
-                        <div class="col-sm-6">
-                          <div class="row">
-                            <div class="col-sm-6">
-                              <img class="img-fluid mb-3" src="../../dist/img/photo2.png" alt="Photo">
-                              <img class="img-fluid" src="../../dist/img/photo3.jpg" alt="Photo">
-                            </div>
-                            <!-- /.col -->
-                            <div class="col-sm-6">
-                              <img class="img-fluid mb-3" src="../../dist/img/photo4.jpg" alt="Photo">
-                              <img class="img-fluid" src="../../dist/img/photo1.png" alt="Photo">
-                            </div>
-                            <!-- /.col -->
-                          </div>
-                          <!-- /.row -->
-                        </div>
-                        <!-- /.col -->
                       </div>
-                      <!-- /.row -->
-
-                      <p>
-                        <a href="#" class="link-black text-sm mr-2"><i class="fa fa-share mr-1"></i> اشتراک گذاری</a>
-                        <a href="#" class="link-black text-sm"><i class="fa fa-thumbs-o-up mr-1"></i> لایک</a>
-                        <span class="float-left">
-                          <a href="#" class="link-black text-sm">
-                            <i class="fa fa-comments-o mr-1"></i> نظر (5)
-                          </a>
-                        </span>
-                      </p>
-
-                      <input class="form-control form-control-sm" type="text" placeholder="نظر خود را تایپ کنید">
                     </div>
-                    <!-- /.post -->
                   </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-                    <ul class="timeline timeline-inverse">
-                      <!-- timeline time label -->
-                      <li class="time-label">
-                        <span class="bg-danger">
-                          10 Feb. 2014
-                        </span>
-                      </li>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-envelope bg-primary"></i>
 
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
-
-                          <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
-
-                          <div class="timeline-body">
-                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
-                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
-                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
-                            quora plaxo ideeli hulu weebly balihoo...
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
-                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
-                          </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="sport-form-group">
+                        <label>شماره تماس</label>
+                        <div class="sport-input-wrap">
+                          <i class="fa fa-phone input-icon"></i>
+                          <input type="text" class="form-control sport-form-control" name="phone"
+                                 value="{{ old('phone', auth()->user()->phone ?? '') }}">
                         </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-user bg-info"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                          <h3 class="timeline-header no-border"><a href="#">Sarah Young</a> accepted your friend request
-                          </h3>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-comments bg-warning"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 27 mins ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
-
-                          <div class="timeline-body">
-                            Take me to your leader!
-                            Switzerland is small and neutral!
-                            We are more like Germany, ambitious and misunderstood!
-                          </div>
-                          <div class="timeline-footer">
-                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
-                          </div>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <!-- timeline time label -->
-                      <li class="time-label">
-                        <span class="bg-success">
-                          3 Jan. 2014
-                        </span>
-                      </li>
-                      <!-- /.timeline-label -->
-                      <!-- timeline item -->
-                      <li>
-                        <i class="fa fa-camera bg-purple"></i>
-
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 2 days ago</span>
-
-                          <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
-
-                          <div class="timeline-body">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                            <img src="http://placehold.it/150x100" alt="..." class="margin">
-                          </div>
-                        </div>
-                      </li>
-                      <!-- END timeline item -->
-                      <li>
-                        <i class="fa fa-clock-o bg-gray"></i>
-                      </li>
-                    </ul>
+                      </div>
+                    </div>
                   </div>
-                  <!-- /.tab-pane -->
 
-                  <div class="tab-pane" id="settings">
-                    <form class="form-horizontal">
-                      <div class="form-group">
-                        <label for="inputName" class="col-sm-2 control-label">Name</label>
-
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputName" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputEmail" class="col-sm-2 control-label">Email</label>
-
-                        <div class="col-sm-10">
-                          <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputName2" class="col-sm-2 control-label">Name</label>
-
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputExperience" class="col-sm-2 control-label">Experience</label>
-
-                        <div class="col-sm-10">
-                          <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputSkills" class="col-sm-2 control-label">Skills</label>
-
-                        <div class="col-sm-10">
-                          <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <div class="checkbox">
-                            <label>
-                              <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                            </label>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                          <button type="submit" class="btn btn-danger">Submit</button>
-                        </div>
-                      </div>
-                    </form>
+                  <div class="sport-form-section">
+                    <h5><i class="fa fa-image"></i> تصویر پروفایل</h5>
                   </div>
-                  <!-- /.tab-pane -->
+
+                  <div class="sport-form-group">
+                    <div class="d-flex align-items-center gap-3">
+                      <div class="sport-avatar sport-avatar-lg sport-avatar-gradient-4 flex-shrink-0">
+                        @if(auth()->user()->avatar)
+                          <img src="{{ asset('storage/'.auth()->user()->avatar) }}" alt="avatar" id="avatar-preview">
+                        @else
+                          <span id="avatar-preview-text">{{ mb_substr(auth()->user()->name, 0, 1) }}</span>
+                        @endif
+                      </div>
+                      <div class="flex-grow-1">
+                        <div class="sport-file-upload">
+                          <input type="file" name="avatar" accept="image/*" id="avatar-input">
+                          <i class="fa fa-cloud-upload upload-icon"></i>
+                          <span class="upload-text">فایل را اینجا بکشید یا کلیک کنید</span>
+                          <div class="upload-hint">JPG, PNG, WebP — حداکثر ۲ مگابایت</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <!-- /.tab-content -->
-              </div><!-- /.card-body -->
+
+                <div class="card-footer">
+                  <button type="submit" class="btn sport-btn-primary">
+                    <i class="fa fa-save"></i> ذخیره تغییرات
+                  </button>
+                  <a href="{{ route('admin.dashboard') }}" class="btn sport-btn-secondary mr-2">بازگشت</a>
+                </div>
+              </form>
             </div>
-            <!-- /.nav-tabs-custom -->
           </div>
-          <!-- /.col -->
         </div>
-        <!-- /.row -->
-      </div><!-- /.container-fluid -->
+      </div>
     </section>
-    <!-- /.content -->
-  </div>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+  $('#avatar-input').on('change', function(e) {
+    var file = e.target.files[0];
+    if (file) {
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var $preview = $('#avatar-preview');
+        var $text = $('#avatar-preview-text');
+        if ($preview.length) {
+          $preview.attr('src', ev.target.result);
+        } else {
+          $text.parent().html('<img src="' + ev.target.result + '" alt="avatar" id="avatar-preview" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">');
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+});
+</script>
+@endpush

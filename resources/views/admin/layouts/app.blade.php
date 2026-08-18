@@ -84,6 +84,11 @@
 <script src="{{asset('plugins/daterangepicker/daterangepicker.js')}}"></script>
 <!-- datepicker -->
 <script src="{{asset('plugins/datepicker/bootstrap-datepicker.j')}}s"></script>
+<script src="{{asset('plugins/datepicker/locales/bootstrap-datepicker.fa.js')}}"></script>
+<!-- Persian datepicker for Jalali calendar -->
+<link rel="stylesheet" href="{{asset('plugins/persian-datepicker/persian-datepicker.min.css')}}">
+<script src="{{asset('plugins/persian-datepicker/persian-date.min.js')}}"></script>
+<script src="{{asset('plugins/persian-datepicker/persian-datepicker.min.js')}}"></script>
 <!-- Bootstrap WYSIHTML5 -->
 <script src="{{asset('plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}"></script>
 <!-- Slimscroll -->
@@ -111,6 +116,17 @@
         position: 'top-start'
       });
     @endif
+  });
+   // Initialize Persian datepicker
+  $(document).ready(function() {
+    $('.persian-datepicker').persianDatepicker({
+      format: 'YYYY/MM/DD H:m',
+      autoClose: true,
+      viewMode: 'day',
+      calendar: {
+        persian: true
+      }
+    });
   });
 </script>
 @stack('scripts')

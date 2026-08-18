@@ -1,48 +1,16 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ثبت نام | {{ $appSettings['app_name'] ?? 'خانه قهرمانان' }}</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.rtl.min.css">
-    <style>
-        body { 
-            font-family: {{ $appSettings['font_family'] ?? "'Vazir', sans-serif" }}; 
-            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
-                        url('{{ asset('images/nou-camp.webp') }}');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .register-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 35px;
-            width: 100%;
-            max-width: 450px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .btn-primary-custom {
-            background-color: #dc3545;
-            border: none;
-            color: white;
-        }
-        .btn-primary-custom:hover {
-            background-color: #a71d2a;
-            color: white;
-        }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
 
-    <div class="register-card">
-        <div class="text-center mb-4">
-            <h2 class="fw-bold">ایجاد حساب کاربری</h2>
-            <p class="text-muted">به خانواده قهرمانان بپیوندید!</p>
+@section('content')
+<div class="container">
+    <div class="row justify-content-center mt-5 mb-5">
+        <div class="col-md-8 col-lg-5">
+            <div class="card shadow-lg border-0 rounded-4 overflow-hidden" style="background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);">
+                <div class="card-header bg-transparent border-0 pt-5 pb-3 text-center" style="background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3" style="width: 72px; height: 72px; background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 8px 24px rgba(239,68,68,0.4);">
+                        <i class="bi bi-person-plus-fill text-white" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <h3 class="fw-bold mb-1" style="color: #ac2727;">ثبت نام</h3>
+                    <p class="fw-bold text-white mb-0">{{ str_replace('{app_name}', $appSettings['app_name'], 'به فروشگاه {app_name} بپیوندید ') }}</p>
                 </div>
 
                 <div class="card-body p-4 p-md-5">
@@ -65,6 +33,9 @@
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-person-fill text-muted"></i></span>
                                 <input type="text" class="form-control border-start-0 rounded-end-4" name="name" value="{{ old('name') }}" placeholder="نام و نام خانوادگی" required style="background: #f8fafc; border-color: #e2e8f0;">
                             </div>
+                            @error('name')
+                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
@@ -73,6 +44,9 @@
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-envelope-fill text-muted"></i></span>
                                 <input type="email" class="form-control border-start-0 rounded-end-4" name="email" value="{{ old('email') }}" placeholder="example@email.com" required style="background: #f8fafc; border-color: #e2e8f0;">
                             </div>
+                            @error('email')
+                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
@@ -81,6 +55,9 @@
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-lock-fill text-muted"></i></span>
                                 <input type="password" class="form-control border-start-0 rounded-end-4" name="password" placeholder="********" required style="background: #f8fafc; border-color: #e2e8f0;">
                             </div>
+                            @error('password')
+                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                            @enderror
                         </div>
 
                         <div class="mb-4">
@@ -97,7 +74,7 @@
                     </form>
 
                     <div class="text-center">
-                        <p class="text-muted small mb-0">قبلاً عضو شده‌ید؟
+                        <p class="text-muted small mb-0">قبلاً عضو شده‌اید؟
                             <a href="{{ route('login') }}" class="text-danger text-decoration-none fw-bold ms-1">ورود به حساب</a>
                         </p>
                         <a href="{{ route('home') }}" class="text-muted small text-decoration-none d-block mt-2"><i class="bi bi-arrow-right me-1"></i>بازگشت به صفحه اصلی</a>
@@ -107,3 +84,4 @@
         </div>
     </div>
 </div>
+@endsection

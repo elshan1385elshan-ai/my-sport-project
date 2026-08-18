@@ -2,6 +2,39 @@
 
 @section('content')
 <main class="container my-5" id="content">
+    @if(isset($flashSaleEndsAt) && $flashSaleEndsAt)
+    <div id="flashSaleCard" class="mb-5">
+        <div class="card border-0 shadow-sm" style="border-radius: 18px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #dbeafe 100%);">
+            <div class="card-body p-4 text-center">
+                <h4 class="fw-bold mb-3" style="color: #1e3a5f;">تخفیف ویژه - مدت محدود</h4>
+                <p class="text-muted mb-3">فقط تا اتمام زمان باقی‌مانده، تخفیفات ویژه ما را از دست ندهید!</p>
+                <div class="d-flex justify-content-center align-items-center gap-3 mb-3 flex-wrap">
+                    <div class="text-center">
+                        <div id="flash-countdown-days" class="fw-bold" style="font-size: 2rem; color: #dc3545; line-height: 1;">0</div>
+                        <small class="text-muted">روز</small>
+                    </div>
+                    <div class="text-center">
+                        <div id="flash-countdown-hours" class="fw-bold" style="font-size: 2rem; color: #dc3545; line-height: 1;">0</div>
+                        <small class="text-muted">ساعت</small>
+                    </div>
+                    <div class="text-center">
+                        <div id="flash-countdown-minutes" class="fw-bold" style="font-size: 2rem; color: #dc3545; line-height: 1;">0</div>
+                        <small class="text-muted">دقیقه</small>
+                    </div>
+                    <div class="text-center">
+                        <div id="flash-countdown-seconds" class="fw-bold" style="font-size: 2rem; color: #dc3545; line-height: 1;">0</div>
+                        <small class="text-muted">ثانیه</small>
+                    </div>
+                </div>
+                <a href="{{ route('discounts.index') }}" class="btn sport-btn-primary w-100 mt-3">مشاهده محصولات تخفیف‌دار</a>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4 text-center">
+        <small class="text-muted" id="flashSaleStatus"></small>
+    </div>
+    @endif
+
     <div class="text-center mb-5">
         <h2 class="sport-title">جدیدترین کالاهای ورزشی</h2>
     </div>
@@ -18,7 +51,7 @@
                                 class="sport-card-img"
                                 alt="{{ $product->name }}">
                         </a>
-                        @if($product->discount > 0)
+                        @if($product->discount_active)
                             <span class="sport-card-discount">-{{ $product->discount }}%</span>
                         @endif
                         @if($product->categories->isNotEmpty())
@@ -32,7 +65,7 @@
                         </a>
 
                         <div class="sport-card-price-row">
-                            @if($product->discount > 0)
+                            @if($product->discount_active)
                                 <span class="sport-card-price-current">{{ number_format($product->discounted_price) }} تومان</span>
                                 <span class="sport-card-price-old">{{ number_format($product->price) }} تومان</span>
                             @else
@@ -96,3 +129,46 @@
     @endif
 </main>
 @endsection
+
+@push('scripts')
+<script>
+(function() {
+    var endTimestamp = "{{ isset($flashSaleEndsAt) && $flashSaleEndsAt ? $flashSaleEndsAt->toIso8601String() : '' }}";
+    if (!endTimestamp) return;
+
+    var endTime = new Date(endTimestamp).getTime();
+
+    function updateCountdown() {
+        var now = new Date().getTime();
+        var distance = endTime - now;
+
+        if (distance < 0) {
+            clearInterval(timerInterval);
+            var card = document.getElementById("flashSaleCard");
+            if (card) card.style.display = "none";
+            var status = document.getElementById("flashSaleStatus");
+            if (status) status.innerHTML = "تخفیف منقضی شده است";
+            return;
+        }
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        var el = function(id, val) {
+            var e = document.getElementById(id);
+            if (e) e.innerHTML = val;
+        };
+
+        el("flash-countdown-days", days);
+        el("flash-countdown-hours", hours);
+        el("flash-countdown-minutes", minutes);
+        el("flash-countdown-seconds", seconds);
+    }
+
+    updateCountdown();
+    var timerInterval = setInterval(updateCountdown, 1000);
+})();
+</script>
+@endpush

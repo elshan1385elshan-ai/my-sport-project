@@ -2,15 +2,8 @@
 
 @section('content')
 <main class="container my-5" id="content">
-    <nav aria-label="breadcrumb" class="mb-4">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ route('home') }}">خانه</a></li>
-            <li class="breadcrumb-item active">{{ $brand->name }}</li>
-        </ol>
-    </nav>
-
     <div class="text-center mb-5">
-        <h2 class="sport-title">برند: {{ $brand->name }}</h2>
+        <h2 class="sport-title">کالاهای با تخفیف</h2>
     </div>
 
     <div class="row g-4">
@@ -39,12 +32,8 @@
                         </a>
 
                         <div class="sport-card-price-row">
-                            @if($product->discount_active)
-                                <span class="sport-card-price-current">{{ number_format($product->discounted_price) }} تومان</span>
-                                <span class="sport-card-price-old">{{ number_format($product->price) }} تومان</span>
-                            @else
-                                <span class="sport-card-price-current">{{ number_format($product->price) }} تومان</span>
-                            @endif
+                            <span class="sport-card-price-current">{{ number_format($product->discounted_price) }} تومان</span>
+                            <span class="sport-card-price-old">{{ number_format($product->price) }} تومان</span>
                         </div>
 
                         <div class="sport-card-stock">
@@ -65,7 +54,7 @@
             </div>
         @empty
             <div class="col-12">
-                <div class="alert alert-info text-center">محصولی برای این برند ثبت نشده است.</div>
+                <div class="alert alert-info text-center">هنوز کالایی با تخفیف ثبت نشده است.</div>
             </div>
         @endforelse
     </div>

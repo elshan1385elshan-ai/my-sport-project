@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Carbon::setLocale('fa');
+
         View::composer('*', function ($view) {
             $appSettings = AppSetting::allSettings();
             $appSettings['copyright_display'] = AppSetting::copyrightText($appSettings);

@@ -46,7 +46,7 @@
 
                                 <div class="mt-auto pt-3 border-top">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        @if($product->discount > 0)
+                                        @if($product->discount_active)
                                             <del class="text-muted small">{{ number_format($product->price) }} تومان</del>
                                             <span class="text-danger fw-bold fs-5">{{ number_format($product->discounted_price) }} تومان</span>
                                             <span class="badge ms-2" style="background: linear-gradient(90deg, #e94560, #ff6b6b); color:#fff;">-{{ $product->discount }}%</span>
@@ -118,6 +118,18 @@
 
 @push('scripts')
 <script>
+  @if(session('success'))
+    Swal.fire({
+      icon: 'success',
+      title: 'موفق!',
+      text: '{{ session("success") }}',
+      confirmButtonText: 'باشه',
+      confirmButtonColor: '#0f3460',
+      timer: 3000,
+      timerProgressBar: true
+    });
+  @endif
+
 function confirmRemove(productId, productName) {
     Swal.fire({
         title: 'حذف از سبد خرید',

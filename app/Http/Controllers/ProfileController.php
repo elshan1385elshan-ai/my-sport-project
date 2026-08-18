@@ -20,9 +20,25 @@ class ProfileController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'last_name' => ['nullable', 'string', 'max:255'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'avatar' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
 
-        Auth::user()->update($request->only('name'));
+        $user = Auth::user();
+
+        $data = $request->only('name', 'last_name', 'phone');
+
+        if ($request->hasFile('avatar')) {
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $data['avatar'] = $avatarPath;
+
+            if ($user->avatar && \Storage::disk('public')->exists($user->avatar)) {
+                \Storage::disk('public')->delete($user->avatar);
+            }
+        }
+
+        $user->update($data);
 
         return redirect()->route('profile.edit')->with('success', 'پروفایل با موفقیت به‌روزرسانی شد.');
     }

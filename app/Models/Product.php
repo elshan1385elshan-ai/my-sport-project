@@ -13,6 +13,7 @@ class Product extends Model
         'name',
         'price',
         'discount',
+        'discount_ends_at',
         'description',
         'slug',
         'brand_id',
@@ -20,6 +21,13 @@ class Product extends Model
         'stock',
         'is_active',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'discount_ends_at' => 'datetime',
+        ];
+    }
 
     // اگر از Slug استفاده می‌کنی (توصیه می‌شود)
     public static function boot()
@@ -34,14 +42,29 @@ class Product extends Model
     }
 
     // Scope برای محصولات فعال
-    // public function scopeActive($query)
-    // {
-    //     return $query->where('is_active', true);
-    // }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeActiveDiscount($query)
+    {
+        return $query->where('discount', '>', 0)
+            ->where(function ($q) {
+                $q->whereNull('discount_ends_at')
+                    ->orWhere('discount_ends_at', '>', now());
+            });
+    }
+
+    public function getDiscountActiveAttribute(): bool
+    {
+        return $this->discount > 0
+            && ($this->discount_ends_at === null || $this->discount_ends_at->isFuture());
+    }
 
     public function getDiscountedPriceAttribute()
     {
-        return $this->discount > 0
+        return $this->discount_active
             ? $this->price - ($this->price * $this->discount / 100)
             : $this->price;
     }

@@ -30,7 +30,7 @@
                             <h3 class="card-title">ویرایش محصول: {{ $product->name }}</h3>
                         </div>
 
-                        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data" id="product-form">
                             @csrf
                             @method('PUT')
 
@@ -87,6 +87,31 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="sport-form-group">
+                                            <label>پایان تخفیف</label>
+                                            <div class="sport-discount-toggle d-flex align-items-center p-2 rounded-lg" style="background: rgba(243,156,18,0.06); border: 1px solid rgba(243,156,18,0.15);">
+                                                <div class="form-check form-switch m-0 d-flex align-items-center flex-shrink-0">
+                                                    <input class="form-check-input" type="checkbox" id="enableDiscountEndsAt"
+                                                       {{ $product->discount_ends_at ? 'checked' : '' }} style="cursor: pointer; margin-top: 0; margin-bottom: 0;">
+                                                </div>
+                                                <small class="text-muted mr-2 flex-grow-1" id="discountEndsAtLabel">فعال‌سازی محدودیت زمانی</small>
+                                            </div>
+                                            <div id="discountEndsAtWrapper" class="mt-3" style="{{ $product->discount_ends_at ? 'display:block; opacity:1;' : 'display:none; opacity:0;' }}">
+                                                <div class="sport-input-wrap">
+                                                    <i class="fa fa-calendar input-icon"></i>
+                                                    <input type="text" class="form-control sport-form-control persian-datepicker" name="discount_ends_at"
+                                                       data-gregorian-date="{{ $product->discount_ends_at ? $product->discount_ends_at->format('Y-m-d\TH:i') : '' }}"
+                                                       id="discountEndsAtInput" placeholder="تاریخ پایان تخفیف را انتخاب کنید">
+                                                </div>
+                                                <small class="d-block mt-2" style="color: #e67e22; font-size: 0.78rem;">
+                                                    <i class="fa fa-info-circle"></i> تاریخ شمسی وارد کنید — به صورت خودکار به میلادی تبدیل می‌شود
+                                                </small>
+                                            </div>
+                                            <small class="text-muted mt-2" id="discountEndsAtHint"><i class="fa fa-clock-o"></i> {{ $product->discount_ends_at ? 'با محدودیت زمانی' : 'بدون محدودیت زمانی' }}</small>
+                                            <small class="text-danger d-block mt-2" id="discountEndsAtError" style="display:none;"></small>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="sport-form-group">
                                             <label>برند</label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-tag input-icon"></i>
@@ -105,7 +130,7 @@
 
                                 <div class="sport-form-group">
                                     <label>دسته‌بندی‌ها <span class="text-danger">*</span></label>
-                                    <div class="border rounded p-3" style="max-height: 240px; overflow-y: auto; border: 2px solid #e9ecef !important;">
+                                    <div class="sport-tree-container">
                                         @if($categories && $categories->isNotEmpty())
                                             @include('admin.features.partials.category-tree', [
                                                 'categories' => $categories,
@@ -138,9 +163,11 @@
 
                                 <div class="sport-form-group">
                                     <label>افزودن تصاویر جدید</label>
-                                    <div class="sport-input-wrap">
-                                        <i class="fa fa-image input-icon"></i>
-                                        <input type="file" name="images[]" multiple class="form-control sport-form-control">
+                                    <div class="sport-file-upload">
+                                        <input type="file" name="images[]" multiple>
+                                        <i class="fa fa-images upload-icon"></i>
+                                        <span class="upload-text">تصاویر جدید را اینجا بکشید یا کلیک کنید</span>
+                                        <div class="upload-hint">JPG, PNG, WebP — حداکثر ۲ مگابایت هر فایل</div>
                                     </div>
                                 </div>
 
@@ -170,6 +197,53 @@
   $(document).ready(function() {
     var byCategoriesUrl = "{{ route('features.byCategories') }}";
     var selectedValueIds = @json($product->featureValues->pluck('id')->toArray());
+
+    // Discount ends at toggle
+    var $enableDiscountEndsAt = $('#enableDiscountEndsAt');
+    var $discountEndsAtWrapper = $('#discountEndsAtWrapper');
+    var $discountEndsAtHint = $('#discountEndsAtHint');
+    var $discountEndsAtInput = $('#discountEndsAtInput');
+
+    // Set initial state based on checkbox
+    if ($enableDiscountEndsAt.is(':checked')) {
+      $discountEndsAtWrapper.slideDown(200).css('opacity', 1);
+      $discountEndsAtHint.html('<i class="fa fa-clock-o"></i> با محدودیت زمانی');
+    } else {
+      $discountEndsAtWrapper.slideUp(200).css('opacity', 0);
+    }
+
+    // Convert Gregorian date to Shamsi for display in Persian datepicker
+    var gregorianDate = $discountEndsAtInput.data('gregorian-date');
+    if (gregorianDate && $enableDiscountEndsAt.is(':checked')) {
+      if (typeof persianDate === 'function') {
+        try {
+          var jalaliDate = new persianDate(new Date(gregorianDate));
+          $discountEndsAtInput.val(jalaliDate.format('YYYY/MM/DD HH:mm'));
+        } catch(e) {
+          console.error('Date conversion error:', e);
+          $discountEndsAtInput.val(gregorianDate);
+        }
+      }
+    }
+
+    $enableDiscountEndsAt.on('change', function() {
+      if ($(this).is(':checked')) {
+        $discountEndsAtWrapper.slideDown(200).css('opacity', 1);
+        $discountEndsAtHint.html('<i class="fa fa-clock-o"></i> با محدودیت زمانی');
+      } else {
+        $discountEndsAtWrapper.slideUp(200).css('opacity', 0);
+        $discountEndsAtInput.val('');
+        $discountEndsAtHint.html('<i class="fa fa-clock-o"></i> بدون محدودیت زمانی');
+      }
+    });
+
+     // Clear input if checkbox unchecked; server-side handles Shamsi→Gregorian conversion
+    $('#product-form').on('submit', function() {
+      if (!$('#enableDiscountEndsAt').is(':checked')) {
+        $('#discountEndsAtInput').val('');
+      }
+      return true;
+    });
 
     function loadFeatures() {
       var categoryIds = $('input[name="categories[]"]:checked').map(function() {
@@ -233,3 +307,5 @@
   });
 </script>
 @endpush
+
+

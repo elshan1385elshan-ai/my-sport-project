@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -52,6 +53,23 @@ class HomeController extends Controller
 
         $brands = Brand::where('image', '!=', null)->get();
 
-        return view('home', compact('products', 'categories', 'childCategories', 'brands'));
+        $flashSaleEndsAt = Product::activeDiscount()
+            ->whereNotNull('discount_ends_at')
+            ->where('discount_ends_at', '>', now())
+            ->min('discount_ends_at');
+
+        $flashSaleEndsAt = $flashSaleEndsAt ? Carbon::parse($flashSaleEndsAt) : null;
+
+        return view('home', compact('products', 'categories', 'childCategories', 'brands', 'flashSaleEndsAt'));
+    }
+
+    public function discounted()
+    {
+        $products = Product::activeDiscount()
+            ->with(['images', 'categories'])
+            ->latest()
+            ->paginate(12);
+
+        return view('discounts.index', compact('products'));
     }
 }

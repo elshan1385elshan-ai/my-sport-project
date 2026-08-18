@@ -17,6 +17,7 @@ use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/discounts', [HomeController::class, 'discounted'])->name('discounts.index');
 
 Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('search.live');
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');

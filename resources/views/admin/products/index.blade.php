@@ -41,13 +41,14 @@
                                     <th>دسته‌بندی</th>
                                     <th>قیمت</th>
                                     <th>تخفیف</th>
+                                    <th>زمان اتمام تخفیف</th>
                                     <th>موجودی</th>
                                     <th style="width:100px;">عملیات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse($products as $product)
-                                    <tr>
+                                    <tr data-product-id="{{ $product->id }}">
                                         <td>
                                             @if($product->images->count() > 0)
                                                 <img src="{{ asset('storage/' . $product->images->first()->image_path) }}" class="sport-thumb" alt="{{ $product->name }}">
@@ -77,6 +78,15 @@
                                             @endif
                                         </td>
                                         <td>
+                                            @if($product->discount_ends_at)
+                                                <span class="countdown-timer" data-end="{{ $product->discount_ends_at->toIso8601String() }}" style="font-size: 0.85rem;">
+                                                    بارگذاری...
+                                                </span>
+                                            @else
+                                                <span class="text-muted">بدون محدودیت</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             <span class="badge {{ $product->stock > 0 ? 'bg-success' : 'bg-danger' }}">
                                                 {{ $product->stock > 0 ? $product->stock.' عدد' : 'ناموجود' }}
                                             </span>
@@ -86,7 +96,7 @@
                                                 <a href="{{ route('products.edit', $product->id) }}" class="sport-action-btn btn-edit" title="ویرایش">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
-                                                <button type="button" class="sport-action-btn btn-delete btn-delete" data-id="{{ $product->id }}" title="حذف">
+                                                <button type="button" class="sport-action-btn btn-delete" data-id="{{ $product->id }}" title="حذف">
                                                     <i class="fa fa-trash"></i>
                                                 </button>
                                             </div>
@@ -98,7 +108,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center py-4 text-muted">هیچ محصولی یافت نشد.</td>
+                                        <td colspan="8" class="text-center py-4 text-muted">هیچ محصولی یافت نشد.</td>
                                     </tr>
                                 @endforelse
                             </tbody>
@@ -136,5 +146,35 @@
       });
     });
   });
+
+  // Update countdown timers
+  function updateCountdown() {
+    $('.countdown-timer').each(function() {
+      var endTime = new Date($(this).data('end')).getTime();
+      var now = new Date().getTime();
+      var distance = endTime - now;
+
+      var $el = $(this);
+
+      if (distance < 0) {
+        $el.html('<span class="text-danger">منقضی شده</span>');
+        return;
+      }
+
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      var timeStr = '';
+      if (days > 0) timeStr += days + ' روز ';
+      timeStr += String(hours).padStart(2, '0') + ':' + String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+
+      $el.html(timeStr);
+    });
+  }
+
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
 </script>
 @endpush
