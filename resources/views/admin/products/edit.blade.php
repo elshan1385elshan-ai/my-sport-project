@@ -237,10 +237,28 @@
       }
     });
 
-     // Clear input if checkbox unchecked; server-side handles Shamsi→Gregorian conversion
+      // Clear input if checkbox unchecked; server-side handles Shamsi→Gregorian conversion
     $('#product-form').on('submit', function() {
       if (!$('#enableDiscountEndsAt').is(':checked')) {
         $('#discountEndsAtInput').val('');
+      }
+
+      // Validate required feature values
+      var featureInputs = $('#product-features-section').find('select[name="feature_values[]"]');
+      if (featureInputs.length > 0) {
+        var allFilled = true;
+        featureInputs.each(function() {
+          if ($(this).val() === '') {
+            allFilled = false;
+            return false;
+          }
+        });
+        if (!allFilled) {
+          $('#featureValuesError').remove();
+          $('#product-features-section').append('<small class="text-danger d-block mt-2" id="featureValuesError">همه مقادیر ویژگی‌ها را انتخاب کنید.</small>');
+          $('html, body').animate({ scrollTop: $('#product-features-section').offset().top - 50 }, 300);
+          return false;
+        }
       }
       return true;
     });
@@ -276,6 +294,7 @@
 
             var select = $('<select>')
               .attr('name', 'feature_values[]')
+              .attr('required', 'required')
               .addClass('form-control sport-form-control')
               .append('<option value="">-- انتخاب مقدار --</option>');
 

@@ -94,6 +94,8 @@ class ProductController extends Controller
             'discount_ends_at' => 'nullable|date',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
+            'feature_values' => 'required|array',
+            'feature_values.*' => 'exists:feature_values,id',
             'brand_id' => 'nullable|exists:brands,id',
             'description' => 'nullable|string',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -104,6 +106,8 @@ class ProductController extends Controller
            'price.required' => 'وارد کردن قیمت محصول الزامی است.',
            'price.numeric'   => 'قیمت محصول را صحیح وارد کن.',
            'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
+           'feature_values.required' => 'حداقل یک مقدار ویژگی برای محصول انتخاب کنید.',
+           'feature_values.array' => 'مقادیر ویژگی‌ها باید آرایه باشند.',
         ]);
 
         $discountEndsAt = $this->shamsiToGregorian($request->input('discount_ends_at'));
@@ -122,9 +126,7 @@ class ProductController extends Controller
 
         $product->categories()->sync($request->categories);
 
-        if ($request->filled('feature_values')) {
-            $product->featureValues()->sync(array_filter($request->feature_values));
-        }
+        $product->featureValues()->sync($request->feature_values);
 
         if ($request->hasFile('images')) {
 
@@ -207,6 +209,8 @@ class ProductController extends Controller
             'discount_ends_at' => 'nullable|date',
             'categories' => 'required|array',
             'categories.*' => 'exists:categories,id',
+            'feature_values' => 'required|array',
+            'feature_values.*' => 'exists:feature_values,id',
             'brand_id' => 'nullable|exists:brands,id',
             'images.*' => 'image|mimes:jpg,jpeg,png,webp|max:2048',
             'description' => 'nullable|string',
@@ -216,6 +220,8 @@ class ProductController extends Controller
             'price.required' => 'قیمت محصول الزامی است.',
             'price.numeric' => 'قیمت باید عدد باشد.',
             'categories.required' => 'حداقل یک دسته‌بندی برای محصول انتخاب کنید.',
+            'feature_values.required' => 'حداقل یک مقدار ویژگی برای محصول انتخاب کنید.',
+            'feature_values.array' => 'مقادیر ویژگی‌ها باید آرایه باشند.',
         ]);
 
         $discountEndsAt = $this->shamsiToGregorian($request->input('discount_ends_at'));
@@ -233,11 +239,7 @@ class ProductController extends Controller
 
         $product->categories()->sync($request->categories);
 
-        if ($request->filled('feature_values')) {
-            $product->featureValues()->sync(array_filter($request->feature_values));
-        } else {
-            $product->featureValues()->detach();
-        }
+        $product->featureValues()->sync($request->feature_values);
 
         if ($request->hasFile('images')) {
 
