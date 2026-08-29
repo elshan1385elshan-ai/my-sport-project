@@ -148,6 +148,30 @@
               </ul>
             </li>
 
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.coupons.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-ticket"></i>
+                <p>
+                  کوپن‌های تخفیف
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('admin.coupons.create') }}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>ایجاد کوپن</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.coupons.index') }}" class="nav-link {{ request()->routeIs('admin.coupons.index') ? 'active' : '' }}">
+                    <i class="fa fa-list nav-icon lists-color"></i>
+                    <p>کوپن‌ها</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
             <li class="nav-item">
               <a href="{{ route('media.index') }}" class="nav-link {{ request()->routeIs('media.*') ? 'active' : '' }}">
                 <i class="nav-icon fa fa-picture-o"></i>

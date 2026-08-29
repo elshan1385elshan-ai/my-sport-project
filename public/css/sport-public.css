@@ -693,6 +693,27 @@
     transform: rotate(360deg);
 }
 
+/* Order summary card */
+.sport-order-summary {
+    border: 2px solid rgba(233,69,96,0.15);
+    border-radius: 20px !important;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(233,69,96,0.03), rgba(255,107,107,0.03));
+    backdrop-filter: blur(10px);
+}
+.sport-order-summary .card-body {
+    padding: 1.25rem;
+}
+.sport-order-summary .input-group input.form-control {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.sport-order-summary .input-group .btn {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    white-space: nowrap;
+}
+
 /* Related products card */
 .sport-product-card {
     position: relative;

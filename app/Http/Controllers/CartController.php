@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coupon;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,30 @@ class CartController extends Controller
             ->get()
             ->keyBy('id');
 
-        return view('cart.show', compact('products', 'cart'));
+        $subtotal = 0;
+        foreach ($cart as $id => $quantity) {
+            $product = $products->get($id);
+            if (! $product) continue;
+            $subtotal += $product->discounted_price * $quantity;
+        }
+
+        $couponData = session()->get('coupon');
+        $coupon = null;
+        $couponDiscount = 0;
+
+        if ($couponData && isset($couponData['id'])) {
+            $coupon = Coupon::find($couponData['id']);
+            if ($coupon && $coupon->is_usable && ($coupon->min_order_amount === null || $subtotal >= $coupon->min_order_amount)) {
+                $couponDiscount = CouponController::calculateDiscountForSubtotal($coupon, (float) $subtotal);
+            } else {
+                $coupon = null;
+                session()->forget('coupon');
+            }
+        }
+
+        $total = (float) $subtotal - (float) $couponDiscount;
+
+        return view('cart.show', compact('products', 'cart', 'subtotal', 'coupon', 'couponDiscount', 'total'));
     }
 
     public function remove(Request $request)

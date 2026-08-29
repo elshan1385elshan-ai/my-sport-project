@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
@@ -27,6 +28,8 @@ Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
+Route::post('/cart/coupon/apply', [CouponController::class, 'apply'])->name('cart.coupon.apply');
+Route::post('/cart/coupon/remove', [CouponController::class, 'remove'])->name('cart.coupon.remove');
 
 Route::middleware('auth')->post('/product/{product}/review', [ReviewController::class, 'store'])->name('product.review.store');
 // بخش پروفایل کاربر
@@ -80,6 +83,8 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::post('/features/{feature}/values', [FeatureController::class, 'storeValue'])->name('features.values.store');
     Route::put('/features/values/{value}', [FeatureController::class, 'updateValue'])->name('features.values.update');
     Route::delete('/features/values/{value}', [FeatureController::class, 'destroyValue'])->name('features.values.destroy');
+
+    Route::resource('/coupons', CouponController::class)->except(['show'])->names('admin.coupons');
 
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');

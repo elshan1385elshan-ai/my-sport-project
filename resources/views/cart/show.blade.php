@@ -13,8 +13,18 @@
         <div class="alert alert-success text-center">{{ session('success') }}</div>
     @endif
 
+    @if($errors->any())
+        <div class="alert alert-danger text-center">
+            @foreach ($errors->all() as $error)
+                <div>{{ $error }}</div>
+            @endforeach
+        </div>
+    @endif
+
     @if(count($cart) > 0)
         <div class="row g-4">
+            <div class="col-lg-8">
+            <div class="row g-4">
             @foreach($cart as $id => $quantity)
                 @php $product = $products->get($id); @endphp
                 @if(!$product) @continue @endif
@@ -91,15 +101,69 @@
                         </div>
                     </div>
             @endforeach
-        </div>
+            </div>
+            </div>
 
-        <div class="d-flex justify-content-between align-items-center mt-5 pt-4 border-top">
-            <a href="{{ route('home') }}" class="btn sport-btn-outline sport-cart-action-btn w-100">
-                <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه
-            </a>
-            <button class="btn sport-btn-outline sport-cart-checkout-btn sport-cart-action-btn w-100">
-                <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
-            </button>
+            <div class="col-lg-4">
+                <div class="card sport-order-summary shadow-sm">
+                    <div class="card-header" style="background: linear-gradient(90deg, #0f3460, #1a1a2e); color:#fff;">
+                        <i class="bi bi-receipt me-1"></i> خلاصه سفارش
+                    </div>
+                    <div class="card-body">
+                        @if($coupon)
+                            <div class="alert alert-success d-flex justify-content-between align-items-center py-2 mb-3">
+                                <span class="fw-bold">
+                                    <i class="bi bi-ticket-perforated me-1"></i>{{ $coupon->code }}
+                                </span>
+                                <form action="{{ route('cart.coupon.remove') }}" method="POST" class="d-inline">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-link text-danger p-0" title="حذف کوپن">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <form action="{{ route('cart.coupon.apply') }}" method="POST" class="mb-3">
+                                @csrf
+                                <label class="form-label fw-bold mb-1"><i class="bi bi-ticket-perforated me-1"></i> کد تخفیف (کوپن)</label>
+                                <div class="input-group">
+                                    <input type="text" name="code" class="form-control" placeholder="کد کوپن را وارد کنید" value="{{ old('code') }}">
+                                    <button type="submit" class="btn sport-btn-primary">اعمال</button>
+                                </div>
+                                <small class="text-muted">در صورت داشتن کد تخفیف، آن را وارد کنید.</small>
+                            </form>
+                        @endif
+
+                        <hr class="my-3">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">جمع سبد خرید</span>
+                            <span>{{ number_format($subtotal) }} تومان</span>
+                        </div>
+
+                        @if($couponDiscount > 0)
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span>تخفیف کوپن</span>
+                                <span>-{{ number_format($couponDiscount) }} تومان</span>
+                            </div>
+                        @endif
+
+                        <hr>
+
+                        <div class="d-flex justify-content-between mb-2 fw-bold fs-5">
+                            <span>مبلغ قابل پرداخت</span>
+                            <span class="text-danger">{{ number_format(max(0, $total)) }} تومان</span>
+                        </div>
+
+                        <button class="btn sport-btn-primary w-100 mt-3 sport-cart-checkout-btn">
+                            <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
+                        </button>
+                        <a href="{{ route('home') }}" class="btn sport-btn-outline w-100 mt-2 sport-cart-action-btn">
+                            <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     @else
         <div class="text-center py-5">
