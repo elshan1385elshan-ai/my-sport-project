@@ -155,7 +155,20 @@
                                     <div class="row">
                                         @foreach($product->images as $image)
                                             <div class="col-md-3 mb-3">
-                                                <img src="{{ asset('storage/'.$image->image_path) }}" class="img-fluid sport-thumb" style="max-height: 120px; width: auto; object-fit: cover;">
+                                                <div class="position-relative d-inline-block" style="width:100%;">
+                                                    <img src="{{ asset('storage/'.$image->image_path) }}" class="img-fluid sport-thumb" style="max-height: 120px; width: auto; object-fit: cover;">
+                                                    <form action="{{ route('products.images.destroy', $image->id) }}" method="POST" class="product-image-delete-form" style="position:absolute; top:5px; left:5px;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                                class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center"
+                                                                style="width: 32px; height: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.35);"
+                                                                title="حذف این تصویر"
+                                                                onclick="return confirm('آیا از حذف این تصویر مطمئن هستید؟');">
+                                                            <i class="fa fa-trash"></i>
+                                                        </button>
+                                                    </form>
+                                                </div>
                                             </div>
                                         @endforeach
                                     </div>

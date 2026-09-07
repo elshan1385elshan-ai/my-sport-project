@@ -167,12 +167,10 @@ class CouponController extends Controller
 
         $cart = session()->get('cart', []);
         $subtotal = $this->cartSubtotal($cart);
-
         if (! $coupon) {
             session()->forget('coupon');
             return redirect()->route('cart.show')->withErrors(['coupon' => 'کد تخفیف معتبر نیست.']);
         }
-
         if (! $coupon->is_usable) {
             session()->forget('coupon');
             $message = 'این کد تخفیف قابل استفاده نیست.';

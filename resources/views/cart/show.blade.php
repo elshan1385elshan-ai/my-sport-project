@@ -24,84 +24,100 @@
     @if(count($cart) > 0)
         <div class="row g-4">
             <div class="col-lg-8">
-            <div class="row g-4">
-            @foreach($cart as $id => $quantity)
-                @php $product = $products->get($id); @endphp
-                @if(!$product) @continue @endif
-                @php $firstImage = $product->images->first(); @endphp
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 sport-cart-card">
-                            <div class="position-relative">
-                                <img
-                                    src="{{ $firstImage ? asset('storage/'.$firstImage->image_path) : 'https://picsum.photos/400/250' }}"
-                                    class="card-img-top"
-                                    alt="{{ $product->name }}">
-                                <button type="button" class="sport-cart-remove-btn"
-                                        onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')"
-                                        title="حذف از سبد">
-                                    <i class="bi bi-trash"></i>
-                                </button>
+                <div class="d-flex flex-column gap-3">
+                @foreach($cart as $id => $quantity)
+                    @php $product = $products->get($id); @endphp
+                    @if(!$product) @continue @endif
+                    @php
+                        $firstImage = $product->images->first();
+                        $unitPrice = $product->discount_active ? $product->discounted_price : $product->price;
+                        $lineTotal = $unitPrice * $quantity;
+                    @endphp
+                    <div class="card sport-cart-card sport-cart-row">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-4 col-sm-3 position-relative">
+                                <a href="{{ route('product.show', $product->id) }}">
+                                    <img
+                                        src="{{ $firstImage ? asset('storage/'.$firstImage->image_path) : 'https://picsum.photos/400/250' }}"
+                                        class="sport-cart-row-img"
+                                        alt="{{ $product->name }}">
+                                </a>
+                                @if($product->discount_active)
+                                    <span class="badge sport-cart-discount-badge">-{{ $product->discount }}%</span>
+                                @endif
                             </div>
 
-                            <div class="card-body d-flex flex-column">
-                                <h5 class="card-title text-truncate">{{ $product->name }}</h5>
-
-                                <p class="text-muted small mb-2">
-                                    <span class="badge text-dark border" style="background: rgba(15,52,96,0.08);">{{ $product->categories->first()->name ?? 'بدون دسته' }}</span>
-                                </p>
-
-                                @if($product->description)
-                                    <p class="card-text text-secondary small flex-grow-1">{{ $product->description }}</p>
-                                @endif
-
-                                <div class="mt-auto pt-3 border-top">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        @if($product->discount_active)
-                                            <del class="text-muted small">{{ number_format($product->price) }} تومان</del>
-                                            <span class="text-danger fw-bold fs-5">{{ number_format($product->discounted_price) }} تومان</span>
-                                            <span class="badge ms-2" style="background: linear-gradient(90deg, #e94560, #ff6b6b); color:#fff;">-{{ $product->discount }}%</span>
-                                        @else
-                                            <span class="price-tag fw-bold fs-5">{{ number_format($product->price) }} تومان</span>
-                                        @endif
+                            <div class="col-8 col-sm-9">
+                                <div class="card-body py-3 pe-3">
+                                    <div class="d-flex justify-content-between align-items-start gap-2">
+                                        <div class="flex-grow-1 min-width-0">
+                                            <a href="{{ route('product.show', $product->id) }}" class="sport-cart-title text-decoration-none">
+                                                <h5 class="card-title mb-1 text-truncate">{{ $product->name }}</h5>
+                                            </a>
+                                            <span class="badge text-dark border" style="background: rgba(15,52,96,0.08);">
+                                                <i class="bi bi-tag"></i> {{ $product->categories->first()->name ?? 'بدون دسته' }}
+                                            </span>
+                                        </div>
+                                        <button type="button" class="sport-cart-remove-btn"
+                                                onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')"
+                                                title="حذف از سبد" aria-label="حذف از سبد">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
 
-                                    <div class="d-flex align-items-center gap-2 mb-2 flex-nowrap">
-                                        <form action="{{ route('cart.add') }}" method="POST" class="d-inline-flex align-items-center">
-                                            @csrf
-                                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                            <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-primary">
-                                                <i class="bi bi-plus-lg"></i>
-                                            </button>
-                                        </form>
-                                        <span class="fw-bold fs-5 px-2" style="min-width: 2.5rem; text-align: center;">{{ $quantity }}</span>
-                                        @if($quantity > 1)
-                                            <form action="{{ route('cart.decrease') }}" method="POST" class="d-inline-flex align-items-center">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-outline">
-                                                    <i class="bi bi-dash-lg"></i>
-                                                </button>
-                                            </form>
-                                        @else
-                                            <form action="{{ route('cart.remove') }}" method="POST" class="d-inline-flex align-items-center" onsubmit="return confirm('آیا از حذف این کالا مطمئن هستید؟');">
-                                                @csrf
-                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-outline">
-                                                    <i class="bi bi-dash-lg"></i>
-                                                </button>
-                                            </form>
-                                        @endif
+                                    <div class="d-flex justify-content-end align-items-center mt-2">
+                                        <div class="text-end">
+                                            @if($product->discount_active)
+                                                <del class="text-muted small d-block">{{ number_format($product->price) }}</del>
+                                            @endif
+                                            <div class="fw-bold sport-cart-unit-price">{{ number_format($unitPrice) }} <small class="fw-normal">تومان</small></div>
+                                        </div>
                                     </div>
 
-                                    <button type="button" class="btn sport-btn-outline sport-cart-action-btn w-100" onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')">
-                                        <i class="bi bi-trash me-1"></i> حذف از سبد
-                                    </button>
+                                    <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top sport-cart-row-footer">
+                                        <div class="d-inline-flex align-items-center gap-1 sport-cart-qty-group">
+                                            <form action="{{ route('cart.add') }}" method="POST">
+                                                @csrf
+                                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-primary"
+                                                        title="افزایش تعداد" @disabled($quantity >= $product->stock)>
+                                                    <i class="bi bi-plus-lg"></i>
+                                                </button>
+                                            </form>
+                                            <span class="sport-cart-qty-value">{{ $quantity }}</span>
+                                            @if($quantity > 1)
+                                                <form action="{{ route('cart.decrease') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <button type="submit" class="btn btn-sm sport-cart-qty-btn sport-btn-outline" title="کاهش تعداد">
+                                                        <i class="bi bi-dash-lg"></i>
+                                                    </button>
+                                                </form>
+                                            @else
+                                                <button type="button" class="btn btn-sm sport-cart-qty-btn sport-btn-outline"
+                                                        onclick="confirmRemove({{ $product->id }}, '{{ $product->name }}')" title="حذف از سبد">
+                                                    <i class="bi bi-dash-lg"></i>
+                                                </button>
+                                            @endif
+                                        </div>
+
+                                        <div class="text-start">
+                                            <small class="text-muted d-block mb-1">
+                                                @if($quantity >= $product->stock && $product->stock > 0)
+                                                    <i class="bi bi-exclamation-circle text-warning"></i> حداکثر موجودی ({{ number_format($product->stock) }})
+                                                @else
+                                                    موجودی: {{ number_format($product->stock) }} عدد
+                                                @endif
+                                            </small>
+                                            <div class="sport-cart-line-total">جمع: <strong>{{ number_format($lineTotal) }} تومان</strong></div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-            @endforeach
-            </div>
+                @endforeach
+                </div>
             </div>
 
             <div class="col-lg-4">
@@ -155,9 +171,9 @@
                             <span class="text-danger">{{ number_format(max(0, $total)) }} تومان</span>
                         </div>
 
-                        <button class="btn sport-btn-primary w-100 mt-3 sport-cart-checkout-btn">
+                        <a href="{{ auth()->check() ? route('addresses.create') : route('register') }}" class="btn sport-btn-primary w-100 mt-3 sport-cart-checkout-btn">
                             <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
-                        </button>
+                        </a>
                         <a href="{{ route('home') }}" class="btn sport-btn-outline w-100 mt-2 sport-cart-action-btn">
                             <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه
                         </a>

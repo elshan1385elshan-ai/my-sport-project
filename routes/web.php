@@ -74,6 +74,7 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
         Route::delete('/{user}', [AdminUserController::class, 'destroy'])->name('destroy');
     });
     Route::resource('/products', ProductController::class);
+    Route::delete('/products/images/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
     Route::resource('/categories', CategoryController::class);
     Route::resource('/brands', BrandController::class);
     Route::resource('/features', FeatureController::class);

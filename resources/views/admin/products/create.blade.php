@@ -50,7 +50,7 @@
                                             <label>نام محصول <span class="text-danger">*</span></label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-box input-icon"></i>
-                                                <input type="text" class="form-control sport-form-control" name="name" required>
+                                                <input type="text" class="form-control sport-form-control" name="name" required value="{{ old('name') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -59,7 +59,7 @@
                                             <label>قیمت <span class="text-danger">*</span></label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-dollar input-icon"></i>
-                                                <input type="number" class="form-control sport-form-control" name="price" required>
+                                                <input type="number" class="form-control sport-form-control" name="price" required value="{{ old('price') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -68,7 +68,7 @@
                                             <label>تعداد موجودی</label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-cubes input-icon"></i>
-                                                <input type="number" class="form-control sport-form-control" name="stock">
+                                                <input type="number" class="form-control sport-form-control" name="stock" value="{{ old('stock') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -115,7 +115,7 @@
                                                 <select name="brand_id" class="form-control sport-form-control">
                                                     <option value="">-- بدون برند --</option>
                                                     @foreach ($brands as $item)
-                                                        <option value="{{$item->id}}">{{$item->name}}</option>
+                                                        <option value="{{$item->id}}" @if(old('brand_id') == $item->id) selected @endif>{{$item->name}}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -157,7 +157,7 @@
 
                                 <div class="sport-form-group">
                                     <label>توضیحات محصول</label>
-                                    <textarea name="description" class="form-control sport-form-control" rows="4"></textarea>
+                                    <textarea name="description" class="form-control sport-form-control" rows="4">{{ old('description') }}</textarea>
                                 </div>
                             </div>
 

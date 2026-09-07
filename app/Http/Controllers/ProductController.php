@@ -275,6 +275,22 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
+    /**
+     * Delete a single image of the product.
+     */
+    public function destroyImage(SportImage $image)
+    {
+        if (\Storage::disk('public')->exists($image->image_path)) {
+            \Storage::disk('public')->delete($image->image_path);
+        }
+
+        $image->delete();
+
+        return redirect()
+            ->route('products.edit', $image->product_id)
+            ->with('success', 'تصویر با موفقیت حذف شد');
+    }
+
     // /**
     //  * جستجوی زنده (Live Search)
     //  */

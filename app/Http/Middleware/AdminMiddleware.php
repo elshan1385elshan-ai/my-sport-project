@@ -15,7 +15,8 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        if ( auth()->user()->role !=='admin') {
+        // allow either a web user with role=admin, or an admin-guard login
+        if (auth()->user()?->role !== 'admin' && ! Auth::guard('admin')->check()) {
             // abort(403, 'You do not have admin access.');
             return redirect('/');
         }

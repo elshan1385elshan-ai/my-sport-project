@@ -568,6 +568,89 @@
     transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     backdrop-filter: blur(10px);
 }
+
+/* Horizontal cart row layout */
+.sport-cart-row .row > [class*="col-"] {
+    position: static;
+}
+.sport-cart-row-img {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-left: 2px solid rgba(233,69,96,0.1);
+    transition: transform 0.4s ease;
+    display: block;
+}
+.sport-cart-row:hover .sport-cart-row-img {
+    transform: scale(1.05);
+}
+.sport-cart-row > .row > .position-relative {
+    overflow: hidden;
+    border-radius: 18px 0 0 18px;
+}
+[dir="rtl"] .sport-cart-row > .row > .position-relative {
+    border-radius: 0 18px 18px 0;
+    border-right: none;
+    border-left: 2px solid rgba(233,69,96,0.1);
+}
+.sport-cart-discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(90deg, #e94560, #ff6b6b);
+    color: #fff;
+    font-weight: 700;
+    padding: 0.35em 0.7em;
+    border-radius: 999px;
+    box-shadow: 0 4px 12px rgba(233,69,96,0.4);
+    z-index: 5;
+}
+.min-width-0 { min-width: 0; }
+.sport-cart-title h5 {
+    color: #0f3460;
+    font-weight: 700;
+    transition: color 0.25s ease;
+}
+.sport-cart-title:hover h5 { color: #e94560; }
+
+.sport-cart-qty-group {
+    background: rgba(15,52,96,0.05);
+    border: 1px solid rgba(15,52,96,0.1);
+    border-radius: 12px;
+    padding: 4px;
+}
+.sport-cart-qty-group form {
+    display: inline-flex;
+    margin: 0;
+    line-height: 0;
+}
+.sport-cart-qty-group .sport-cart-qty-btn {
+    width: 36px;
+    height: 36px;
+}
+.sport-cart-qty-value {
+    min-width: 2.25rem;
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #0f3460;
+}
+.sport-cart-unit-price {
+    color: #e94560;
+    font-size: 1.1rem;
+}
+.sport-cart-row-footer {
+    border-color: rgba(15,52,96,0.1) !important;
+}
+.sport-cart-line-total {
+    font-size: 1rem;
+    color: #0f3460;
+}
+.sport-cart-line-total strong { color: #e94560; }
+@media (max-width: 576px) {
+    .sport-cart-row-img { height: 110px; }
+    .sport-cart-remove-btn { width: 36px; height: 36px; }
+}
 .sport-cart-card::before {
     content: '';
     position: absolute;
@@ -592,6 +675,7 @@
     object-fit: cover;
     border-bottom: 2px solid rgba(233,69,96,0.1);
 }
+.sport-cart-row .card-img-top { height: auto; }
 
 .sport-cart-remove-btn {
     position: absolute;
