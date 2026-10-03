@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
@@ -24,12 +26,20 @@ Route::get('/search/live', [ProductController::class, 'liveSearch'])->name('sear
 Route::get('/product/{product}', [ProductController::class, 'show'])->name('product.show');
 Route::get('/category/{category}', [CategoryController::class, 'show'])->name('category.show');
 Route::get('/brand/{brand}', [BrandController::class, 'show'])->name('brand.show');
+Route::get('/articles', [ArticleController::class, 'publicIndex'])->name('articles.index');
+Route::get('/article/{article}', [ArticleController::class, 'show'])->name('article.show');
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
 Route::post('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
 Route::post('/cart/decrease', [CartController::class, 'decrease'])->name('cart.decrease');
 Route::post('/cart/coupon/apply', [CouponController::class, 'apply'])->name('cart.coupon.apply');
 Route::post('/cart/coupon/remove', [CouponController::class, 'remove'])->name('cart.coupon.remove');
+
+// Checkout — صفحه انتخاب شیوه پرداخت
+Route::middleware('auth')->group(function () {
+    Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
+    Route::post('/checkout/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
+});
 
 Route::middleware('auth')->post('/product/{product}/review', [ReviewController::class, 'store'])->name('product.review.store');
 // بخش پروفایل کاربر
@@ -66,6 +76,7 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
     Route::prefix('/users')->name('admin.users.')->group(function () {
         Route::get('/', [AdminUserController::class, 'index'])->name('index');
+        Route::get('/registered', [AdminUserController::class, 'registered'])->name('registered');
         Route::get('/create', [AdminUserController::class, 'create'])->name('create');
         Route::post('/', [AdminUserController::class, 'store'])->name('store');
         Route::get('/{user}', [AdminUserController::class, 'show'])->name('show');
@@ -89,6 +100,20 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
 
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');
     Route::put('/settings', [SettingController::class, 'update'])->name('settings.update');
+
+    Route::prefix('/articles')->name('admin.articles.')->group(function () {
+        Route::get('/', [ArticleController::class, 'index'])->name('index');
+        Route::get('/drafts', [ArticleController::class, 'drafts'])->name('drafts');
+        Route::get('/categories', [ArticleController::class, 'categories'])->name('categories');
+        Route::post('/categories', [ArticleController::class, 'storeCategory'])->name('categories.store');
+        Route::put('/categories/{category}', [ArticleController::class, 'updateCategory'])->name('categories.update');
+        Route::delete('/categories/{category}', [ArticleController::class, 'destroyCategory'])->name('categories.destroy');
+        Route::get('/create', [ArticleController::class, 'create'])->name('create');
+        Route::post('/', [ArticleController::class, 'store'])->name('store');
+        Route::get('/{article}/edit', [ArticleController::class, 'edit'])->name('edit');
+        Route::put('/{article}', [ArticleController::class, 'update'])->name('update');
+        Route::delete('/{article}', [ArticleController::class, 'destroy'])->name('destroy');
+    });
 
     Route::get('/media', [MediaController::class, 'index'])->name('media.index');
     Route::post('/media/upload', [MediaController::class, 'upload'])->name('media.upload');

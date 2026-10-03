@@ -16,6 +16,18 @@ class AdminUserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
+    /**
+     * لیست کاربران ثبت‌نام شده — نام، ایمیل، نقش و تعداد سفارشات کاربران عادی
+     */
+    public function registered()
+    {
+        $registeredUsers = User::withCount('orders')
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return view('admin.users.registered', compact('registeredUsers'));
+    }
+
     public function create()
     {
         return view('admin.users.create');

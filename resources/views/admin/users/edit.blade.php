@@ -93,7 +93,10 @@
                                             <label>رمز عبور جدید</label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-lock input-icon"></i>
-                                                <input type="password" class="form-control sport-form-control" name="password">
+                                                <input type="password" class="form-control sport-form-control" name="password" id="userEditPassword">
+                                                <button type="button" class="sport-password-toggle" tabindex="-1" aria-label="نمایش/مخفی کردن رمز عبور" onclick="togglePasswordVisibility('userEditPassword', this)">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
                                             </div>
                                             <small class="text-muted">در صورت عدم تمایل به تغییر، خالی بگذارید.</small>
                                         </div>
@@ -103,7 +106,10 @@
                                             <label>تکرار رمز عبور جدید</label>
                                             <div class="sport-input-wrap">
                                                 <i class="fa fa-lock input-icon"></i>
-                                                <input type="password" class="form-control sport-form-control" name="password_confirmation">
+                                                <input type="password" class="form-control sport-form-control" name="password_confirmation" id="userEditPasswordConfirm">
+                                                <button type="button" class="sport-password-toggle" tabindex="-1" aria-label="نمایش/مخفی کردن رمز عبور" onclick="togglePasswordVisibility('userEditPasswordConfirm', this)">
+                                                    <i class="fa fa-eye"></i>
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -124,3 +130,19 @@
     </section>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    var icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+</script>
+@endpush

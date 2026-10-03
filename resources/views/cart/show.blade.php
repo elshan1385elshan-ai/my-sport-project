@@ -171,8 +171,8 @@
                             <span class="text-danger">{{ number_format(max(0, $total)) }} تومان</span>
                         </div>
 
-                        <a href="{{ auth()->check() ? route('addresses.create') : route('register') }}" class="btn sport-btn-primary w-100 mt-3 sport-cart-checkout-btn">
-                            <i class="bi bi-check-circle"></i> تکمیل فرآیند خرید
+                        <a href="{{ auth()->check() ? route('checkout.payment') : route('register') }}" class="btn sport-btn-primary w-100 mt-3 sport-cart-checkout-btn">
+                            <i class="bi bi-credit-card-2-front"></i> انتخاب شیوه پرداخت
                         </a>
                         <a href="{{ route('home') }}" class="btn sport-btn-outline w-100 mt-2 sport-cart-action-btn">
                             <i class="bi bi-arrow-right"></i> بازگشت به فروشگاه

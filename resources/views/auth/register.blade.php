@@ -39,10 +39,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-medium text-dark">ایمیل</label>
+                            <label class="form-label fw-medium text-dark">شماره تلفن</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-telephone-fill text-muted"></i></span>
+                                <input type="tel" dir="ltr" class="form-control border-start-0 rounded-end-4" name="phone" value="{{ old('phone') }}" placeholder="۰۹۱۲۳۴۵۶۷۸۹" required style="background: #f8fafc; border-color: #e2e8f0;">
+                            </div>
+                            @error('phone')
+                                <small class="text-danger d-block mt-1">{{ $message }}</small>
+                            @enderror
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-medium text-dark">ایمیل <span class="text-muted small">(اختیاری)</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-envelope-fill text-muted"></i></span>
-                                <input type="email" class="form-control border-start-0 rounded-end-4" name="email" value="{{ old('email') }}" placeholder="example@email.com" required style="background: #f8fafc; border-color: #e2e8f0;">
+                                <input type="email" class="form-control border-start-0 rounded-end-4" name="email" value="{{ old('email') }}" placeholder="example@email.com" style="background: #f8fafc; border-color: #e2e8f0;">
                             </div>
                             @error('email')
                                 <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -50,10 +61,13 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-medium text-dark">رمز عبور</label>
+                            <label class="form-label fw-medium text-dark">رمز عبور <span class="text-muted small">(اختیاری)</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-lock-fill text-muted"></i></span>
-                                <input type="password" class="form-control border-start-0 rounded-end-4" name="password" placeholder="********" required style="background: #f8fafc; border-color: #e2e8f0;">
+                                <input type="password" class="form-control border-start-0 rounded-end-4" name="password" id="registerPassword" placeholder="********" style="background: #f8fafc; border-color: #e2e8f0;">
+                                <button type="button" class="sport-password-toggle" tabindex="-1" aria-label="نمایش/مخفی کردن رمز عبور" onclick="togglePasswordVisibility('registerPassword', this)">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
                             </div>
                             @error('password')
                                 <small class="text-danger d-block mt-1">{{ $message }}</small>
@@ -61,10 +75,13 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="form-label fw-medium text-dark">تکرار رمز عبور</label>
+                            <label class="form-label fw-medium text-dark">تکرار رمز عبور <span class="text-muted small">(اختیاری)</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-transparent border-end-0"><i class="bi bi-lock-fill text-muted"></i></span>
-                                <input type="password" class="form-control border-start-0 rounded-end-4" name="password_confirmation" placeholder="********" required style="background: #f8fafc; border-color: #e2e8f0;">
+                                <input type="password" class="form-control border-start-0 rounded-end-4" name="password_confirmation" id="registerPasswordConfirm" placeholder="********" style="background: #f8fafc; border-color: #e2e8f0;">
+                                <button type="button" class="sport-password-toggle" tabindex="-1" aria-label="نمایش/مخفی کردن رمز عبور" onclick="togglePasswordVisibility('registerPasswordConfirm', this)">
+                                    <i class="bi bi-eye-fill"></i>
+                                </button>
                             </div>
                         </div>
 
@@ -85,3 +102,19 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    var icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('bi-eye-fill', 'bi-eye-slash-fill');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('bi-eye-slash-fill', 'bi-eye-fill');
+    }
+}
+</script>
+@endpush

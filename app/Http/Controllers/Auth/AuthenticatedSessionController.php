@@ -14,7 +14,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
         return view('auth.login');
     }
@@ -22,19 +22,46 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, \App\Services\OtpService $otpService): RedirectResponse
     {
-        $request->authenticate();
+        $request->ensureIsNotRateLimited();
 
-        $request->session()->regenerate();
+        $phone = $request->string('phone')->toString();
 
-        $user = auth()->user();
+        $user = \App\Models\User::where('phone', $phone)->first();
 
-        if ($user->role === 'admin') {
-            return redirect()->route('admin.dashboard');
+        if ($user && ! empty($user->password)) {
+            // کاربر رمز عبور دارد؛ ابتدا اعتبار آن بررسی می‌شود
+            if (! \Illuminate\Support\Facades\Hash::check($request->password, $user->password)) {
+                \Illuminate\Support\Facades\RateLimiter::hit($request->throttleKey());
+
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'password' => trans('auth.failed'),
+                ]);
+            }
+        } elseif (! $user && $request->filled('password')) {
+            // شماره ثبت نشده و رمز هم وارد شده؛ ثبت‌نام با رمز ممکن نیست
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'phone' => 'این شماره تلفن ثبت نشده است. لطفاً ثبت‌نام کنید.',
+            ]);
         }
 
-        return redirect()->route('user.dashboard');
+        // ارسال کد تأیید پیامکی و هدایت به صفحه ورود کد
+        $otpService->send($phone, 'login', [
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        $request->session()->put('otp_pending', [
+            'phone' => $phone,
+            'purpose' => 'login',
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
+
+        return redirect()->route('otp.verify');
     }
 
     /**

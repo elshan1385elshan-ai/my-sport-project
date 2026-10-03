@@ -872,3 +872,178 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
+
+
+/* Password toggle button (show/hide) — auth pages */
+.sport-password-toggle {
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    padding: 0 0.9rem;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none;
+    transition: color 0.25s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+}
+.sport-password-toggle:hover,
+.sport-password-toggle:focus {
+    color: #e94560;
+    background: rgba(233, 69, 96, 0.08);
+    box-shadow: none;
+    border-radius: 8px;
+}
+.sport-password-toggle:active {
+    transform: scale(0.88);
+}
+.sport-password-toggle i {
+    transition: transform 0.25s ease;
+}
+.sport-password-toggle:hover i {
+    transform: scale(1.12);
+}
+
+
+/* ===== Checkout payment method selection ===== */
+.sport-payment-option {
+    position: relative;
+    border: 2px solid #e2e8f0;
+    border-radius: 16px;
+    background: #f8fafc;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    user-select: none;
+}
+.sport-payment-option:hover {
+    border-color: rgba(233, 69, 96, 0.45);
+    background: rgba(233, 69, 96, 0.04);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(233, 69, 96, 0.12);
+}
+.sport-payment-option.selected {
+    border-color: #e94560;
+    background: rgba(233, 69, 96, 0.06);
+    box-shadow: 0 6px 18px rgba(233, 69, 96, 0.18);
+}
+.sport-payment-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(233, 69, 96, 0.08);
+    color: #94a3b8;
+    font-size: 1.6rem;
+    transition: all 0.25s ease;
+}
+.sport-payment-option:hover .sport-payment-icon,
+.sport-payment-option.selected .sport-payment-icon {
+    color: #e94560;
+    background: rgba(233, 69, 96, 0.14);
+    transform: scale(1.06);
+}
+.sport-payment-check {
+    width: 30px;
+    height: 30px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    color: transparent;
+    font-size: 1rem;
+    transition: all 0.25s ease;
+}
+.sport-payment-option.selected .sport-payment-check {
+    border-color: #e94560;
+    background: #e94560;
+    color: #fff;
+    animation: sport-check-pop 0.3s ease;
+}
+@keyframes sport-check-pop {
+    0%   { transform: scale(0.6); }
+    60%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+.sport-checkout-complete-btn {
+    transition: all 0.25s ease;
+}
+.sport-checkout-complete-btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+.sport-checkout-complete-btn:not(:disabled):hover {
+    transform: translateY(-2px);
+}
+
+/* ===== Checkout delivery destination options ===== */
+.sport-delivery-option {
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    background: #f8fafc;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    user-select: none;
+    height: 100%;
+}
+.sport-delivery-option:hover {
+    border-color: rgba(15, 52, 96, 0.4);
+    background: rgba(15, 52, 96, 0.05);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(15, 52, 96, 0.1);
+}
+.sport-delivery-option.selected {
+    border-color: #0f3460;
+    background: rgba(15, 52, 96, 0.07);
+    box-shadow: 0 4px 14px rgba(15, 52, 96, 0.15);
+}
+.sport-delivery-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(15, 52, 96, 0.08);
+    color: #94a3b8;
+    font-size: 1.25rem;
+    transition: all 0.25s ease;
+}
+.sport-delivery-option:hover .sport-delivery-icon,
+.sport-delivery-option.selected .sport-delivery-icon {
+    color: #0f3460;
+    background: rgba(15, 52, 96, 0.15);
+    transform: scale(1.06);
+}
+.sport-delivery-check {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: 2px solid #e2e8f0;
+    color: transparent;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+.sport-delivery-option.selected .sport-delivery-check {
+    border-color: #0f3460;
+    background: #0f3460;
+    color: #fff;
+    animation: sport-check-pop 0.3s ease;
+}
+
+/* نقشه انتخاب مقصد */
+#cityMap {
+    border: 1px solid rgba(15, 52, 96, 0.15);
+    box-shadow: 0 6px 18px rgba(15, 52, 96, 0.08);
+    z-index: 1; /* جلوگیری از تداخل با کارت‌های Bootstrap */
+}

@@ -28,26 +28,33 @@ class RegisteredUserController extends Controller
      *
      * @throws ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, \App\Services\OtpService $otpService): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'phone' => ['required', 'string', 'max:20', 'unique:'.User::class],
+            'email' => ['nullable', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'password' => ['nullable', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
+        $phone = $request->string('phone')->toString();
+
+        // ارسال کد تأیید پیامکی و هدایت به صفحه ورود کد؛
+        // کاربر فقط پس از تأیید کد ساخته و وارد می‌شود.
+        $otpService->send($phone, 'register', [
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_seller' => true,
-            'seller_status' => 'approved',
+            'password' => $request->password,
         ]);
 
-        event(new Registered($user));
+        $request->session()->put('otp_pending', [
+            'phone' => $phone,
+            'purpose' => 'register',
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => $request->password,
+        ]);
 
-        Auth::login($user);
-
-        return redirect(route('user.dashboard', absolute: false));
+        return redirect()->route('otp.verify');
     }
 }

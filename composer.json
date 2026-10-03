@@ -8,8 +8,11 @@
     "require": {
         "php": "^8.2",
         "hekmatinasser/verta": "^9.0",
+        "kavenegar/laravel": "^1.3",
+        "kavenegar/php": "^1.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "shetabit/payment": "^6.4"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

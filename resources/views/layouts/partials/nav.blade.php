@@ -103,7 +103,7 @@
                         </button>
                         <ul class="dropdown-menu sport-dropdown-menu shadow border-0" style="background: #1a1a2e;">
                             <li>
-                                <a class="dropdown-item sport-dropdown-item" href="{{ route('user.dashboard') }}">
+                                <a class="dropdown-item sport-dropdown-item" href="{{ route(auth('web')->user()->role.'.dashboard') }}">
                                     <i class="bi bi-speedometer2"></i> داشبورد
                                 </a>
                             </li>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Brand;
+use App\Models\Article;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
@@ -53,6 +54,12 @@ class HomeController extends Controller
 
         $brands = Brand::where('image', '!=', null)->get();
 
+        $latestArticles = Article::published()
+            ->with('category')
+            ->latest('published_at')
+            ->limit(3)
+            ->get();
+
         $flashSaleEndsAt = Product::activeDiscount()
             ->whereNotNull('discount_ends_at')
             ->where('discount_ends_at', '>', now())
@@ -60,7 +67,7 @@ class HomeController extends Controller
 
         $flashSaleEndsAt = $flashSaleEndsAt ? Carbon::parse($flashSaleEndsAt) : null;
 
-        return view('home', compact('products', 'categories', 'childCategories', 'brands', 'flashSaleEndsAt'));
+        return view('home', compact('products', 'categories', 'childCategories', 'brands', 'flashSaleEndsAt', 'latestArticles'));
     }
 
     public function discounted()

@@ -49,6 +49,12 @@
                     <p>کاربران</p>
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.users.registered') }}" class="nav-link">
+                    <i class="fa fa-check-circle nav-icon" style="color: #28a745;"></i>
+                    <p>کاربران ثبت‌نام شده</p>
+                  </a>
+                </li>
               </ul>
             </li>
 
@@ -167,6 +173,42 @@
                   <a href="{{ route('admin.coupons.index') }}" class="nav-link {{ request()->routeIs('admin.coupons.index') ? 'active' : '' }}">
                     <i class="fa fa-list nav-icon lists-color"></i>
                     <p>کوپن‌ها</p>
+                  </a>
+                </li>
+              </ul>
+            </li>
+
+            <li class="nav-item has-treeview {{ request()->routeIs('admin.articles.*') ? 'menu-open' : '' }}">
+              <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-newspaper-o"></i>
+                <p style="font-size: 0.75rem;">
+                  مدیریت مقالات و مجلات
+                  <i class="fa fa-angle-left right"></i>
+                </p>
+              </a>
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a href="{{ route('admin.articles.index') }}" class="nav-link {{ request()->routeIs('admin.articles.index') ? 'active' : '' }}">
+                    <i class="fa fa-list nav-icon lists-color"></i>
+                    <p>همه مقالات</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.articles.create') }}" class="nav-link">
+                    <i class="fa fa-plus nav-icon plus"></i>
+                    <p>افزودن مقاله</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.articles.drafts') }}" class="nav-link {{ request()->routeIs('admin.articles.drafts') ? 'active' : '' }}">
+                    <i class="fa fa-file-text-o nav-icon"></i>
+                    <p>پیش نویس‌ها</p>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="{{ route('admin.articles.categories') }}" class="nav-link {{ request()->routeIs('admin.articles.categories') ? 'active' : '' }}">
+                    <i class="fa fa-tags nav-icon"></i>
+                    <p>دسته بندی مقالات</p>
                   </a>
                 </li>
               </ul>

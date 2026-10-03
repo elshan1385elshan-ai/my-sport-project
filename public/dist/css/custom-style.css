@@ -1056,6 +1056,41 @@ textarea.sport-form-control { min-height: 100px; resize: vertical; }
 .sport-input-wrap .sport-form-control { padding-right: 46px !important; }
 .sport-input-wrap .sport-form-control:focus ~ .input-icon { color: #e94560; }
 
+/* Password toggle button inside sport-input-wrap (admin forms) */
+.sport-input-wrap .sport-password-toggle {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    border: none;
+    background: transparent;
+    color: #adb5bd;
+    padding: 6px 8px;
+    cursor: pointer;
+    outline: none;
+    box-shadow: none !important;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    line-height: 1;
+    transition: color 0.25s ease, background 0.25s ease, transform 0.15s ease;
+}
+.sport-input-wrap .sport-password-toggle:hover {
+    color: #e94560;
+    background: rgba(233, 69, 96, 0.08);
+}
+.sport-input-wrap .sport-password-toggle:active {
+    transform: translateY(-50%) scale(0.88);
+}
+.sport-input-wrap .sport-password-toggle i {
+    transition: transform 0.25s ease;
+}
+.sport-input-wrap .sport-password-toggle:hover i {
+    transform: scale(1.1);
+}
+/* Give password inputs extra left padding so text doesn't run under the button */
+.sport-input-wrap input.sport-form-control:not(:last-child) { padding-left: 40px !important; }
+
 /* ===== 11B. FORM BUTTONS (Admin Layout) ===== */
 
 .sport-btn-primary {
