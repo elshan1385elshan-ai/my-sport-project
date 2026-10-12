@@ -17,6 +17,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'admin' => AdminMiddleware::class,
         ]);
 
+        // درگاه پرداخت محلی (local) فرم خود را بدون توکن CSRF به این مسیر ارسال می‌کند
+        $middleware->validateCsrfTokens(except: ['callback']);
+
         // important: do NOT remove/override default middleware.
     })
 

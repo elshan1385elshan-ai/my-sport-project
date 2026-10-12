@@ -19,18 +19,20 @@
         </div>
 
         <div class="row stats-row">
-          <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="info-box sport-info-box border-0 bg-card-sunset">
-              <div class="inner">
-                <h3>{{ $ordersToday }}</h3>
-                <p>سفارش‌های امروز</p>
+          <div class="col-lg-4 col-md-4 col-sm-6">
+            <a href="{{ route('admin.orders.index') }}" class="text-decoration-none">
+              <div class="info-box sport-info-box border-0 bg-card-sunset">
+                <div class="inner">
+                  <h3>{{ $ordersToday }}</h3>
+                  <p>سفارش‌های امروز</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-shopping-cart"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="fa fa-shopping-cart"></i>
-              </div>
-            </div>
+            </a>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="info-box sport-info-box border-0 bg-card-ocean">
               <div class="inner">
                 <h3>{{ $ordersThisMonth }}</h3>
@@ -41,7 +43,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="info-box sport-info-box border-0 bg-card-forest">
               <div class="inner">
                 <h3>{{ number_format($totalRevenue) }}<sup class="text-sm"> تومان</sup></h3>
@@ -52,7 +54,7 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-3 col-md-4 col-sm-6">
+          <div class="col-lg-4 col-md-4 col-sm-6">
             <div class="info-box sport-info-box border-0 bg-card-lavender">
               <div class="inner">
                 <h3>{{ $newUsersToday }}</h3>
@@ -86,37 +88,43 @@
             </div>
           </div>
           <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="info-box sport-info-box border-0 bg-card-flame">
-              <div class="inner">
-                <h3>{{ $inactiveProducts }}</h3>
-                <p>محصولات ناموجود (غیرفعال)</p>
+            <a href="{{ route('all.products.outOfStock') }}" class="text-decoration-none">
+              <div class="info-box sport-info-box border-0 bg-card-flame">
+                <div class="inner">
+                  <h3>{{ $inactiveProducts }}</h3>
+                  <p>محصولات ناموجود (غیرفعال)</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-times-circle"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="fa fa-times-circle"></i>
-              </div>
-            </div>
+            </a>
           </div>
           <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="info-box sport-info-box border-0 bg-card-stone">
-              <div class="inner">
-                <h3>{{ $activeProducts + $inactiveProducts }}</h3>
-                <p>کل محصولات</p>
+            <a href="{{ route('all.products.show') }}" class="text-decoration-none">
+              <div class="info-box sport-info-box border-0 bg-card-stone">
+                <div class="inner">
+                  <h3>{{ $activeProducts + $inactiveProducts }}</h3>
+                  <p>کل محصولات</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-archive"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="fa fa-archive"></i>
-              </div>
-            </div>
+            </a>
           </div>
           <div class="col-lg-3 col-md-4 col-sm-6">
-            <div class="info-box sport-info-box border-0 bg-card-wine">
-              <div class="inner">
-                <h3>{{ $pendingOrders }}</h3>
-                <p>سفارش‌های در انتظار</p>
+            <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="text-decoration-none">
+              <div class="info-box sport-info-box border-0 bg-card-wine">
+                <div class="inner">
+                  <h3>{{ $pendingOrders }}</h3>
+                  <p>سفارش‌های در انتظار</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-hourglass"></i>
+                </div>
               </div>
-              <div class="icon">
-                <i class="fa fa-hourglass"></i>
-              </div>
-            </div>
+            </a>
           </div>
         </div>
 

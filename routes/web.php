@@ -17,6 +17,8 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserAddressController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminOrderController;
+use App\Http\Controllers\ShowAllProductsController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
@@ -39,8 +41,9 @@ Route::post('/cart/coupon/remove', [CouponController::class, 'remove'])->name('c
 Route::middleware('auth')->group(function () {
     Route::get('/checkout/payment', [CheckoutController::class, 'payment'])->name('checkout.payment');
     Route::post('/checkout/complete', [CheckoutController::class, 'complete'])->name('checkout.complete');
+    Route::post('/callback', [CheckoutController::class, 'callback'])->name('payment.callback');
 });
-
+Route::get('/callback', [CheckoutController::class, 'callback'])->name('payment.callback.guest');
 Route::middleware('auth')->post('/product/{product}/review', [ReviewController::class, 'store'])->name('product.review.store');
 // بخش پروفایل کاربر
 Route::middleware('auth')->group(function () {
@@ -84,6 +87,8 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
         Route::put('/{user}', [AdminUserController::class, 'update'])->name('update');
         Route::delete('/{user}', [AdminUserController::class, 'destroy'])->name('destroy');
     });
+    Route::get('/orders',[AdminOrderController::class,'index'])->name('admin.orders.index');
+    Route::get('/orders/{order}',[AdminOrderController::class,'show'])->name('admin.orders.show');
     Route::resource('/products', ProductController::class);
     Route::delete('/products/images/{image}', [ProductController::class, 'destroyImage'])->name('products.images.destroy');
     Route::resource('/categories', CategoryController::class);
@@ -95,7 +100,8 @@ Route::middleware('admin')->prefix('/admin')->group(function () {
     Route::post('/features/{feature}/values', [FeatureController::class, 'storeValue'])->name('features.values.store');
     Route::put('/features/values/{value}', [FeatureController::class, 'updateValue'])->name('features.values.update');
     Route::delete('/features/values/{value}', [FeatureController::class, 'destroyValue'])->name('features.values.destroy');
-
+    Route::get('allproducts/show',[ShowAllProductsController::class, 'show'])->name('all.products.show');
+    Route::get('allproducts/out-of-stock',[ShowAllProductsController::class, 'outOfStock'])->name('all.products.outOfStock');
     Route::resource('/coupons', CouponController::class)->except(['show'])->names('admin.coupons');
 
     Route::get('/settings', [SettingController::class, 'edit'])->name('settings.edit');

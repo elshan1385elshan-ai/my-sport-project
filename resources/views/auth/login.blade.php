@@ -52,7 +52,7 @@
                             <a href="#" class="text-danger text-decoration-none fw-medium small">فراموشی رمز؟</a>
                         </div>
 
-                        <button type="submit" class="btn btn-lg w-100 rounded-3 fw-semibold mb-4" style="background: linear-gradient(135deg, #ef4444, #dc2626); border: none; box-shadow: 0 4px 16px rgba(239,68,68,0.3);">
+                        <button type="submit" class="btn btn-lg w-100 rounded-3 fw-semibold mb-4" style="color: white; background: linear-gradient(135deg, #ef4444, #dc2626); border: none; box-shadow: 0 4px 16px rgba(239,68,68,0.3);">
                             <i class="bi bi-box-arrow-in-right me-2"></i> ورود
                         </button>
                     </form>

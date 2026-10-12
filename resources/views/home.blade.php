@@ -202,4 +202,17 @@
     var timerInterval = setInterval(updateCountdown, 1000);
 })();
 </script>
+<script>
+  @if(session('success'))
+    Swal.fire({
+      icon: 'success',
+      title: 'موفق!',
+      text: '{{ session("success") }}',
+      confirmButtonText: 'باشه',
+      confirmButtonColor: '#0f3460',
+      timer: 3000,
+      timerProgressBar: true
+    });
+  @endif
+</script>
 @endpush

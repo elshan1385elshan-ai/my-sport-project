@@ -163,13 +163,13 @@
                 var deliveryOptions = document.getElementById('deliveryOptions');
                 if (selected) {
                     document.querySelector('label[for="' + selected.id + '"]').classList.add('selected');
-                    if (selected.value === 'in_person') {
+                    if (selected.value === 'online' || selected.value === 'in_person') {
                         deliveryOptions.style.display = 'block';
                         completeBtn.disabled = true; // تا انتخاب مقصد
                     } else {
                         deliveryOptions.style.display = 'none';
                         document.getElementById('mapSection').style.display = 'none';
-                        completeBtn.disabled = false;
+                        completeBtn.disabled = true;
                     }
                 } else {
                     deliveryOptions.style.display = 'none';

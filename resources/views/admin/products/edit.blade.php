@@ -157,17 +157,14 @@
                                             <div class="col-md-3 mb-3">
                                                 <div class="position-relative d-inline-block" style="width:100%;">
                                                     <img src="{{ asset('storage/'.$image->image_path) }}" class="img-fluid sport-thumb" style="max-height: 120px; width: auto; object-fit: cover;">
-                                                    <form action="{{ route('products.images.destroy', $image->id) }}" method="POST" class="product-image-delete-form" style="position:absolute; top:5px; left:5px;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                                class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center"
-                                                                style="width: 32px; height: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.35);"
-                                                                title="حذف این تصویر"
-                                                                onclick="return confirm('آیا از حذف این تصویر مطمئن هستید؟');">
-                                                            <i class="fa fa-trash"></i>
-                                                        </button>
-                                                    </form>
+                                                    {{-- فرم حذف تصویر خارج از فرم اصلی ساخته و سابمیت می‌شود (فرم تو در تو ممنوع) --}}
+                                                    <button type="button"
+                                                            class="btn btn-sm btn-danger rounded-circle d-flex align-items-center justify-content-center"
+                                                            style="position:absolute; top:5px; left:5px; width: 32px; height: 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.35);"
+                                                            title="حذف این تصویر"
+                                                            onclick="deleteProductImage('{{ route('products.images.destroy', $image->id) }}')">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -207,6 +204,30 @@
 
 @push('scripts')
 <script>
+  // حذف تصویر محصول با فرم مستقل خارج از فرم اصلی، تا سایر اطلاعات از دست نرود
+  function deleteProductImage(url) {
+    if (!confirm('آیا از حذف این تصویر مطمئن هستید؟')) return;
+
+    var form = document.createElement('form');
+    form.method = 'POST';
+    form.action = url;
+
+    var csrf = document.createElement('input');
+    csrf.type = 'hidden';
+    csrf.name = '_token';
+    csrf.value = '{{ csrf_token() }}';
+    form.appendChild(csrf);
+
+    var method = document.createElement('input');
+    method.type = 'hidden';
+    method.name = '_method';
+    method.value = 'DELETE';
+    form.appendChild(method);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
+
   $(document).ready(function() {
     var byCategoriesUrl = "{{ route('features.byCategories') }}";
     var selectedValueIds = @json($product->featureValues->pluck('id')->toArray());

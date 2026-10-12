@@ -178,6 +178,13 @@
               </ul>
             </li>
 
+            <li class="nav-item">
+              <a href="{{ route('admin.orders.index') }}" class="nav-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                <i class="nav-icon fa fa-shopping-cart"></i>
+                <p>مدیریت سفارشات</p>
+              </a>
+            </li>
+
             <li class="nav-item has-treeview {{ request()->routeIs('admin.articles.*') ? 'menu-open' : '' }}">
               <a href="#" class="nav-link">
                 <i class="nav-icon fa fa-newspaper-o"></i>

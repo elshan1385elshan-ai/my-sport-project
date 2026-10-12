@@ -33,11 +33,10 @@ class SettingController extends Controller
         $adminIcons = array_keys(AppSetting::adminIconOptions());
         $publicIcons = array_keys(AppSetting::publicIconOptions());
         $fontFamilies = array_keys(AppSetting::fontOptions());
-
         $validated = $request->validate([
             'app_name' => 'required|string|max:100',
             'page_title_prefix' => 'required|string|max:50',
-            'font_family' => 'required|string|in:' . implode(',', $fontFamilies),
+            'font_family' => 'required|string',// . implode(',', $fontFamilies),
             'admin_icon' => 'required|string|in:' . implode(',', $adminIcons),
             'admin_icon_type' => 'required|in:font,custom',
             'admin_icon_custom' => 'nullable|string|max:255',

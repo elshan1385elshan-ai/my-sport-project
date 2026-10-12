@@ -7,6 +7,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Shetabit\Multipay\Invoice;
 use Shetabit\Payment\Facade\Payment;
+use Shetabit\Multipay\Exceptions\InvalidPaymentException;
+use App\Models\Order;
 
 class CheckoutController extends Controller
 {
@@ -69,20 +71,68 @@ class CheckoutController extends Controller
             'payment_method' => 'required|in:online,in_person',
         ]);
         $cart = session()->get('cart', []);
-        
-
+        $address = '';
+        if ($request->delivery_choice=="saved"){
+            $useraddress = auth()->user()->address;
+            $address = $useraddress->province.' '.$useraddress->city.' '.$useraddress->address.' ';   
+        }
+        else{
+            $address = $request->delivery_lat.','.$request->delivery_lng;
+        }
+        $order = Order::create([
+            'user_id' => auth()->user()->id,
+            'shipping_address' => $address
+        ]);
+        $total = 0;
+        foreach ($cart as $id => $q) {
+            $product = Product::findOrFail($id);
+            $price = round($product->price*$q*(100-$product->discount)/100);
+            $total += $price;
+            $order->items()->create([
+                'product_id'=>$id,
+                'quantity'=>$q,
+                'price'=>$price
+            ]) ; 
+        }
+        $order->total=$total;
+        $order->save();
+        session()->forget('cart');
         // Create new invoice.
-        $invoice = (new Invoice)->amount(1000);
-
+        $invoice = (new Invoice)->amount($total);
+        if($request->payment_method=='online'){ 
+            return Payment::purchase($invoice,function($driver, $transactionId) use($order) {
+                $order->transaction_id=$transactionId;
+                $order->save();
+            })->pay()->render();
+        }
         // Purchase the given invoice.
-        return Payment::purchase($invoice,function($driver, $transactionId) {
-            // We can store $transactionId in database.
-        })->pay()->render();
-        //foreach($cart as $id => $quantity)
-        // return $cart;
-        // return $request->all();
-        //Order::create()
         // فعلاً فرآیند خرید در همین‌جا خاتمه می‌یابد؛ منطق ثبت سفارش بعداً اضافه می‌شود
-        //return redirect()->route('home')->with('success', 'شیوه پرداخت شما ثبت شد.');
+        return redirect()->route('home')->with('success', 'شیوه پرداخت شما ثبت شد.');
+    }
+
+    /**
+     * بازگشت از درگاه پرداخت (callback) و تأیید تراکنش
+     */
+    public function callback(Request $request)
+    {
+        try {
+            if($request->Status=='OK'){
+                $transaction_id = $request->Authority;
+                // در حالت آنلاین باید وضعیت تراکنش چک شود. 
+                $order = Order::where('transaction_id',$transaction_id)->first();
+                $order->payment_status = 'paid';
+                $order->save();
+                return redirect()->route('home')->with('success',
+                    'پرداخت با موفقیت انجام شد. '
+                );
+            }
+            else{
+                return redirect()->route('cart.show')->with('error','پرداخت ناموفق بود. ');    
+            }
+            //$receipt = Payment::amount(1000)->verify();
+
+        } catch (InvalidPaymentException $e) {
+            return redirect()->route('cart.show')->with('error','پرداخت ناموفق بود. ');  
+        }
     }
 }
